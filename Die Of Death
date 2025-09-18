@@ -107,8 +107,8 @@ Tabs.Main:Toggle({
 _G.AntiBanana = v
 end})
 game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets.Debris.Cleanable:FindFirstChild("EvilScary") then
-workspace.GameAssets.Debris.Cleanable:FindFirstChild("EvilScary").CanTouch = not _G.AntiEvilScary
+if workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary") then
+workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary").CanTouch = not _G.AntiEvilScary
 end
 end)
 Tabs.Main:Toggle({
@@ -119,7 +119,7 @@ _G.AntiEvilScary = v
 end})
 Tabs.Main:Section({Title = "Other", Icon = "plus"})
 game:GetService("RunService").RenderStepped:Connect(function()
-for _, v in ipairs(workspace.GameAssets.Map.Config.KillerOnly:GetChildren()) do
+for _, v in ipairs(workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly"):GetChildren()) do
 if v.Parent.Name == "KillerOnly" and v then
 v.CanCollide = not _G.ThroughRedKillerWalls
 end
@@ -133,7 +133,7 @@ _G.ThroughRedKillerWalls = v
 end})
 game:GetService("RunService").RenderStepped:Connect(function()
 for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
-if v.Parent.Name == "Other" and v.Name == "Wall" then
+if v.Parent.Name == "Other" and v.Name == "Wall" and v then
 v.CanCollide = not _G.ThroughBuildKillerWalls
 end
 end
@@ -153,9 +153,6 @@ if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.N
 if _G.InfStamina then
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
 end
-if _G.BlockSlow then
-workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SpeedBoostModifier", 0)
-end
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (26 + _G.SprintSpeedBoost))
 end
@@ -163,18 +160,12 @@ if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Nam
 if _G.InfStamina then
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
 end
-if _G.BlockSlow then
-workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SpeedBoostModifier", 0)
-end
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (28 + _G.SprintSpeedBoost))
 end
 if workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name) then
 if _G.InfStamina then
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
-end
-if _G.BlockSlow then
-workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SpeedBoostModifier", 0)
 end
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (30 + _G.SprintSpeedBoost))
@@ -199,13 +190,13 @@ Tabs.Players:Toggle({
 _G.InfStamina = v
 end})
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 12 then
+if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 10 then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
 end
 end)
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 12 then
+if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 10 then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
 end
 end)
