@@ -1,0 +1,307 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
+Library:SetTheme("Dark")
+local function gradient(text, startColor, endColor)
+local result = ""
+for i = 1, #text do
+local t = (i - 1) / (#text - 1)
+local r = math.floor((startColor.R + (endColor.R - startColor.R) * t) * 255)
+local g = math.floor((startColor.G + (endColor.G - startColor.G) * t) * 255)
+local b = math.floor((startColor.B + (endColor.B - startColor.B) * t) * 255)
+result = result .. string.format('<font color="rgb(%d,%d,%d)">%s</font>', r, g, b, text:sub(i, i))
+end
+return result
+end
+
+local Window = Library:CreateWindow({
+Title = "YOUHUB",
+Icon = "geist:key",
+Author = "v0.1",
+Folder = "WindUI_Example",
+Size = UDim2.fromOffset(800, 600),
+Theme = "Dark",
+User = {
+Enabled = true,
+Anonymous = false,
+Callback = function()
+Library:Notify({
+Title = "Welcome",
+Content = "This is your user profile!",
+Duration = 3
+})
+end
+},
+Acrylic = true,
+HideSearchBar = false,
+SideBarWidth = 200
+})
+Window:Tag({
+Title = "DIE OF DEATH",
+Color = Library:Gradient({
+["0"]   = { Color = Color3.fromRGB(255,0,0), Transparency = 0 },
+["14"] = { Color = Color3.fromRGB(255,125,0), Transparency = 0 },
+["28"] = { Color = Color3.fromRGB(255,255,0), Transparency = 0 },
+["42"] = { Color = Color3.fromRGB(0,255,0), Transparency = 0 },
+["56"] = { Color = Color3.fromRGB(0,0,255), Transparency = 0 },
+["70"] = { Color = Color3.fromRGB(125,0,255), Transparency = 0 },
+["84"] = { Color = Color3.fromRGB(255,0,255), Transparency = 0 },
+}, {
+Rotation = 45,
+}),
+})
+local Tabs = {
+Main = Window:Section({ Title = "Tabs", Opened = true }),
+}
+
+local Tab = {
+Main = Tabs.Main:Tab({ Title = "Main", Icon = "layout-grid"}),
+Players = Tabs.Main:Tab({ Title = "Players", Icon = "user"}),
+Camera = Tabs.Main:Tab({ Title = "Camera", Icon = "camera"}),
+ESP = Tabs.Main:Tab({ Title = "ESP", Icon = "map"}),
+Setting = Tabs.Main:Tab({ Title = "Setting", Icon = "settings"}),
+}
+
+local function Notify(name, time)
+Library:Notify({
+Title = "Notification",
+Content = name,
+Icon = "bell",
+Duration = time or 5
+})
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = 10
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+
+Tabs.Main:Section({Title = "Interact", Icon = "mouse"})
+Tabs.Main:Toggle({
+    Title = "Instance Interact",
+    Value = false,
+    Callback = function(v) 
+if v then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") and v then
+v.HoldDuration = 0
+end
+end
+InstanceInteract = workspace.DescendantAdded:Connect(function(v)
+if v:IsA("ProximityPrompt") and v then
+v.HoldDuration = 0
+end
+end)
+else
+InstanceInteract:Disconnect()
+end
+end})
+Tabs.Main:Section({Title = "Anti", Icon = "hammer"})
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Debris.Cleanable:FindFirstChild("BananaPeelAbility") and _G.AntiBanana then
+for _,v in ipairs(workspace.GameAssets.Debris.Cleanable:FindFirstChild("BananaPeelAbility"):GetChildren()) do
+if v.Parent.Name == "BananaPeelAbility" and v:IsA("BasePart") then
+v.CanTouch = not _G.AntiBanana
+end
+end
+end
+end)
+Tabs.Main:Toggle({
+    Title = "Anti-Banana",
+    Value = false,
+    Callback = function(v) 
+_G.AntiBanana = v
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Other:FindFirstChild("MusicBox") and _G.AntiMusicBox then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:FindFirstChild("MusicBox"):GetChildren()) do
+if v.Parent.Name == "MusicBox" and v:IsA("BasePart") then
+v.CanTouch = not _G.AntiMusicBox
+end
+end
+end
+end)
+Tabs.Main:Toggle({
+    Title = "Anti-Music Box",
+    Value = false,
+    Callback = function(v) 
+_G.AntiMusicBox = v
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Other:FindFirstChild("Wall") and _G.AntiWall then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:FindFirstChild("Wall"):GetChildren()) do
+if v.Parent.Name == "MusicBox" and v:IsA("BasePart") then
+v.CanCollide = not _G.AntiWall
+end
+end
+end
+end)
+Tabs.Main:Toggle({
+    Title = "Anti-Wall",
+    Value = false,
+    Callback = function(v) 
+_G.AntiWall = v
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Debris.Cleanable:FindFirstChild("Killbot") and _G.AntiKillbotsDetect then
+for _,v in ipairs(workspace.GameAssets.Debris.Cleanable:FindFirstChild("Killbot"):GetChildren()) do
+if v.Parent.Name == "Killbot" and v:IsA("BasePart") then
+v.CanTouch = not _G.AntiKillbotsDetect
+end
+end
+end
+end)
+Tabs.Main:Toggle({
+    Title = "Anti-Killbots Detect",
+    Value = false,
+    Callback = function(v) 
+_G.AntiKillbotsDetect = v
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Other:FindFirstChild("Puppet") and _G.AntiPuppet then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:FindFirstChild("Puppet"):GetChildren()) do
+if v.Parent.Name == "Puppet" and v:IsA("BasePart") then
+v.CanTouch = not _G.AntiPuppet
+end
+end
+end
+end)
+Tabs.Main:Toggle({
+    Title = "Anti-Puppet",
+    Value = false,
+    Callback = function(v) 
+_G.AntiPuppet = v
+end})
+
+Tabs.Players:Section({Title = "Players", Icon = "user"})
+
+local inf = 9e999999999
+
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+if _G.InfStamina then
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+end
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (26 + _G.SprintSpeedBoost))
+end
+if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
+if _G.InfStamina then
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+end
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (28 + _G.SprintSpeedBoost))
+end
+if workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name) then
+if _G.InfStamina then
+workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+end
+workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
+workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (30 + _G.SprintSpeedBoost))
+end
+end)
+Tabs.Players:Slider({
+    Title = "Walk Speed Boost",
+    Value = { Min = 0, Max = 6, Default = 0 },
+    Callback = function(v)
+_G.WalkSpeedBoost = v
+end})
+Tabs.Players:Slider({
+    Title = "Sprint Speed Boost",
+    Value = { Min = 0, Max = 6, Default = 0 },
+    Callback = function(v)
+_G.SprintSpeedBoost = v
+end})
+Tabs.Players:Toggle({
+    Title = "Infinite Stamina",
+    Value = false,
+    Callback = function(v) 
+_G.InfStamina = v
+end})
+
+Tabs.Camera:Section({Title = "Vignette", Icon = "eye"})
+Tabs.Camera:Toggle({
+    Title = "Remove Blood Vignette",
+    Value = false,
+    Callback = function(v) 
+_G.RemoveBloodVignette = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.BloodVignette.Visible = not _G.RemoveBloodVignette
+end)
+end})
+Tabs.Camera:Toggle({
+    Title = "Remove Hurt Overlay Vignette",
+    Value = false,
+    Callback = function(v) 
+_G.RemoveHurtOverlayVignette = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.HurtOverlay.Visible = not _G.RemoveHurtOverlayVignette
+end)
+end})
+Tabs.Camera:Toggle({
+    Title = "Remove Paranoy Vignette",
+    Value = false,
+    Callback = function(v) 
+_G.RemoveParanoyVignette = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Paranoy.Visible = not _G.RemoveParanoyVignette
+end)
+end})
+Tabs.Camera:Section({Title = "Jumpscare", Icon = "pumpkin"})
+Tabs.Camera:Toggle({
+    Title = "Remove Evil Scary Jumpscare",
+    Value = false,
+    Callback = function(v) 
+_G.RemoveEvilScaryJumpscare = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.EvilScary.Visible = not _G.RemoveEvilScaryJumpscare
+end)
+end})
+Tabs.Camera:Section({Title = "Camera", Icon = "camera"})
+game:GetService("RunService").RenderStepped:Connect(function()
+workspace.CurrentCamera.FieldOfView = _G.FieldOfView or 70
+end)
+Tabs.Camera:Slider({
+    Title = "Field Of View",
+    Value = { Min = 70, Max = 120, Default = 70 },
+    Callback = function(v)
+_G.FieldOfView = v
+end})
+local Default = {
+Shadows = game.Lighting.GlobalShadows,
+Brightness = game.Lighting.Brightness,
+OutdoorAmbient = game.Lighting.OutdoorAmbient
+}
+Tabs.Camera:Toggle({
+    Title = "Fullbright",
+    Value = false,
+    Callback = function(v) 
+_G.Fullbright = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.Fullbright then
+game.Lighting.GlobalShadows = false
+game.Lighting.Brightness = 0.3
+game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
+else
+game.Lighting.GlobalShadows = Default.Shadows
+game.Lighting.Brightness = Default.Brightness
+game.Lighting.OutdoorAmbient = Default.OutdoorAmbient
+end
+end)
+end})
+Tabs.Camera:Toggle({
+    Title = "No Fog",
+    Value = false,
+    Callback = function(v) 
+_G.NoFog = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
+if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
+game.Lighting.FogStart = _G.NoFog and 0 or game.Lighting:GetAttribute("FogStart")
+game.Lighting.FogEnd = _G.NoFog and math.huge or game.Lighting:GetAttribute("FogEnd")
+local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+if fog then
+if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+fog.Density = _G.NoFog and 0 or fog:GetAttribute("Density")
+end
+end)
+end})
