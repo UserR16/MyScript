@@ -106,60 +106,12 @@ Tabs.Main:Toggle({
     Callback = function(v) 
 _G.AntiBanana = v
 end})
-game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets.Teams.Other:FindFirstChild("MusicBox") and _G.AntiMusicBox then
-for _,v in ipairs(workspace.GameAssets.Teams.Other:FindFirstChild("MusicBox"):GetChildren()) do
-if v.Parent.Name == "MusicBox" and v:IsA("BasePart") then
-v.CanTouch = not _G.AntiMusicBox
-end
-end
-end
-end)
-Tabs.Main:Toggle({
-    Title = "Anti-Music Box",
-    Value = false,
-    Callback = function(v) 
-_G.AntiMusicBox = v
-end})
-game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets.Teams.Other:FindFirstChild("Wall") and _G.AntiWall then
-for _,v in ipairs(workspace.GameAssets.Teams.Other:FindFirstChild("Wall"):GetChildren()) do
-if v.Parent.Name == "MusicBox" and v:IsA("BasePart") then
-v.CanCollide = not _G.AntiWall
-end
-end
-end
-end)
 Tabs.Main:Toggle({
     Title = "Anti-Wall",
     Value = false,
     Callback = function(v) 
 _G.AntiWall = v
 end})
-game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets.Debris.Cleanable:FindFirstChild("Killbot") and _G.AntiKillbotsDetect then
-for _,v in ipairs(workspace.GameAssets.Debris.Cleanable:FindFirstChild("Killbot"):GetChildren()) do
-if v.Parent.Name == "Killbot" and v:IsA("BasePart") then
-v.CanTouch = not _G.AntiKillbotsDetect
-end
-end
-end
-end)
-Tabs.Main:Toggle({
-    Title = "Anti-Killbots Detect",
-    Value = false,
-    Callback = function(v) 
-_G.AntiKillbotsDetect = v
-end})
-game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets.Teams.Other:FindFirstChild("Puppet") and _G.AntiPuppet then
-for _,v in ipairs(workspace.GameAssets.Teams.Other:FindFirstChild("Puppet"):GetChildren()) do
-if v.Parent.Name == "Puppet" and v:IsA("BasePart") then
-v.CanTouch = not _G.AntiPuppet
-end
-end
-end
-end)
 Tabs.Main:Toggle({
     Title = "Anti-Puppet",
     Value = false,
@@ -171,10 +123,13 @@ Tabs.Players:Section({Title = "Players", Icon = "user"})
 
 local inf = 9e999999999
 
-game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("RunService").Stepped:Connect(function()
 if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
 if _G.InfStamina then
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+end
+if _G.BlockSlow then
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SpeedBoostModifier", 0)
 end
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (26 + _G.SprintSpeedBoost))
@@ -183,12 +138,18 @@ if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Nam
 if _G.InfStamina then
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
 end
+if _G.BlockSlow then
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SpeedBoostModifier", 0)
+end
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (28 + _G.SprintSpeedBoost))
 end
 if workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name) then
 if _G.InfStamina then
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+end
+if _G.BlockSlow then
+workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SpeedBoostModifier", 0)
 end
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (30 + _G.SprintSpeedBoost))
@@ -212,8 +173,56 @@ Tabs.Players:Toggle({
     Callback = function(v) 
 _G.InfStamina = v
 end})
+Tabs.Players:Toggle({
+    Title = "Block Freeze",
+    Value = false,
+    Callback = function(v) 
+if v then
+BlockFreeze = game:GetService("RunService").Stepped:Connect(function()
+if game.Players.LocalPlayer and game.Players.LocalPlayer.Character then
+for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+if part:IsA("BasePart") then
+part.Anchored = false
+end
+end
+end
+end)
+else
+if BlockFreeze then
+BlockFreeze:Disconnect()
+BlockFreeze = nil
+end
+end
+end})
+Tabs.Players:Toggle({
+    Title = "Block Slow",
+    Value = false,
+    Callback = function(v) 
+_G.BlockSlow = v
+end})
+Tabs.Players:Toggle({
+    Title = "Noclip",
+    Value = false,
+    Callback = function(v) 
+if v then
+Noclip = game:GetService("RunService").Stepped:Connect(function()
+if game.Players.LocalPlayer and game.Players.LocalPlayer.Character then
+for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+if part:IsA("BasePart") then
+part.CanCollide = false
+end
+end
+end
+end)
+else
+if Noclip then
+Noclip:Disconnect()
+Noclip = nil
+end
+end
+end})
 
-Tabs.Camera:Section({Title = "Vignette", Icon = "eye"})
+Tabs.Camera:Section({Title = "Vignette", Icon = "camera"})
 Tabs.Camera:Toggle({
     Title = "Remove Blood Vignette",
     Value = false,
@@ -241,7 +250,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Paranoy.Visible = not _G.RemoveParanoyVignette
 end)
 end})
-Tabs.Camera:Section({Title = "Jumpscare", Icon = "pumpkin"})
+Tabs.Camera:Section({Title = "Jumpscare", Icon = "camera"})
 Tabs.Camera:Toggle({
     Title = "Remove Evil Scary Jumpscare",
     Value = false,
@@ -301,7 +310,7 @@ end
 end)
 end})
 
-Tabs.ESP:Section({Title = "ESP", Icon = "compass"})
+Tabs.ESP:Section({Title = "ESP", Icon = "map"})
 local function Highlight(target, color, name)
 task.wait(0.25)
 local Highlight = Instance.new('Highlight', target)
@@ -391,7 +400,7 @@ Tabs.ESP:Toggle({
 if v then
 for _,v in ipairs(workspace.GameAssets.Teams.Survivor:GetChildren()) do
 if v:IsA("Model") and v and v.Parent.Name == "Survivor" then
-Highlight(v, Color3.new(1), "YOUHUB : Survivir ESP")
+Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
@@ -410,7 +419,7 @@ TextLabel.Visible = true
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 TextLabel.Size = UDim2.new(1,0,0,0)
 TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
-UIStroke.Thickness = 1
+UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 game:GetService("RunService").Stepped:Connect(function()
@@ -420,7 +429,7 @@ end
 end
 SurvivorESP = workspace.GameAssets.Teams.Survivor.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v and v.Parent.Name == "Survivor" then
-Highlight(v, Color3.new(1), "YOUHUB : Survivir ESP")
+Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
@@ -439,7 +448,7 @@ TextLabel.Visible = true
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 TextLabel.Size = UDim2.new(1,0,0,0)
 TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
-UIStroke.Thickness = 1
+UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 game:GetService("RunService").Stepped:Connect(function()
@@ -451,6 +460,150 @@ else
 SurvivorESP:Disconnect()
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "YOUHUB : Survivor ESP" then
+v:Destroy()
+end
+end
+end
+end})
+Tabs.ESP:Toggle({
+    Title = "Ghost ESP",
+    Value = false,
+    Callback = function(v) 
+if v then
+for _,v in ipairs(workspace.GameAssets.Teams.Ghost:GetChildren()) do
+if v:IsA("Model") and v and v.Parent.Name == "Ghost" then
+Highlight(v, Color3.new(0,1,1), "YOUHUB : Ghost ESP")
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Ghost ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 0.5
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+game:GetService("RunService").Stepped:Connect(function()
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+end)
+end
+end
+GhostESP = workspace.GameAssets.Teams.Ghost.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v and v.Parent.Name == "Ghost" then
+Highlight(v, Color3.new(0,1,1), "YOUHUB : Ghost ESP")
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Ghost ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 0.5
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+game:GetService("RunService").Stepped:Connect(function()
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+end)
+end
+end)
+else
+GhostESP:Disconnect()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "YOUHUB : Ghost ESP" then
+v:Destroy()
+end
+end
+end
+end})
+Tabs.ESP:Toggle({
+    Title = "Other ESP",
+    Value = false,
+    Callback = function(v) 
+if v then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
+if v:IsA("Model") and v and v.Parent.Name == "Other" then
+Highlight(v, v:FindFirstChild("HumanoidRootPart").Color, "YOUHUB : Other ESP")
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Other ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 0.5
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+game:GetService("RunService").Stepped:Connect(function()
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+end)
+end
+end
+OtherESP = workspace.GameAssets.Teams.Survivor.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v and v.Parent.Name == "Other" then
+Highlight(v, v:FindFirstChild("HumanoidRootPart").Color, "YOUHUB : Other ESP")
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Other ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 0.5
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+game:GetService("RunService").Stepped:Connect(function()
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+end)
+end
+end)
+else
+OtherESP:Disconnect()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "YOUHUB : Other ESP" then
 v:Destroy()
 end
 end
