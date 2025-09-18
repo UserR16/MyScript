@@ -93,8 +93,8 @@ end})
 Tabs.Main:Section({Title = "Anti", Icon = "hammer"})
 game:GetService("RunService").RenderStepped:Connect(function()
 if workspace.GameAssets.Debris.Cleanable:FindFirstChild("BananaPeelAbility") and _G.AntiBanana then
-for _,v in ipairs(workspace.GameAssets.Debris.Cleanable:FindFirstChild("BananaPeelAbility"):GetChildren()) do
-if v.Parent.Name == "BananaPeelAbility" and v:IsA("BasePart") then
+for _,v in ipairs(workspace.GameAssets.Debris.Cleanable:GetChildren()) do
+if v.Name == "BananaPeelAbility" and v:IsA("BasePart") then
 v.CanTouch = not _G.AntiBanana
 end
 end
@@ -106,19 +106,44 @@ Tabs.Main:Toggle({
     Callback = function(v) 
 _G.AntiBanana = v
 end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Debris.Cleanable:FindFirstChild("EvilScary") then
+workspace.GameAssets.Debris.Cleanable:FindFirstChild("EvilScary").CanTouch = not _G.AntiEvilScary
+end
+end)
 Tabs.Main:Toggle({
-    Title = "Anti-Wall",
+    Title = "Anti-Evil Scary",
     Value = false,
     Callback = function(v) 
-_G.AntiWall = v
+_G.AntiEvilScary = v
 end})
+Tabs.Main:Section({Title = "Other", Icon = "plus"})
+game:GetService("RunService").RenderStepped:Connect(function()
+for _, v in ipairs(workspace.GameAssets.Map.Config.KillerOnly:GetChildren()) do
+if v.Parent.Name == "KillerOnly" and v then
+v.CanCollide = not _G.ThroughRedKillerWalls
+end
+end
+end)
 Tabs.Main:Toggle({
-    Title = "Anti-Puppet",
+    Title = "Through Red Killer Walls",
     Value = false,
     Callback = function(v) 
-_G.AntiPuppet = v
+_G.ThroughRedKillerWalls = v
 end})
-
+game:GetService("RunService").RenderStepped:Connect(function()
+for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
+if v.Parent.Name == "Other" and v.Name == "Wall" then
+v.CanCollide = not _G.ThroughBuildKillerWalls
+end
+end
+end)
+Tabs.Main:Toggle({
+    Title = "Through Build Killer Walls",
+    Value = false,
+    Callback = function(v) 
+_G.ThroughBuildKillerWalls = v
+end})
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
 local inf = 9e999999999
@@ -173,32 +198,23 @@ Tabs.Players:Toggle({
     Callback = function(v) 
 _G.InfStamina = v
 end})
-Tabs.Players:Toggle({
-    Title = "Block Freeze",
-    Value = false,
-    Callback = function(v) 
-if v then
-BlockFreeze = game:GetService("RunService").Stepped:Connect(function()
-if game.Players.LocalPlayer and game.Players.LocalPlayer.Character then
-for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-if part:IsA("BasePart") then
-part.Anchored = false
-end
-end
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 12 then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
 end
 end)
-else
-if BlockFreeze then
-BlockFreeze:Disconnect()
-BlockFreeze = nil
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 12 then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
 end
-end
-end})
+end)
+end)
 Tabs.Players:Toggle({
-    Title = "Block Slow",
+    Title = "Block Slowness & Stun",
     Value = false,
     Callback = function(v) 
-_G.BlockSlow = v
+_G.BlockStun = v
 end})
 Tabs.Players:Toggle({
     Title = "Noclip",
@@ -229,7 +245,9 @@ Tabs.Camera:Toggle({
     Callback = function(v) 
 _G.RemoveBloodVignette = v
 game:GetService("RunService").RenderStepped:Connect(function()
-game:GetService("Players").LocalPlayer.PlayerGui.MainGui.BloodVignette.Visible = not _G.RemoveBloodVignette
+if _G.RemoveBloodVignette then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.BloodVignette.Visible = false
+end
 end)
 end})
 Tabs.Camera:Toggle({
@@ -238,7 +256,9 @@ Tabs.Camera:Toggle({
     Callback = function(v) 
 _G.RemoveHurtOverlayVignette = v
 game:GetService("RunService").RenderStepped:Connect(function()
-game:GetService("Players").LocalPlayer.PlayerGui.MainGui.HurtOverlay.Visible = not _G.RemoveHurtOverlayVignette
+if _G.RemoveHurtOverlayVignette then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.HurtOverlay.Visible = false
+end
 end)
 end})
 Tabs.Camera:Toggle({
@@ -247,9 +267,46 @@ Tabs.Camera:Toggle({
     Callback = function(v) 
 _G.RemoveParanoyVignette = v
 game:GetService("RunService").RenderStepped:Connect(function()
-game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Paranoy.Visible = not _G.RemoveParanoyVignette
+if _G.RemoveParanoyVignette then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Paranoy.Visible = false
+end
 end)
 end})
+Tabs.Camera:Section({Title = "Screen", Icon = "camera"})
+Tabs.Camera:Toggle({
+    Title = "Remove Death Screen",
+    Value = false,
+    Callback = function(v) 
+_G.RemoveDeathScreen = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveDeathScreen then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.DeathScreen.Visible = false
+end
+end)
+end})
+Tabs.Camera:Toggle({
+    Title = "Remove Taunt Screen",
+    Value = false,
+    Callback = function(v) 
+_G.RemoveTauntScreen = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveTauntScreen then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.RoundUI.TauntTemplate.Visible = false
+end
+end)
+end})
+Tabs.Camera:Toggle({
+    Title = "Remove Message Screen",
+    Value = false,
+    Callback = function(v) 
+_G.RemoveMessageScreen = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveMessageScreen then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.RoundUI.MessageStatus.Visible = false
+end
+end)
+end})
+
 Tabs.Camera:Section({Title = "Jumpscare", Icon = "camera"})
 Tabs.Camera:Toggle({
     Title = "Remove Evil Scary Jumpscare",
@@ -483,7 +540,7 @@ Billboard.Active = true
 TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
 TextLabel.BackgroundTransparency = 1
 TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.TextColor3 = Color3.new(0,1,1)
 TextLabel.Font = "SourceSansBold"
 TextLabel.TextSize = 14
 TextLabel.TextTransparency = 0
@@ -512,7 +569,7 @@ Billboard.Active = true
 TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
 TextLabel.BackgroundTransparency = 1
 TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.TextColor3 = Color3.new(0,1,1)
 TextLabel.Font = "SourceSansBold"
 TextLabel.TextSize = 14
 TextLabel.TextTransparency = 0
@@ -544,7 +601,7 @@ Tabs.ESP:Toggle({
 if v then
 for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
 if v:IsA("Model") and v and v.Parent.Name == "Other" then
-Highlight(v, v:FindFirstChild("HumanoidRootPart").Color, "YOUHUB : Other ESP")
+Highlight(v, Color3.new(1,1), "YOUHUB : Other ESP")
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
@@ -555,7 +612,7 @@ Billboard.Active = true
 TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
 TextLabel.BackgroundTransparency = 1
 TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.TextColor3 = Color3.new(1,1)
 TextLabel.Font = "SourceSansBold"
 TextLabel.TextSize = 14
 TextLabel.TextTransparency = 0
@@ -571,9 +628,9 @@ TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.Max
 end)
 end
 end
-OtherESP = workspace.GameAssets.Teams.Survivor.DescendantAdded:Connect(function(v)
+OtherESP = workspace.GameAssets.Teams.Other.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v and v.Parent.Name == "Other" then
-Highlight(v, v:FindFirstChild("HumanoidRootPart").Color, "YOUHUB : Other ESP")
+Highlight(v, Color3.new(1,1), "YOUHUB : Other ESP")
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
@@ -584,7 +641,7 @@ Billboard.Active = true
 TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
 TextLabel.BackgroundTransparency = 1
 TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.TextColor3 = Color3.new(1,1)
 TextLabel.Font = "SourceSansBold"
 TextLabel.TextSize = 14
 TextLabel.TextTransparency = 0
