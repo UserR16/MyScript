@@ -47,7 +47,7 @@ local Tabs = {
 Main = Window:Section({ Title = "Tabs", Opened = true }),
 }
 
-local Tab = {
+local Tabs = {
 Main = Tabs.Main:Tab({ Title = "Main", Icon = "layout-grid"}),
 Players = Tabs.Main:Tab({ Title = "Players", Icon = "user"}),
 Camera = Tabs.Main:Tab({ Title = "Camera", Icon = "camera"}),
