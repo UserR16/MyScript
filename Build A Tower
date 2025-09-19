@@ -1,7 +1,8 @@
 function BuyItem(v)
 game:GetService("ReplicatedStorage"):WaitForChild("BuyItemEvent"):FireServer(v)
 end
-game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("RunService").Stepped:Connect(function()
+if _G.AutoBuyItems then
 BuyItem("SmallSphere")
 BuyItem("Square")
 BuyItem("Tulip")
@@ -34,4 +35,5 @@ BuyItem("PaintBucket")
 BuyItem("SpeedGiver")
 BuyItem("SlapGiver")
 BuyItem("TrollPart")
+end
 end)
