@@ -134,7 +134,7 @@ end})
 game:GetService("RunService").RenderStepped:Connect(function()
 for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
 if v.Parent.Name == "Other" and v.Name == "Wall" and v then
-v.CanCollide = not _G.ThroughBuildKillerWalls
+v.HumanoidRootPart.CanCollide = not _G.ThroughBuildKillerWalls
 end
 end
 end)
@@ -190,13 +190,13 @@ Tabs.Players:Toggle({
 _G.InfStamina = v
 end})
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 10 then
+if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 12 then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
 end
 end)
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 10 then
+if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 12 then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
 end
 end)
@@ -305,7 +305,9 @@ Tabs.Camera:Toggle({
     Callback = function(v) 
 _G.RemoveEvilScaryJumpscare = v
 game:GetService("RunService").RenderStepped:Connect(function()
-game:GetService("Players").LocalPlayer.PlayerGui.MainGui.EvilScary.Visible = not _G.RemoveEvilScaryJumpscare
+if _G.RemoveEvilScaryJumpscare then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.EvilScary.Visible = false
+end
 end)
 end})
 Tabs.Camera:Section({Title = "Camera", Icon = "camera"})
