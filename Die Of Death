@@ -260,6 +260,48 @@ Tabs.Main:Button({
     Callback = function()
 AddAbilityButton("Taunt")
 end})
+Tabs.Main:AddDivider()
+
+local Ability = {
+"Adrenaline",
+"Banana",
+"BonusPad",
+"Block",
+"Dash",
+"Cloak",
+"Caretaker",
+"Hotdog",
+"Punch",
+"Revolver",
+"Taunt"
+}
+game:GetService("RunService").Stepped:Connect(function()
+if _G.AutoSetAbility and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("Skill1", _G.SetAbility1 or "Adrenaline")
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("Skill2", _G.SetAbility2 or "Banana")
+end
+end)
+
+Tabs.Main:Dropdown({
+    Title = "Ability 1",
+    Values = Ability,
+    Value = "Adrenaline",
+    Callback = function(v)
+_G.SetAbility2 = v
+end})
+Tabs.Main:Dropdown({
+    Title = "Ability 2",
+    Values = Ability,
+    Value = "Banana",
+    Callback = function(v)
+_G.SetAbility2 = v
+end})
+Tabs.Main:Toggle({
+    Title = "Auto Set Ability",
+    Value = false,
+    Callback = function(v) 
+_G.AutoSetAbility = v
+end})
 Tabs.Main:Section({Title = "Other", Icon = "plus"})
 game:GetService("RunService").RenderStepped:Connect(function()
 for _, v in ipairs(workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly"):GetChildren()) do
