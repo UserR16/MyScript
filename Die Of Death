@@ -94,7 +94,7 @@ Tabs.Main:Section({Title = "Anti", Icon = "hammer"})
 game:GetService("RunService").RenderStepped:Connect(function()
 if workspace.GameAssets.Debris.Cleanable:FindFirstChild("BananaPeelAbility") and _G.AntiBanana then
 for _,v in ipairs(workspace.GameAssets.Debris.Cleanable:GetChildren()) do
-if v.Name == "BananaPeelAbility" and v:IsA("BasePart") then
+if v.Name == "BananaPeelAbility" and v then
 v.CanTouch = not _G.AntiBanana
 end
 end
@@ -116,6 +116,149 @@ Tabs.Main:Toggle({
     Value = false,
     Callback = function(v) 
 _G.AntiEvilScary = v
+end})
+Tabs.Main:Section({Title = "Abilities", Icon = "compass"})
+local function AddAbilityButton(Ability)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = Ability .. "_Button"
+ScreenGui.ResetOnSpawn = true
+ScreenGui.Parent = game.CoreGui
+
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(0, 125, 0, 60)
+Button.Position = UDim2.new(0.85, 0, 0, 10)
+Button.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Button.BackgroundTransparency = 0.3
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.Font = Enum.Font.SourceSansBold
+Button.TextSize = 16
+Button.Text = Ability
+Button.Parent = ScreenGui
+
+local Shadow = Instance.new("Frame")
+Shadow.Size = UDim2.new(0, 125, 0, 60)
+Shadow.Position = UDim2.new(0, 0, 0, 0)
+Shadow.BackgroundTransparency = 1
+Shadow.Parent = Button
+
+local UICornerShadow = Instance.new("UICorner")
+UICornerShadow.Parent = Shadow
+
+local UICornerButton = Instance.new("UICorner")
+UICornerButton.Parent = Button
+
+local UIStrokeShadow = Instance.new("UIStroke")
+UIStrokeShadow.Color = Color3.fromRGB(255,255,255)
+UIStrokeShadow.Thickness = 3
+UIStrokeShadow.Transparency = 0.2
+UIStrokeShadow.Parent = Shadow
+
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    Button.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+ 
+Button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = Button.Position
+ 
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+ 
+Button.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+ 
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        update(input)
+    end
+end)
+
+Button.MouseButton1Click:Connect(function()
+local args = {
+	Ability
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer(unpack(args))
+end)
+end
+Tabs.Main:Button({
+    Title = "Adrenaline",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Adrenaline")
+end})
+Tabs.Main:Button({
+    Title = "Banana",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Banana")
+end})
+Tabs.Main:Button({
+    Title = "Bonus Pad",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("BonusPad")
+end})
+Tabs.Main:Button({
+    Title = "Block",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Block")
+end})
+Tabs.Main:Button({
+    Title = "Dash",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Dash")
+end})
+Tabs.Main:Button({
+    Title = "Cloak",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Cloak")
+end})
+Tabs.Main:Button({
+    Title = "Caretaker",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Caretaker")
+end})
+Tabs.Main:Button({
+    Title = "Hotdog",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Hotdog")
+end})
+Tabs.Main:Button({
+    Title = "Punch",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Punch")
+end})
+Tabs.Main:Button({
+    Title = "Revolver",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Revolver")
+end})
+Tabs.Main:Button({
+    Title = "Taunt",
+    Icon = "plus",
+    Callback = function()
+AddAbilityButton("Taunt")
 end})
 Tabs.Main:Section({Title = "Other", Icon = "plus"})
 game:GetService("RunService").RenderStepped:Connect(function()
@@ -190,13 +333,13 @@ Tabs.Players:Toggle({
 _G.InfStamina = v
 end})
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 12 then
+if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 0 then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
 end
 end)
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 12 then
+if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 0 then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
 end
 end)
@@ -594,7 +737,7 @@ Tabs.ESP:Toggle({
 if v then
 for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
 if v:IsA("Model") and v and v.Parent.Name == "Other" then
-Highlight(v, Color3.new(1,1), "YOUHUB : Other ESP")
+Highlight(v, Color3.new(1,0,1), "YOUHUB : Other ESP")
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
@@ -605,7 +748,7 @@ Billboard.Active = true
 TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
 TextLabel.BackgroundTransparency = 1
 TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = Color3.new(1,1)
+TextLabel.TextColor3 = Color3.new(1,0,1)
 TextLabel.Font = "SourceSansBold"
 TextLabel.TextSize = 14
 TextLabel.TextTransparency = 0
@@ -620,7 +763,7 @@ end
 end
 OtherESP = workspace.GameAssets.Teams.Other.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v and v.Parent.Name == "Other" then
-Highlight(v, Color3.new(1,1), "YOUHUB : Other ESP")
+Highlight(v, Color3.new(1,0,1), "YOUHUB : Other ESP")
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
@@ -631,7 +774,7 @@ Billboard.Active = true
 TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
 TextLabel.BackgroundTransparency = 1
 TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = Color3.new(1,1)
+TextLabel.TextColor3 = Color3.new(1,0,1)
 TextLabel.Font = "SourceSansBold"
 TextLabel.TextSize = 14
 TextLabel.TextTransparency = 0
@@ -653,104 +796,3 @@ end
 end
 end
 end})
-
-local ConfigName = "default"
-local ConfigFile = nil
-local MyPlayerData = {
-    name = "Player1",
-    level = 1,
-    inventory = { "sword", "shield", "potion" }
-}
-
-Tabs.Config:Input({
-    Title = "Config Name",
-    Value = ConfigName,
-    Callback = function(value)
-        ConfigName = value or "default"
-    end
-})
-
-local ConfigManager = Window.ConfigManager
-if ConfigManager then
-    ConfigManager:Init(Window)
-    
-    Tabs.Config:Button({
-        Title = "Save Configuration",
-        Icon = "save",
-        Variant = "Primary",
-        Callback = function()
-            ConfigFile = ConfigManager:CreateConfig(ConfigName)
-            
-            ConfigFile:Register("featureToggle", featureToggle)
-            ConfigFile:Register("intensitySlider", intensitySlider)
-            ConfigFile:Register("testDropdown", testDropdown)
-            ConfigFile:Register("themeDropdown", themeDropdown)
-            ConfigFile:Register("transparencySlider", transparencySlider)
-            
-            ConfigFile:Set("playerData", MyPlayerData)
-            ConfigFile:Set("lastSave", os.date("%Y-%m-%d %H:%M:%S"))
-            
-            if ConfigFile:Save() then
-                Library:Notify({ 
-                    Title = "Save Configuration", 
-                    Content = "Saved as: "..ConfigName,
-                    Icon = "check",
-                    Duration = 3
-                })
-            else
-                Library:Notify({ 
-                    Title = "Error", 
-                    Content = "Failed to save config",
-                    Icon = "x",
-                    Duration = 3
-                })
-            end
-        end
-    })
-
-    Tabs.Config:Button({
-        Title = "Load Configuration",
-        Icon = "folder",
-        Callback = function()
-            ConfigFile = ConfigManager:CreateConfig(ConfigName)
-            local LoadedData = ConfigFile:Load()
-            
-            if LoadedData then
-                if LoadedData.playerData then
-                    MyPlayerData = LoadedData.playerData
-                end
-                
-                local LastSave = LoadedData.lastSave or "Unknown"
-                Library:Notify({ 
-                    Title = "Load Configuration", 
-                    Content = "Loaded: "..ConfigName.."\nLast save: "..LastSave,
-                    Icon = "refresh-cw",
-                    Duration = 5
-                })
-                
-                Tabs.Config:Paragraph({
-                    Title = "Player Data",
-                    Desc = string.format("Name: %s\nLevel: %d\nInventory: %s", 
-                        MyPlayerData.name, 
-                        MyPlayerData.level, 
-                        table.concat(MyPlayerData.inventory, ", "))
-                })
-            else
-                Library:Notify({ 
-                    Title = "Error", 
-                    Content = "Failed to load config",
-                    Icon = "x",
-                    Duration = 3
-                })
-            end
-        end
-    })
-else
-    Tabs.Config:Paragraph({
-        Title = "Config Manager Not Available",
-        Desc = "This feature requires ConfigManager",
-        Image = "alert-triangle",
-        ImageSize = 20,
-        Color = "White"
-    })
-end
