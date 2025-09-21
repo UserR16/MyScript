@@ -658,78 +658,7 @@ end
 end
 end
 end})
-Tabs.ESP:Toggle({
-    Title = "Ghost ESP",
-    Value = false,
-    Callback = function(v) 
-if v then
-for _,v in ipairs(workspace.GameAssets.Teams.Ghost:GetChildren()) do
-if v:IsA("Model") and v and v.Parent.Name == "Ghost" and v:FindFirstChild("Humanoid") then
-Highlight(v, Color3.new(0,1,1), "YOUHUB : Ghost ESP")
-local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
-local TextLabel = Instance.new("TextLabel", Billboard)
-local UIStroke = Instance.new("UIStroke", TextLabel)
-Billboard.AlwaysOnTop = true
-Billboard.Size = UDim2.new(0,400,0,100)
-Billboard.Name = "YOUHUB : Ghost ESP"
-Billboard.Active = true
-TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
-TextLabel.BackgroundTransparency = 1
-TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = Color3.new(0,1,1)
-TextLabel.Font = "SourceSansBold"
-TextLabel.TextSize = 14
-TextLabel.TextTransparency = 0
-TextLabel.Visible = true
-TextLabel.Text = v.Name .. "\nHP:" .. v:FindFirstChild("Humanoid").Health .. "/" .. v:FindFirstChild("Humanoid").MaxHealth
-TextLabel.Size = UDim2.new(1,0,0,0)
-TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
-UIStroke.Thickness = 0.5
-UIStroke.Color = Color3.new()
-UIStroke.Transparency = 0
-game:GetService("RunService").Stepped:Connect(function()
-TextLabel.Text = v.Name .. "\nHP:" .. v:FindFirstChild("Humanoid").Health .. "/" .. v:FindFirstChild("Humanoid").MaxHealth
-end)
-end
-end
-GhostESP = workspace.GameAssets.Teams.Ghost.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v and v.Parent.Name == "Ghost" and v:FindFirstChild("Humanoid") then
-Highlight(v, Color3.new(0,1,1), "YOUHUB : Ghost ESP")
-local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
-local TextLabel = Instance.new("TextLabel", Billboard)
-local UIStroke = Instance.new("UIStroke", TextLabel)
-Billboard.AlwaysOnTop = true
-Billboard.Size = UDim2.new(0,400,0,100)
-Billboard.Name = "YOUHUB : Ghost ESP"
-Billboard.Active = true
-TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
-TextLabel.BackgroundTransparency = 1
-TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = Color3.new(0,1,1)
-TextLabel.Font = "SourceSansBold"
-TextLabel.TextSize = 14
-TextLabel.TextTransparency = 0
-TextLabel.Visible = true
-TextLabel.Text = v.Name .. "\nHP:" .. v:FindFirstChild("Humanoid").Health .. "/" .. v:FindFirstChild("Humanoid").MaxHealth
-TextLabel.Size = UDim2.new(1,0,0,0)
-TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
-UIStroke.Thickness = 0.5
-UIStroke.Color = Color3.new()
-UIStroke.Transparency = 0
-game:GetService("RunService").Stepped:Connect(function()
-TextLabel.Text = v.Name .. "\nHP:" .. v:FindFirstChild("Humanoid").Health .. "/" .. v:FindFirstChild("Humanoid").MaxHealth
-end)
-end
-end)
-else
-GhostESP:Disconnect()
-for _,v in ipairs(workspace:GetDescendants()) do
-if v.Name == "YOUHUB : Ghost ESP" then
-v:Destroy()
-end
-end
-end
-end})
+
 Tabs.ESP:Toggle({
     Title = "Other ESP",
     Value = false,
