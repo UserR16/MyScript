@@ -52,7 +52,7 @@ Main = Tabs.Main:Tab({ Title = "Main", Icon = "layout-grid"}),
 Players = Tabs.Main:Tab({ Title = "Players", Icon = "user"}),
 Camera = Tabs.Main:Tab({ Title = "Camera", Icon = "camera"}),
 ESP = Tabs.Main:Tab({ Title = "ESP", Icon = "map"}),
-Setting = Tabs.Main:Tab({ Title = "Setting", Icon = "settings"}),
+Config = Tabs.Main:Tab({ Title = "Setting", Icon = "settings"}),
 }
 
 local function Notify(name, time)
@@ -379,7 +379,7 @@ if v then
 for _,v in ipairs(workspace.GameAssets.Teams.Killer:GetChildren()) do
 if v:IsA("Model") and v and v.Parent.Name == "Killer" then
 Highlight(v, Color3.new(1), "YOUHUB : Killer ESP")
-local Billboard = Instance.new("BillboardGui", v)
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
 Billboard.AlwaysOnTop = true
@@ -408,7 +408,7 @@ end
 KillersESP = workspace.GameAssets.Teams.Killer.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v and v.Parent.Name == "Killer" then
 Highlight(v, Color3.new(1), "YOUHUB : Killer ESP")
-local Billboard = Instance.new("BillboardGui", v)
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
 Billboard.AlwaysOnTop = true
@@ -451,7 +451,7 @@ if v then
 for _,v in ipairs(workspace.GameAssets.Teams.Survivor:GetChildren()) do
 if v:IsA("Model") and v and v.Parent.Name == "Survivor" then
 Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
-local Billboard = Instance.new("BillboardGui", v)
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
 Billboard.AlwaysOnTop = true
@@ -480,7 +480,7 @@ end
 SurvivorESP = workspace.GameAssets.Teams.Survivor.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v and v.Parent.Name == "Survivor" then
 Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
-local Billboard = Instance.new("BillboardGui", v)
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
 Billboard.AlwaysOnTop = true
@@ -523,7 +523,7 @@ if v then
 for _,v in ipairs(workspace.GameAssets.Teams.Ghost:GetChildren()) do
 if v:IsA("Model") and v and v.Parent.Name == "Ghost" then
 Highlight(v, Color3.new(0,1,1), "YOUHUB : Ghost ESP")
-local Billboard = Instance.new("BillboardGui", v)
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
 Billboard.AlwaysOnTop = true
@@ -552,7 +552,7 @@ end
 GhostESP = workspace.GameAssets.Teams.Ghost.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v and v.Parent.Name == "Ghost" then
 Highlight(v, Color3.new(0,1,1), "YOUHUB : Ghost ESP")
-local Billboard = Instance.new("BillboardGui", v)
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
 Billboard.AlwaysOnTop = true
@@ -610,15 +610,12 @@ TextLabel.Font = "SourceSansBold"
 TextLabel.TextSize = 14
 TextLabel.TextTransparency = 0
 TextLabel.Visible = true
-TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+TextLabel.Text = v.Name
 TextLabel.Size = UDim2.new(1,0,0,0)
 TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
 UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
-game:GetService("RunService").Stepped:Connect(function()
-TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
-end)
 end
 end
 OtherESP = workspace.GameAssets.Teams.Other.DescendantAdded:Connect(function(v)
@@ -639,15 +636,12 @@ TextLabel.Font = "SourceSansBold"
 TextLabel.TextSize = 14
 TextLabel.TextTransparency = 0
 TextLabel.Visible = true
-TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
+TextLabel.Text = v.Name
 TextLabel.Size = UDim2.new(1,0,0,0)
 TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
 UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
-game:GetService("RunService").Stepped:Connect(function()
-TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
-end)
 end
 end)
 else
@@ -659,3 +653,104 @@ end
 end
 end
 end})
+
+local ConfigName = "default"
+local ConfigFile = nil
+local MyPlayerData = {
+    name = "Player1",
+    level = 1,
+    inventory = { "sword", "shield", "potion" }
+}
+
+Tabs.Config:Input({
+    Title = "Config Name",
+    Value = ConfigName,
+    Callback = function(value)
+        ConfigName = value or "default"
+    end
+})
+
+local ConfigManager = Window.ConfigManager
+if ConfigManager then
+    ConfigManager:Init(Window)
+    
+    Tabs.Config:Button({
+        Title = "Save Configuration",
+        Icon = "save",
+        Variant = "Primary",
+        Callback = function()
+            ConfigFile = ConfigManager:CreateConfig(ConfigName)
+            
+            ConfigFile:Register("featureToggle", featureToggle)
+            ConfigFile:Register("intensitySlider", intensitySlider)
+            ConfigFile:Register("testDropdown", testDropdown)
+            ConfigFile:Register("themeDropdown", themeDropdown)
+            ConfigFile:Register("transparencySlider", transparencySlider)
+            
+            ConfigFile:Set("playerData", MyPlayerData)
+            ConfigFile:Set("lastSave", os.date("%Y-%m-%d %H:%M:%S"))
+            
+            if ConfigFile:Save() then
+                Library:Notify({ 
+                    Title = "Save Configuration", 
+                    Content = "Saved as: "..ConfigName,
+                    Icon = "check",
+                    Duration = 3
+                })
+            else
+                Library:Notify({ 
+                    Title = "Error", 
+                    Content = "Failed to save config",
+                    Icon = "x",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tabs.Config:Button({
+        Title = "Load Configuration",
+        Icon = "folder",
+        Callback = function()
+            ConfigFile = ConfigManager:CreateConfig(ConfigName)
+            local LoadedData = ConfigFile:Load()
+            
+            if LoadedData then
+                if LoadedData.playerData then
+                    MyPlayerData = LoadedData.playerData
+                end
+                
+                local LastSave = LoadedData.lastSave or "Unknown"
+                Library:Notify({ 
+                    Title = "Load Configuration", 
+                    Content = "Loaded: "..ConfigName.."\nLast save: "..LastSave,
+                    Icon = "refresh-cw",
+                    Duration = 5
+                })
+                
+                Tabs.Config:Paragraph({
+                    Title = "Player Data",
+                    Desc = string.format("Name: %s\nLevel: %d\nInventory: %s", 
+                        MyPlayerData.name, 
+                        MyPlayerData.level, 
+                        table.concat(MyPlayerData.inventory, ", "))
+                })
+            else
+                Library:Notify({ 
+                    Title = "Error", 
+                    Content = "Failed to load config",
+                    Icon = "x",
+                    Duration = 3
+                })
+            end
+        end
+    })
+else
+    Tabs.Config:Paragraph({
+        Title = "Config Manager Not Available",
+        Desc = "This feature requires ConfigManager",
+        Image = "alert-triangle",
+        ImageSize = 20,
+        Color = "White"
+    })
+end
