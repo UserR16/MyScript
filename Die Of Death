@@ -91,6 +91,11 @@ InstanceInteract:Disconnect()
 end
 end})
 Tabs.Main:Section({Title = "Anti", Icon = "hammer"})
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary") then
+workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary").CanTouch = not _G.AntiEvilScary
+end
+end)
 Tabs.Main:Toggle({
     Title = "Anti-Evil Scary",
     Value = false,
@@ -439,40 +444,6 @@ game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Paranoy.Visible = false
 end
 end)
 end})
-Tabs.Camera:Section({Title = "Screen", Icon = "camera"})
-Tabs.Camera:Toggle({
-    Title = "Remove Death Screen",
-    Value = false,
-    Callback = function(v) 
-_G.RemoveDeathScreen = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.RemoveDeathScreen then
-game:GetService("Players").LocalPlayer.PlayerGui.MainGui.DeathScreen.Visible = false
-end
-end)
-end})
-Tabs.Camera:Toggle({
-    Title = "Remove Taunt Screen",
-    Value = false,
-    Callback = function(v) 
-_G.RemoveTauntScreen = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.RemoveTauntScreen then
-game:GetService("Players").LocalPlayer.PlayerGui.MainGui.RoundUI.TauntTemplate.Visible = false
-end
-end)
-end})
-Tabs.Camera:Toggle({
-    Title = "Remove Message Screen",
-    Value = false,
-    Callback = function(v) 
-_G.RemoveMessageScreen = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.RemoveMessageScreen then
-game:GetService("Players").LocalPlayer.PlayerGui.MainGui.RoundUI.MessageStatus.Visible = false
-end
-end)
-end})
 
 Tabs.Camera:Section({Title = "Jumpscare", Icon = "camera"})
 Tabs.Camera:Toggle({
@@ -579,6 +550,7 @@ UIStroke.Transparency = 0
 end
 end
 KillersESP = workspace.GameAssets.Teams.Killer.DescendantAdded:Connect(function(v)
+wait(0.3)
 if v:IsA("Model") and v and v.Parent.Name == "Killer" and v:FindFirstChild("Humanoid") then
 Highlight(v, Color3.new(1), "YOUHUB : Killer ESP")
 local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
@@ -645,6 +617,7 @@ UIStroke.Transparency = 0
 end
 end
 SurvivorESP = workspace.GameAssets.Teams.Survivor.DescendantAdded:Connect(function(v)
+wait(0.3)
 if v:IsA("Model") and v and v.Parent.Name == "Survivor" and v:FindFirstChild("Humanoid") then
 Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
 local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
@@ -712,6 +685,7 @@ UIStroke.Transparency = 0
 end
 end
 OtherESP = workspace.GameAssets.Teams.Other.DescendantAdded:Connect(function(v)
+wait(0.3)
 if v:IsA("Model") and v and v.Parent.Name == "Other" then
 Highlight(v, Color3.new(1,0,1), "YOUHUB : Other ESP")
 local Billboard = Instance.new("BillboardGui", v)
