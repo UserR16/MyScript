@@ -277,8 +277,13 @@ local Ability = {
 }
 game:GetService("RunService").Stepped:Connect(function()
 if _G.AutoSetAbility and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
-workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("Ability1", _G.SetAbility1 or "Adrenaline")
-workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("Ability2", _G.SetAbility2 or "Banana")
+local args = {
+	{
+		_G.SetAbility1 or "Adrenaline",
+		_G.SetAbility2 or "Banana"
+	}
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteEvents"):WaitForChild("AbilitySelection"):FireServer(unpack(args))
 end
 end)
 
@@ -301,6 +306,18 @@ Tabs.Main:Toggle({
     Value = false,
     Callback = function(v) 
 _G.AutoSetAbility = v
+end})
+Tabs.Main:Button({
+    Title = "Set Ability",
+    Icon = "compass",
+    Callback = function()
+local args = {
+	{
+		_G.SetAbility1 or "Adrenaline",
+		_G.SetAbility2 or "Banana"
+	}
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteEvents"):WaitForChild("AbilitySelection"):FireServer(unpack(args))
 end})
 Tabs.Main:Section({Title = "Other", Icon = "plus"})
 game:GetService("RunService").RenderStepped:Connect(function()
@@ -338,12 +355,18 @@ if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.N
 if _G.InfStamina then
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
 end
+if _G.NoStun and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):GetAttribute("WalkSpeedModifier") < 0 then
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeedModifier", 0)
+end
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (26 + _G.SprintSpeedBoost))
 end
 if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
 if _G.InfStamina then
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+end
+if _G.NoStun and workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):GetAttribute("WalkSpeedModifier") < 0 then
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeedModifier", 0)
 end
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (28 + _G.SprintSpeedBoost))
@@ -374,20 +397,8 @@ Tabs.Players:Toggle({
     Callback = function(v) 
 _G.InfStamina = v
 end})
-game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 0 then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
-end
-end)
-game.Players.LocalPlayer.CharacterAdded:Connect(function()
-game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.BlockStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 0 then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 28 + _G.SprintSpeedBoost
-end
-end)
-end)
 Tabs.Players:Toggle({
-    Title = "Block Slowness & Stun",
+    Title = "No Stun",
     Value = false,
     Callback = function(v) 
 _G.BlockStun = v
