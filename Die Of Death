@@ -91,26 +91,6 @@ InstanceInteract:Disconnect()
 end
 end})
 Tabs.Main:Section({Title = "Anti", Icon = "hammer"})
-game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets.Debris.Cleanable:FindFirstChild("BananaPeelAbility") and _G.AntiBanana then
-for _,v in ipairs(workspace.GameAssets.Debris.Cleanable:GetChildren()) do
-if v.Name == "BananaPeelAbility" and v then
-v.CanTouch = not _G.AntiBanana
-end
-end
-end
-end)
-Tabs.Main:Toggle({
-    Title = "Anti-Banana",
-    Value = false,
-    Callback = function(v) 
-_G.AntiBanana = v
-end})
-game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary") then
-workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary").CanTouch = not _G.AntiEvilScary
-end
-end)
 Tabs.Main:Toggle({
     Title = "Anti-Evil Scary",
     Value = false,
@@ -292,7 +272,7 @@ Tabs.Main:Dropdown({
     Values = Ability,
     Value = "Adrenaline",
     Callback = function(v)
-_G.SetAbility2 = v
+_G.SetAbility1 = v
 end})
 Tabs.Main:Dropdown({
     Title = "Ability 2",
@@ -401,7 +381,7 @@ Tabs.Players:Toggle({
     Title = "No Stun",
     Value = false,
     Callback = function(v) 
-_G.BlockStun = v
+_G.NoStun = v
 end})
 Tabs.Players:Toggle({
     Title = "Noclip",
