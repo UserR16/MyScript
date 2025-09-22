@@ -277,8 +277,8 @@ local Ability = {
 }
 game:GetService("RunService").Stepped:Connect(function()
 if _G.AutoSetAbility and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
-workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("Skill1", _G.SetAbility1 or "Adrenaline")
-workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("Skill2", _G.SetAbility2 or "Banana")
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("Ability1", _G.SetAbility1 or "Adrenaline")
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("Ability2", _G.SetAbility2 or "Banana")
 end
 end)
 
