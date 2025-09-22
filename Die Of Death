@@ -260,7 +260,7 @@ Tabs.Main:Button({
     Callback = function()
 AddAbilityButton("Taunt")
 end})
-Tabs.Main:AddDivider()
+Tabs.Main:Divider()
 
 local Ability = {
 "Adrenaline",
