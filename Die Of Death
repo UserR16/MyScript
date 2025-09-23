@@ -375,13 +375,13 @@ end
 end)
 Tabs.Players:Slider({
     Title = "Walk Speed Boost",
-    Value = { Min = 0, Max = 6, Default = 0 },
+    Value = { Min = 0, Max = 10, Default = 0 },
     Callback = function(v)
 _G.WalkSpeedBoost = v
 end})
 Tabs.Players:Slider({
     Title = "Sprint Speed Boost",
-    Value = { Min = 0, Max = 6, Default = 0 },
+    Value = { Min = 0, Max = 10, Default = 0 },
     Callback = function(v)
 _G.SprintSpeedBoost = v
 end})
