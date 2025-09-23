@@ -90,6 +90,17 @@ else
 InstanceInteract:Disconnect()
 end
 end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoBreakComputer and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") and (workspace.GameAssets.Teams.Other:FindFirstChild("Computer").Primary.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 15 then
+fireproximityprompt(workspace.GameAssets.Teams.Other:FindFirstChild("Computer").Primary.Prompt)
+end
+end)
+Tabs.Main:Toggle({
+    Title = "Auto Break Computer",
+    Value = false,
+    Callback = function(v) 
+_G.AutoBreakComputer = v
+end})
 Tabs.Main:Section({Title = "Anti", Icon = "hammer"})
 game:GetService("RunService").RenderStepped:Connect(function()
 if workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary") then
@@ -402,7 +413,7 @@ Tabs.Players:Toggle({
     Value = false,
     Callback = function(v) 
 if v then
-Noclip = game:GetService("RunService").Stepped:Connect(function()
+Noclip = game:GetService("RunService").RenderStepped:Connect(function()
 if game.Players.LocalPlayer and game.Players.LocalPlayer.Character then
 for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
 if part:IsA("BasePart") then
