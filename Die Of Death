@@ -352,7 +352,22 @@ Tabs.Main:Toggle({
     Callback = function(v) 
 _G.ThroughBuildKillerWalls = v
 end})
-
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("Events"):FindFirstChild("Rain"):FindFirstChild("TeapotDrone") and _G.ThroughTeapotDrone then
+for _,v in ipairs(workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("Events"):FindFirstChild("Rain"):GetChildren()) do
+if v.Parent.Name == "Rain" and v.Name == "TeapotDrone" and v then
+v["MeshPart"].CanCollide = not _G.ThroughTeapotDrone
+v["MeshPart"].Material = "ForceField"
+end
+end
+end
+end)
+Tabs.Main:Toggle({
+    Title = "Through Teapot Drone",
+    Value = false,
+    Callback = function(v) 
+_G.ThroughTeapotDrone = v
+end})
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
 local inf = 9e999999999
@@ -411,54 +426,28 @@ Tabs.Players:Slider({
 _G.JumpPower = v
 end})
 Tabs.Players:Toggle({
-    Title = "Add Jump Button",
+    Title = "Invisible",
     Value = false,
     Callback = function(v) 
-if v then
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "Jump_Button"
-ScreenGui.ResetOnSpawn = true
-ScreenGui.Parent = game.CoreGui
-
-local JumpButton = Instance.new("TextButton")
-JumpButton.Size = UDim2.new(0, 100, 0, 100)
-JumpButton.Position = UDim2.new(0.9, 0, 0, 15)
-JumpButton.BackgroundColor3 = Color3.fromRGB(0,0,0)
-JumpButton.BackgroundTransparency = 0.3
-JumpButton.TextColor3 = Color3.fromRGB(255,255,255)
-JumpButton.Font = Enum.Font.SourceSansBold
-JumpButton.TextSize = 16
-JumpButton.Text = "Jump"
-JumpButton.Parent = ScreenGui
-
-local Shadow = Instance.new("Frame")
-Shadow.Size = UDim2.new(0, 125, 0, 60)
-Shadow.Position = UDim2.new(0, 0, 0, 0)
-Shadow.BackgroundTransparency = 1
-Shadow.Parent = JumpButton
-
-local UICornerShadow = Instance.new("UICorner")
-UICornerShadow.Parent = Shadow
-
-local UICornerButton = Instance.new("UICorner")
-UICornerButton.Parent = JumpButton
-
-local UIStrokeShadow = Instance.new("UIStroke")
-UIStrokeShadow.Color = Color3.fromRGB(255,255,255)
-UIStrokeShadow.Thickness = 3
-UIStrokeShadow.Transparency = 0.2
-UIStrokeShadow.Parent = Shadow
-
-JumpButton.MouseButton1Click:Connect(function()
-game.Players.LocalPlayer.Character.Humanoid.Jump = true
-end)
+_G.Invisible = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) or workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+if _G.Invisible then
+local Animation = Instance.new("Animation")
+Animation.Name = "Invisible_Animation"
+Animation.AnimationId = "rbxassetid://75804462760596"
+local Load = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Animation)
+Load:Play(0,1,1)
+Load:AdjustSpeed(0)
 else
-for _,v in ipairs(game.CoreGui:GetDescendants()) do
-if v.Name == "Jump_Button" then
-v:Destroy()
+for i,v in next, game.Players.LocalPlayer.Character.Humanoid:GetPlayingAnimationTracks() do
+if v.Animation.Name == "Invisible_Animation" then
+v:Stop()
 end
 end
 end
+end
+end)
 end})
 Tabs.Players:Toggle({
     Title = "Infinite Stamina",
@@ -514,6 +503,21 @@ _G.RemoveHurtOverlayVignette = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.RemoveHurtOverlayVignette then
 game:GetService("Players").LocalPlayer.PlayerGui.MainGui.HurtOverlay.Visible = false
+end
+end)
+end})
+Tabs.Camera:Toggle({
+    Title = "Remove Taunt Vignette",
+    Value = false,
+    Callback = function(v) 
+_G.RemoveTauntVignette = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveTauntVignette and game:GetService("Players").LocalPlayer.PlayerGui.MainGui.RoundUI:FindFirstChild("Taunt") then
+for _,v in ipairs(game:GetService("Players").LocalPlayer.PlayerGui.MainGui.RoundUI:GetChildren()) do
+if v.Name == "Taunt" and v then
+v.Visible = false
+end
+end
 end
 end)
 end})
