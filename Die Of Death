@@ -355,7 +355,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
 if _G.Fling then
 game:GetService("RunService").Heartbeat:Wait()
 if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity * 10000 + Vector3.new(0, 10000, 0)
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity * movel + Vector3.new(0, movel, 0)
 game:GetService("RunService").RenderStepped:Wait()
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity
 game:GetService("RunService").Stepped:Wait()
