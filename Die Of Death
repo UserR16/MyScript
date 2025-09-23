@@ -523,7 +523,7 @@ local Highlight = Instance.new('Highlight', target)
 Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 Highlight.FillColor = color
 Highlight.OutlineColor = color
-Highlight.FillTransparency = 0.8
+Highlight.FillTransparency = 1
 Highlight.OutlineTransparency =  0
 Highlight.Name = name
 end
