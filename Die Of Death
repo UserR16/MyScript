@@ -419,12 +419,7 @@ Tabs.Players:Slider({
     Callback = function(v)
 _G.SprintSpeedBoost = v
 end})
-Tabs.Players:Slider({
-    Title = "Jump Power",
-    Value = { Min = 0, Max = 50, Default = 0 },
-    Callback = function(v)
-_G.JumpPower = v
-end})
+
 Tabs.Players:Toggle({
     Title = "Invisible",
     Value = false,
@@ -449,7 +444,7 @@ end
 end
 end)
 end})
-Tabs.Players:Toggle({
+Tabs.Players:Togle({
     Title = "Infinite Stamina",
     Value = false,
     Callback = function(v) 
