@@ -584,7 +584,7 @@ Tabs.ESP:Toggle({
     Callback = function(v) 
 if v then
 for _,v in ipairs(workspace.GameAssets.Teams.Killer:GetChildren()) do
-if v:IsA("Model") and v and v.Parent.Name == "Killer" and v:FindFirstChild("Humanoid") then
+if v:IsA("Model") and v and v.Parent.Name == "Killer" then
 Highlight(v, Color3.new(1), "YOUHUB : Killer ESP")
 local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
@@ -611,7 +611,7 @@ end
 end
 KillersESP = workspace.GameAssets.Teams.Killer.DescendantAdded:Connect(function(v)
 wait(0.3)
-if v:IsA("Model") and v and v.Parent.Name == "Killer" and v:FindFirstChild("Humanoid") then
+if v:IsA("Model") and v and v.Parent.Name == "Killer" then
 Highlight(v, Color3.new(1), "YOUHUB : Killer ESP")
 local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
@@ -651,7 +651,7 @@ Tabs.ESP:Toggle({
     Callback = function(v) 
 if v then
 for _,v in ipairs(workspace.GameAssets.Teams.Survivor:GetChildren()) do
-if v:IsA("Model") and v and v.Parent.Name == "Survivor" and v:FindFirstChild("Humanoid") then
+if v:IsA("Model") and v and v.Parent.Name == "Survivor" then
 Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
 local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
@@ -678,7 +678,7 @@ end
 end
 SurvivorESP = workspace.GameAssets.Teams.Survivor.DescendantAdded:Connect(function(v)
 wait(0.3)
-if v:IsA("Model") and v and v.Parent.Name == "Survivor" and v:FindFirstChild("Humanoid") then
+if v:IsA("Model") and v and v.Parent.Name == "Survivor" then
 Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
 local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
 local TextLabel = Instance.new("TextLabel", Billboard)
