@@ -352,43 +352,6 @@ Tabs.Main:Toggle({
     Callback = function(v) 
 _G.ThroughBuildKillerWalls = v
 end})
-Tabs.Main:Divider()
-
-local movel = 0.1
-game:GetService("RunService").Heartbeat:Connect(function()
-if _G.Fling then
-game:GetService("RunService").Heartbeat:Wait()
-if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity * movel + Vector3.new(0, movel, 0)
-game:GetService("RunService").RenderStepped:Wait()
-game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity
-game:GetService("RunService").Stepped:Wait()
-game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity + Vector3.new(0, movel, 0)
-movel = -movel
-end
-end
-end)
-Tabs.Main:Button({
-    Title = "Fling Any Killer",
-    Icon = "plus",
-    Callback = function()
-local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-wait(0.5)
-_G.Fling = true
-_G.TPKiller = true
-task.spawn(function()
-while _G.TPKiller do
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.GameAssets.Teams.Killer:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
-wait()
-end
-end)
-wait(3)
-Notify("Complete",3)
-_G.TPKiller = false
-_G.Fling = false
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
-end})
-
 
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
@@ -446,6 +409,56 @@ Tabs.Players:Slider({
     Value = { Min = 0, Max = 50, Default = 0 },
     Callback = function(v)
 _G.JumpPower = v
+end})
+Tabs.Players:Toggle({
+    Title = "Add Jump Button",
+    Value = false,
+    Callback = function(v) 
+if v then
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "Jump_Button"
+ScreenGui.ResetOnSpawn = true
+ScreenGui.Parent = game.CoreGui
+
+local JumpButton = Instance.new("TextButton")
+JumpButton.Size = UDim2.new(0, 100, 0, 100)
+JumpButton.Position = UDim2.new(0.9, 0, 0, 15)
+JumpButton.BackgroundColor3 = Color3.fromRGB(0,0,0)
+JumpButton.BackgroundTransparency = 0.3
+JumpButton.TextColor3 = Color3.fromRGB(255,255,255)
+JumpButton.Font = Enum.Font.SourceSansBold
+JumpButton.TextSize = 16
+JumpButton.Text = "Jump"
+JumpButton.Parent = ScreenGui
+
+local Shadow = Instance.new("Frame")
+Shadow.Size = UDim2.new(0, 125, 0, 60)
+Shadow.Position = UDim2.new(0, 0, 0, 0)
+Shadow.BackgroundTransparency = 1
+Shadow.Parent = JumpButton
+
+local UICornerShadow = Instance.new("UICorner")
+UICornerShadow.Parent = Shadow
+
+local UICornerButton = Instance.new("UICorner")
+UICornerButton.Parent = JumpButton
+
+local UIStrokeShadow = Instance.new("UIStroke")
+UIStrokeShadow.Color = Color3.fromRGB(255,255,255)
+UIStrokeShadow.Thickness = 3
+UIStrokeShadow.Transparency = 0.2
+UIStrokeShadow.Parent = Shadow
+
+JumpButton.MouseButton1Click:Connect(function()
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+else
+for _,v in ipairs(game.CoreGui:GetDescendants()) do
+if v.Name == "Jump_Button" then
+v:Destroy()
+end
+end
+end
 end})
 Tabs.Players:Toggle({
     Title = "Infinite Stamina",
