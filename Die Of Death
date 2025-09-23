@@ -435,7 +435,7 @@ if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Nam
 if _G.Invisible then
 local Animation = Instance.new("Animation")
 Animation.Name = "Invisible_Animation"
-Animation.AnimationId = "rbxassetid://75804462760596"
+Animation.AnimationId = "rbxassetid://139854803244662"
 local Load = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Animation)
 Load:Play(0,1,1)
 Load:AdjustSpeed(0)
