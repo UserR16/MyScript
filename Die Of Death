@@ -348,6 +348,47 @@ Tabs.Main:Toggle({
     Callback = function(v) 
 _G.ThroughBuildKillerWalls = v
 end})
+Tabs.Main:Divider()
+
+local movel = 0.1
+game:GetService("RunService").Heartbeat:Connect(function()
+if _G.Fling then
+game:GetService("RunService").Heartbeat:Wait()
+if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity * 10000 + Vector3.new(0, 10000, 0)
+game:GetService("RunService").RenderStepped:Wait()
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity
+game:GetService("RunService").Stepped:Wait()
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity + Vector3.new(0, movel, 0)
+movel = -movel
+end
+end
+end)
+Tabs.Main:Button({
+    Title = "Fling Any Killer",
+    Icon = "plus",
+    Callback = function()
+local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+wait(0.5)
+_G.Fling = true
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.GameAssets.Teams.Killer:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
+wait(3)
+_G.Fling = false
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+end})
+Tabs.Main:Button({
+    Title = "Fling Any Survivor",
+    Icon = "plus",
+    Callback = function()
+local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+wait(0.5)
+_G.Fling = true
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.GameAssets.Teams.Survivor:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
+wait(3)
+_G.Fling = false
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+end})
+
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
 local inf = 9e999999999
@@ -372,14 +413,17 @@ end
 end)
 game:GetService("RunService").RenderStepped:Connect(function()
 if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpPower or 0
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (26 + _G.SprintSpeedBoost))
 end
 if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpPower or 0
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (28 + _G.SprintSpeedBoost))
 end
 if workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name) then
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpPower or 0
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (30 + _G.SprintSpeedBoost))
 end
@@ -396,6 +440,12 @@ Tabs.Players:Slider({
     Callback = function(v)
 _G.SprintSpeedBoost = v
 end})
+Tabs.Players:Slider({
+    Title = "Jump Power",
+    Value = { Min = 0, Max = 50, Default = 0 },
+    Callback = function(v)
+_G.JumpPower = v
+end})
 Tabs.Players:Toggle({
     Title = "Infinite Stamina",
     Value = false,
@@ -403,7 +453,7 @@ Tabs.Players:Toggle({
 _G.InfStamina = v
 end})
 Tabs.Players:Toggle({
-    Title = "No Stun",
+    Title = "Disabled Stun",
     Value = false,
     Callback = function(v) 
 _G.NoStun = v
