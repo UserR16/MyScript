@@ -91,8 +91,12 @@ InstanceInteract:Disconnect()
 end
 end})
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoBreakComputer and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") and (workspace.GameAssets.Teams.Other:FindFirstChild("Computer").Primary.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 15 then
-fireproximityprompt(workspace.GameAssets.Teams.Other:FindFirstChild("Computer").Primary.Prompt)
+if _G.AutoBreakComputer and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
+if v.Name == "Computer" and v then
+fireproximityprompt(v.Primary.Prompt)
+end
+end
 end
 end)
 Tabs.Main:Toggle({
