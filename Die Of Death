@@ -371,25 +371,20 @@ Tabs.Main:Button({
 local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 wait(0.5)
 _G.Fling = true
+_G.TPKiller = true
+task.spawn(function()
+while _G.TPKiller do
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.GameAssets.Teams.Killer:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
+wait()
+end
+end)
 wait(3)
 Notify("Complete",3)
+_G.TPKiller = false
 _G.Fling = false
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
 end})
-Tabs.Main:Button({
-    Title = "Fling Any Survivor",
-    Icon = "plus",
-    Callback = function()
-local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-wait(0.5)
-_G.Fling = true
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.GameAssets.Teams.Survivor:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
-wait(3)
-Notify("Complete", 3)
-_G.Fling = false
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
-end})
+
 
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
