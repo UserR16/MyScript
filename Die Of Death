@@ -173,10 +173,12 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
 end)
 
 Button.MouseButton1Click:Connect(function()
+if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
 local args = {
 	Ability
 }
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer(unpack(args))
+end
 end)
 end
 Tabs.Main:Button({
@@ -306,9 +308,11 @@ game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Remote
 end})
 Tabs.Main:Section({Title = "Other", Icon = "plus"})
 game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly") then
 for _, v in ipairs(workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly"):GetChildren()) do
 if v.Parent.Name == "KillerOnly" and v then
 v.CanCollide = not _G.ThroughRedKillerWalls
+end
 end
 end
 end)
@@ -319,9 +323,11 @@ Tabs.Main:Toggle({
 _G.ThroughRedKillerWalls = v
 end})
 game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Other:FindFirstChild("Wall") then
 for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
 if v.Parent.Name == "Other" and v.Name == "Wall" and v then
 v.HumanoidRootPart.CanCollide = not _G.ThroughBuildKillerWalls
+end
 end
 end
 end)
