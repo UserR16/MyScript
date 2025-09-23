@@ -420,30 +420,7 @@ Tabs.Players:Slider({
 _G.SprintSpeedBoost = v
 end})
 
-Tabs.Players:Toggle({
-    Title = "Invisible",
-    Value = false,
-    Callback = function(v) 
-_G.Invisible = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) or workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
-if _G.Invisible then
-local Animation = Instance.new("Animation")
-Animation.Name = "Invisible_Animation"
-Animation.AnimationId = "rbxassetid://139854803244662"
-local Load = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Animation)
-Load:Play(0,1,1)
-Load:AdjustSpeed(0)
-else
-for i,v in next, game.Players.LocalPlayer.Character.Humanoid:GetPlayingAnimationTracks() do
-if v.Animation.Name == "Invisible_Animation" then
-v:Stop()
-end
-end
-end
-end
-end)
-end})
+
 Tabs.Players:Togle({
     Title = "Infinite Stamina",
     Value = false,
