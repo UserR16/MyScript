@@ -373,6 +373,7 @@ wait(0.5)
 _G.Fling = true
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.GameAssets.Teams.Killer:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
 wait(3)
+Notify("Complete",3)
 _G.Fling = false
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
 end})
@@ -385,6 +386,7 @@ wait(0.5)
 _G.Fling = true
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.GameAssets.Teams.Survivor:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
 wait(3)
+Notify("Complete", 3)
 _G.Fling = false
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
 end})
