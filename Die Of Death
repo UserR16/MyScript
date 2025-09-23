@@ -421,7 +421,7 @@ _G.SprintSpeedBoost = v
 end})
 
 
-Tabs.Players:Togle({
+Tabs.Players:Toggle({
     Title = "Infinite Stamina",
     Value = false,
     Callback = function(v) 
