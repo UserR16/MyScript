@@ -349,8 +349,6 @@ end
 if _G.NoStun and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):GetAttribute("WalkSpeedModifier") < 0 then
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeedModifier", 0)
 end
-workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
-workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (26 + _G.SprintSpeedBoost))
 end
 if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
 if _G.InfStamina then
@@ -359,13 +357,18 @@ end
 if _G.NoStun and workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):GetAttribute("WalkSpeedModifier") < 0 then
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeedModifier", 0)
 end
+end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (26 + _G.SprintSpeedBoost))
+end
+if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (28 + _G.SprintSpeedBoost))
 end
 if workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name) then
-if _G.InfStamina then
-workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
-end
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
 workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (30 + _G.SprintSpeedBoost))
 end
