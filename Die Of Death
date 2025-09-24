@@ -136,16 +136,18 @@ Button.Text = Ability
 Button.Parent = ScreenGui
 
 local Shadow = Instance.new("Frame")
-Shadow.Size = UDim2.new(0, 125, 0, 60)
+Shadow.Size = UDim2.new(0, 120, 0, 60)
 Shadow.Position = UDim2.new(0, 0, 0, 0)
 Shadow.BackgroundTransparency = 1
 Shadow.Parent = Button
 
 local UICornerShadow = Instance.new("UICorner")
 UICornerShadow.Parent = Shadow
+UICornerShadow.CornerRadius = UDim2.new(0,15)
 
 local UICornerButton = Instance.new("UICorner")
 UICornerButton.Parent = Button
+UICornerButton.CornerRadius = UDim2.new(0,15)
 
 local UIStrokeShadow = Instance.new("UIStroke")
 UIStrokeShadow.Color = Color3.fromRGB(255,255,255)
@@ -346,28 +348,7 @@ end
 end
 end
 end)
-Tabs.Main:Toggle({
-    Title = "Through Build Killer Walls",
-    Value = false,
-    Callback = function(v) 
-_G.ThroughBuildKillerWalls = v
-end})
-game:GetService("RunService").RenderStepped:Connect(function()
-if workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("Events"):FindFirstChild("Rain"):FindFirstChild("TeapotDrone") and _G.ThroughTeapotDrone then
-for _,v in ipairs(workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("Events"):FindFirstChild("Rain"):GetChildren()) do
-if v.Parent.Name == "Rain" and v.Name == "TeapotDrone" and v then
-v["MeshPart"].CanCollide = not _G.ThroughTeapotDrone
-v["MeshPart"].Material = "ForceField"
-end
-end
-end
-end)
-Tabs.Main:Toggle({
-    Title = "Through Teapot Drone",
-    Value = false,
-    Callback = function(v) 
-_G.ThroughTeapotDrone = v
-end})
+
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
 local inf = 9e999999999
