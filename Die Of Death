@@ -143,11 +143,11 @@ Shadow.Parent = Button
 
 local UICornerShadow = Instance.new("UICorner")
 UICornerShadow.Parent = Shadow
-UICornerShadow.CornerRadius = UDim2.new(0,15)
+UICornerShadow.CornerRadius = UDim.new(0,15)
 
 local UICornerButton = Instance.new("UICorner")
 UICornerButton.Parent = Button
-UICornerButton.CornerRadius = UDim2.new(0,15)
+UICornerButton.CornerRadius = UDim.new(0,15)
 
 local UIStrokeShadow = Instance.new("UIStroke")
 UIStrokeShadow.Color = Color3.fromRGB(255,255,255)
