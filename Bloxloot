@@ -17,12 +17,21 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.SpeedBoost then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 40
 end
+if _G.HipHeight then
+game.Players.LocalPlayer.Character.Humanoid.HipHeight = 12.5
+else
+game.Players.LocalPlayer.Character.Humanoid.HipHeight = 0
+end
 end)
 
 
 Window:CreateCheckbox("Speed Boost", function(v)
 _G.SpeedBoost = v
 end)
+Window:CreateCheckbox("HipHeight", function(v)
+_G.HipHeight = v
+end)
+
 Window:CreateCheckbox("Hitbox Enemies", function(v)
 if v then
 for _,v in pairs(workspace.World1:GetDescendants()) do
