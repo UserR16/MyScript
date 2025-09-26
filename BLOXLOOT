@@ -89,7 +89,7 @@ Players:AddToggle({
 	callback = function(v)
 _G.WalkSpeed = v
 end})
-
+Library:Init()
 --[[
 Main:AddButton({
 	text = "Click me",
@@ -98,7 +98,7 @@ Main:AddButton({
 	print("hello world")
 end
 })
-Library:Init()
+
 folder:AddToggle({
 	text = "Toggle",
 	flag = "toggle",
