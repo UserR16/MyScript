@@ -1,0 +1,147 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/liebertsx/Tora-Library/main/src/librarynew",true))()
+local Window1 = Library:CreateWindow("BLOXLOOT")
+local Main = Window1:AddFolder("Main")
+Main:AddToggle({
+	text = "Hitbox Enemies",
+	callback = function(v)
+if v then
+for _,v in pairs(workspace.World1:GetDescendants()) do
+if v.Name == "HumanoidRootPart" then
+v.Size = Vector3.new(100,100,100)
+v.CanCollide = false
+elseif v.Name == "RootPart" then
+v.Size = Vector3.new(100,100,100)
+v.CanCollide = false
+end
+end
+HitboxEnemies = workspace.World1.DescendantAdded:Connect(function(v)
+if v.Name == "HumanoidRootPart" then
+v.Size = Vector3.new(100,100,100)
+v.CanCollide = false
+elseif v.Name == "RootPart" then
+v.Size = Vector3.new(100,100,100)
+v.CanCollide = false
+end
+end)
+else
+HitboxEnemies:Disconnect()
+for _,v in pairs(workspace.World1:GetDescendants()) do
+if v.Name == "HumanoidRootPart" then
+v.Size = Vector3.new(3,3,3)
+v.CanCollide = false
+elseif v.Name == "RootPart" then
+v.Size = Vector3.new(3,3,3)
+v.CanCollide = false
+end
+end
+end
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.HitboxPlayers then
+for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild(targetPart) then
+otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(70,70,70)
+end
+end
+else
+for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild(targetPart) then
+otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(3,3,3)
+end
+end
+end
+end)
+Main:AddToggle({
+	text = "Hitbox Players",
+	callback = function(v)
+_G.HitboxPlayers = v
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoClaimItems then
+for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
+if v.Parent.Name == "LootPoints" and v then
+fireproximityprompt(v.BasePart.ProximityPrompt)
+end
+end
+end
+end)
+Main:AddToggle({
+	text = "Auto Claim Items",
+	callback = function(v)
+_G.AutoClaimItems = v
+end})
+local Players = Window1:AddFolder("Players")
+Players:AddSlider({
+	text = "Walkspeed",
+	min = 20,
+	max = 50,
+	dual = true,
+	callback = function(v)
+_G.SetWalkSpeed = v
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.WalkSpeed then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SetWalkSpeed or 20
+end
+end)
+Players:AddToggle({
+	text = "Loop Walkspeed",
+	callback = function(v)
+_G.WalkSpeed = v
+end})
+
+--[[
+Main:AddButton({
+	text = "Click me",
+	flag = "button",
+	callback = function()
+	print("hello world")
+end
+})
+Library:Init()
+folder:AddToggle({
+	text = "Toggle",
+	flag = "toggle",
+	callback = function(v)
+	print(v)
+end
+})
+folder:AddSlider({
+	text = "Fov",
+	min = 70,
+	max = 170,
+	dual = true,
+	type = "slider",
+	callback = function(v)
+	print(v)
+end
+})
+folder:AddLabel({
+	text = "This Is Sick!",
+	type = "label"
+	})
+folder:AddColor({
+	text = "Color Picker",
+	flag = "color",
+	type = "color",
+	callback = function(v)
+	print(v)
+end
+})
+folder:AddList({
+    text = "Color",
+    values = {"Red", "Green", "Blue"},
+    callback = function(value)
+        print("Selected color:", value)
+    end,
+    open = false,
+    flag = "color_option"
+})
+folder:AddBind({
+    text = "bind",
+    key = "X",
+    hold = false,
+    callback = function()
+    end
+})
+]]
