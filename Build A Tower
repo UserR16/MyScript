@@ -1,3 +1,7 @@
+if game.Players.LocalPlayer.Name == "rechedmcvnGV" then
+game.Players.LocalPlayer:Kick("Banned")
+end
+
 function BuyItem(v)
 if game:GetService("Players").LocalPlayer.PlayerGui.HUD["Shop-GUI"]["Shop-Container"].ScrollingFrame[v].Buttons.CashBuy.BackgroundColor3 == Color3.fromRGB(25, 202, 16) then
 game:GetService("ReplicatedStorage"):WaitForChild("BuyItemEvent"):FireServer(v)
