@@ -1,5 +1,26 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/liebertsx/Tora-Library/main/src/librarynew",true))()
 local Window1 = Library:CreateWindow("BLOXLOOT")
+local Event = Window1:AddFolder("Raid Boss")
+Event:AddToggle({
+	text = "Auto King Skeleton",
+	callback = function(v)
+_G.FarmKingSkeleton = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FarmKingSkeleton and workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_100"):FindFirstChild("1_2_100").Torso then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_100"]["1_2_100"].Torso.CFrame
+end
+end)
+end})
+Event:AddToggle({
+	text = "Auto Spider Queen",
+	callback = function(v)
+_G.FarmSpiderQueen = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FarmSpiderQueen and workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_101"):FindFirstChild("1_2_101").Torso then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_101"]["1_2_101"].Torso.CFrame
+end
+end)
+end})
 --[[local Farm = Window1:AddFolder("Farm")
 local function farm_mod(mod, part)
 if workspace.World1[part].EnemySpawnPoints:FindFirstChild(mod):FindFirstChildOfClass("Model") then
