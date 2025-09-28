@@ -1,6 +1,6 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/liebertsx/Tora-Library/main/src/librarynew",true))()
 local Window1 = Library:CreateWindow("BLOXLOOT")
-local Farm = Window1:AddFolder("Farm")
+--[[local Farm = Window1:AddFolder("Farm")
 local function farm_mod(mod, part)
 if workspace.World1[part].EnemySpawnPoints:FindFirstChild(mod):FindFirstChildOfClass("Model") then
 for _,v in ipairs(workspace.World1[part].EnemySpawnPoints:GetChildren()) do
@@ -71,7 +71,7 @@ end
 end
 end
 end)
-end})
+end})]]
 local Main = Window1:AddFolder("Main")
 Main:AddToggle({
 	text = "Hitbox Enemies",
@@ -117,7 +117,7 @@ end
 end
 else
 for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
 otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(3,3,3)
 end
 end
