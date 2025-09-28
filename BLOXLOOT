@@ -8,8 +8,14 @@ Event:AddToggle({
 _G.FarmKingSkeleton = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmKingSkeleton and workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_100"):FindFirstChild("1_2_100").Torso then
-workspace.Gravity = 0
+workspace.Gravity = 20
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_100"]["1_2_100"].Torso.CFrame
+for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
+if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
+fireproximityprompt(v.BasePart.ProximityPrompt)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
+end
+end
 else
 workspace.Gravity = NormalGravity
 end
@@ -21,85 +27,20 @@ Event:AddToggle({
 _G.FarmSpiderQueen = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmSpiderQueen and workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_101"):FindFirstChild("1_2_101").Torso then
-workspace.Gravity = 0
+workspace.Gravity = 20
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_101"]["1_2_101"].Torso.CFrame
+for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
+if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
+fireproximityprompt(v.BasePart.ProximityPrompt)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
+end
+end
 else
 workspace.Gravity = NormalGravity
 end
 end)
 end})
---[[local Farm = Window1:AddFolder("Farm")
-local function farm_mod(mod, part)
-if workspace.World1[part].EnemySpawnPoints:FindFirstChild(mod):FindFirstChildOfClass("Model") then
-for _,v in ipairs(workspace.World1[part].EnemySpawnPoints:GetChildren()) do
-if v.Name == mod and v:FindFirstChildOfClass("Model"):FindFirstChild("HumanoidRootPart") then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
-elseif v.Name == mod and v:FindFirstChildOfClass("Model"):FindFirstChild("RootPart") then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:FindFirstChildOfClass("Model").RootPart.CFrame
-end
-end
-end
-end
-Farm:AddList({
-    text = "Select Mod",
-    values = {"Chicken", "Pig", "Llama", "Zombie", "Creeper", "Bat", "Slime", "Copper Zombie", "Skeleton"},
-    callback = function(v)
-_G.SelectModFarm = v
-end})
-Farm:AddToggle({
-	text = "Farm Mod",
-	callback = function(v)
-_G.FarmMod = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.FarmMod then
-if _G.SelectModFarm == "Chicken" then
-farm_mod("1_1_1", "Part1")
-elseif _G.SelectModFarm == "Pig" then
-farm_mod("1_1_2", "Part1")
-elseif _G.SelectModFarm == "Llama" then
-farm_mod("1_1_4", "Part1")
-elseif _G.SelectModFarm == "Zombie" then
-farm_mod("1_1_5", "Part1")
-elseif _G.SelectModFarm == "Creeper" then
-farm_mod("1_1_6", "Part1")
-elseif _G.SelectModFarm == "Bat" then
-farm_mod("1_2_1", "Part2")
-elseif _G.SelectModFarm == "Slime" then
-farm_mod("1_2_2", "Part2")
-elseif _G.SelectModFarm == "Copper Zombie" then
-farm_mod("1_2_3", "Part2")
-elseif _G.SelectModFarm == "Skeleton" then
-farm_mod("1_2_4", "Part2")
-end
-end
-end)
-end})
-Farm:AddList({
-    text = "Select Boss",
-    values = {"Sheep", "Zombie King", "Skeleton King"},
-    callback = function(v)
-_G.SelectBossFarm = v
-end})
-Farm:AddToggle({
-	text = "Farm Boss",
-	callback = function(v)
-_G.FarmBoss = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.FarmBoss then
-if _G.SelectBossFarm == "Sheep" then
-farm_mod("1_1_3", "Part1")
-elseif _G.SelectBossFarm == "Zombie King" then
-farm_mod("1_1_8", "Part1")
-elseif _G.SelectModFarm == "Skeleton King" then
-for _,v in ipairs(game:GetService("Workspace").World1.EnemySpawnPools["1"]:GetChildren()) do
-if v.Name == "1_2_100" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =  v:FindFirstChildOfClass("Model").HumanoidRootPart.CFrame
-end
-end
-end
-end
-end)
-end})]]
+
 local Main = Window1:AddFolder("Main")
 Main:AddToggle({
 	text = "Hitbox Enemies",
@@ -190,10 +131,9 @@ Players:AddToggle({
 _G.WalkSpeed = v
 end})
 local Server = Window1:AddFolder("Server")
-Server:AddToggle({
-	text = "Auto Server Hop",
-	callback = function(v)
-_G.AutoServerHop = v
+Server:AddButton({
+	text = "Server Hop",
+	callback = function()
 local Player = game.Players.LocalPlayer    
 local Http = game:GetService("HttpService")
 local TPS = game:GetService("TeleportService")
@@ -206,15 +146,11 @@ function ListServers(cursor)
    local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
    return Http:JSONDecode(Raw)
 end
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoServerHop then
 -- choose a random server and join every 2 minutes
    --freeze player before teleporting to prevent synapse crash?
    local Servers = ListServers()
    local Server = Servers.data[math.random(1,#Servers.data)]
    TPS:TeleportToPlaceInstance(_place, Server.id, Player)
-end
-end)
 end})
 Library:Init()
 --[[
