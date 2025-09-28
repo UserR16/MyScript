@@ -1,5 +1,87 @@
+if game.Players.LocalPlayer.Name == "rechedmcvnGV" then
+game.Players.LocalPlayer:Kick("Banned")
+end
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/liebertsx/Tora-Library/main/src/librarynew",true))()
 local Window1 = Library:CreateWindow("BLOXLOOT")
+local Farm = Window1:AddFolder("Farm")
+
+
+
+
+
+
+
+
+
+
+
+local function farm_mod(mod, part)
+for _,v in ipairs(workspace.World1[part].EnemySpawnPoints:GetChildren()) do
+if v.Name == mod then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v[mod].HumanoidRootPart.CFrame
+end
+end
+end
+Farm:AddList({
+    text = "Select Mod",
+    values = {"Chicken", "Pig", "Llama", "Zombie", "Creeper", "Bat", "Slime", "Copper Zombie", "Skeleton"},
+    callback = function(v)
+_G.SelectModFarm = v
+end})
+Farm:AddToggle({
+	text = "Farm Mod",
+	callback = function(v)
+_G.FarmMod = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FarmMod then
+if _G.SelectModFarm == "Chicken" then
+farm_mod("1_1_1", "Part1")
+elseif _G.SelectModFarm == "Pig" then
+farm_mod("1_1_2", "Part1")
+elseif _G.SelectModFarm == "Llama" then
+farm_mod("1_1_4", "Part1")
+elseif _G.SelectModFarm == "Zombie" then
+farm_mod("1_1_5", "Part1")
+elseif _G.SelectModFarm == "Creeper" then
+farm_mod("1_1_6", "Part1")
+elseif _G.SelectModFarm == "Bat" then
+farm_mod("1_2_1", "Part2")
+elseif _G.SelectModFarm == "Slime" then
+farm_mod("1_2_2", "Part2")
+elseif _G.SelectModFarm == "Copper Zombie" then
+farm_mod("1_2_3", "Part2")
+elseif _G.SelectModFarm == "Skeleton" then
+farm_mod("1_2_4", "Part2")
+end
+end
+end)
+end})
+Farm:AddList({
+    text = "Select Boss",
+    values = {"Sheep", "Zombie King", "Skeleton King"},
+    callback = function(v)
+_G.SelectBossFarm = v
+end})
+Farm:AddToggle({
+	text = "Farm Boss",
+	callback = function(v)
+_G.FarmBoss = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FarmBoss then
+if _G.SelectBossFarm == "Sheep" then
+farm_mod("1_1_3", "Part1")
+elseif _G.SelectBossFarm == "Zombie King" then
+farm_mod("1_1_8", "Part1")
+elseif _G.SelectModFarm == "Skeleton King" then
+for _,v in ipairs(game:GetService("Workspace").World1.EnemySpawnPools.1:GetChildren()) do
+if v.Name == "1_2_100" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v["1_2_100"].HumanoidRootPart.CFrame
+end
+end
+end
+end
+end)
+end})
 local Main = Window1:AddFolder("Main")
 Main:AddToggle({
 	text = "Hitbox Enemies",
@@ -45,7 +127,7 @@ end
 end
 else
 for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild(targetPart) then
+if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
 otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(3,3,3)
 end
 end
