@@ -194,8 +194,6 @@ Server:AddToggle({
 	text = "Auto Server Hop",
 	callback = function(v)
 _G.AutoServerHop = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoServerHop then
 local Player = game.Players.LocalPlayer    
 local Http = game:GetService("HttpService")
 local TPS = game:GetService("TeleportService")
@@ -208,10 +206,10 @@ function ListServers(cursor)
    local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
    return Http:JSONDecode(Raw)
 end
-
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoServerHop then
 -- choose a random server and join every 2 minutes
    --freeze player before teleporting to prevent synapse crash?
-   Player.Character.HumanoidRootPart.Anchored = _G.AutoServerHop
    local Servers = ListServers()
    local Server = Servers.data[math.random(1,#Servers.data)]
    TPS:TeleportToPlaceInstance(_place, Server.id, Player)
