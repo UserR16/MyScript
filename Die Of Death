@@ -1,3 +1,7 @@
+if game.Players.LocalPlayer.Name == "rechedmcvnGV" then
+game.Players.LocalPlayer:Kick("Banned")
+end
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
 Library:SetTheme("Dark")
 local function gradient(text, startColor, endColor)
