@@ -399,3 +399,19 @@ end
 end
 end
 end})
+Miscellaneous:AddDivider()
+Miscellaneous:AddToggle('MyToggle',{
+	Text = 'Auto Claim Items',
+	Default = false,
+	Callback = function(v)
+_G.AutoClaimItems = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoClaimItems then
+for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
+if v.Parent.Name == "LootPoints" and v and v:FindFirstChild("BasePart") then
+fireproximityprompt(v.BasePart.ProximityPrompt)
+end
+end
+end
+end)
+end})
