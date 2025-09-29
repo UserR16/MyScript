@@ -37,9 +37,9 @@ if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChil
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_3"]["1_1_3"].Torso.CFrame
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
-if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
+if v.Parent.Name == "LootPoints" and v and v:FindFirstChild("BasePart") and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
 fireproximityprompt(v.BasePart.ProximityPrompt)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v["BasePart"].CFrame
 end
 end
 else
@@ -61,9 +61,9 @@ if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChil
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_7"]["1_1_7"].Torso.CFrame
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
-if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
+if v.Parent.Name == "LootPoints" and v and v:FindFirstChild("BasePart") and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
 fireproximityprompt(v.BasePart.ProximityPrompt)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v["BasePart"].CFrame
 end
 end
 else
@@ -85,9 +85,9 @@ if workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_100"):FindFirstChil
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_100"]["1_2_100"].Torso.CFrame
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
-if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
+if v.Parent.Name == "LootPoints" and v and v:FindFirstChild("BasePart") and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
 fireproximityprompt(v.BasePart.ProximityPrompt)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v["BasePart"].CFrame
 end
 end
 else
@@ -109,9 +109,9 @@ if workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_101"):FindFirstChil
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_101"]["1_2_101"].Torso.CFrame
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
-if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
+if v.Parent.Name == "LootPoints" and v and v:FindFirstChild("BasePart") and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
 fireproximityprompt(v.BasePart.ProximityPrompt)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v["BasePart"].CFrame
 end
 end
 else
