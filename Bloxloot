@@ -1,51 +1,3 @@
---// Create Text \\
-local function Text(target, title, color, fontsize, name)
-local Billboard = Instance.new("BillboardGui", target)
-local TextLabel = Instance.new("TextLabel", Billboard)
-local UIStroke = Instance.new("UIStroke", TextLabel)
---// Billboard \\
-Billboard.AlwaysOnTop = true
-Billboard.Size = UDim2.new(0,400,0,100)
-Billboard.Name = name
-Billboard.Active = true
---// TextLabel \\
-TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
-TextLabel.BackgroundTransparency = 1
-TextLabel.BackgroundColor3 = Color3.new(0,0,0)
-TextLabel.TextColor3 = color
-TextLabel.Font = "SourceSans"
-TextLabel.TextSize = fontsize
-TextLabel.TextTransparency = 0
-TextLabel.Visible = true
-TextLabel.Text = title
-TextLabel.Size = UDim2.new(1,0,0,0)
-TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
---// UIStroke \\
-UIStroke.Thickness = 1
-UIStroke.Color = Color3.new()
-UIStroke.Transparency = 0
-end
---// Create Highlight \\
-local function Highlight(target, color, name)
-task.wait(0.25)
-local Highlight = Instance.new('Highlight', target)
---// Highlight \\
-Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-Highlight.FillColor = color
-Highlight.OutlineColor = color
-Highlight.FillTransparency = 1
-Highlight.OutlineTransparency =  0
-Highlight.Name = name
-end
---// Disable Text & Highlight \\
-local function Disable(name)
-for _,v in ipairs(workspace:GetDescendants()) do
-if v.Name == name then
-v:Destroy()
-end
-end
-end
-
 local repo = 'https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
@@ -83,7 +35,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmSheep then
 if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3") and workspace.World1.Part1.EnemySpawnPools:FindFirstChild("1_1_3"):FindFirstChild("1_1_3"):FindFirstChild("Humanoid").Health > 0 then
 workspace.Gravity = 0
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPools["1_1_3"]["1_1_3"].Torso.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_3"]["1_1_3"].Torso.CFrame
 if _G.LootTP then
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
 if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
@@ -109,7 +61,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmKingZombie then
 if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7") and workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7"):FindFirstChild("Humanoid").Health > 0 then
 workspace.Gravity = 0
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPools["1_1_8"]["1_1_8"].Torso.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_8"]["1_1_8"].Torso.CFrame
 if _G.LootTP then
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
 if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
@@ -183,6 +135,7 @@ RaidBoss:AddToggle('MyToggle',{
 	Text = 'Auto Collect Teleport',
 	Default = false,
 	Callback = function(v)
+_G.LootTP = v
 end})
 
 local Server = Main:AddLeftGroupbox('Server')
@@ -274,7 +227,7 @@ Players:AddToggle('MyToggle',{
 _G.FOV = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FOV then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SetFOV or 70
+workspace.CurrentCamera.FieldOfView = _G.SetFOV or 70
 end
 end)
 end})
@@ -347,57 +300,6 @@ end
 end
 end
 end)
-end})
-Miscellaneous:AddDivider()
-Miscellaneous:AddToggle('MyToggle',{
-	Text = 'Enemies ESP',
-	Default = false,
-	Callback = function(v)
-if v then
-for _,v in pairs(workspace.World1:GetDescendants()) do
-if v.Name == "HumanoidRootPart" and not v.Parent:FindFirstChild("EnemiesESP") then
-Highlight(v.Parent, Color3.new(1), "EnemiesESP")
-elseif v.Name == "RootPart" and not v.Parent:FindFirstChild("EnemiesESP") then
-Highlight(v.Parent, Color3.new(1), "EnemiesESP")
-end
-end
-EnemiesESP = workspace.World1.DescendantAdded:Connect(function(v)
-if v.Name == "HumanoidRootPart" and not v.Parent:FindFirstChild("EnemiesESP") then
-Highlight(v.Parent, Color3.new(1), "EnemiesESP")
-elseif v.Name == "RootPart" and not v.Parent:FindFirstChild("EnemiesESP") then
-Highlight(v.Parent, Color3.new(1), "EnemiesESP")
-end
-end)
-else
-EnemiesESP:Disconnect()
-for _,v in ipairs(workspace.World1:GetDescendants()) do
-if v.Name == "EnemiesESP" then
-v:Destroy()
-end
-end
-end
-end})
-Miscellaneous:AddToggle('MyToggle',{
-	Text = 'Players ESP',
-	Default = false,
-	Callback = function(v)
-if v then
-PlayersESP = game:GetService("RunService").RenderStepped:Connect(function()
-for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and not otherPlayer.Character:FindFirstChild("PlayersESP") then
-Text(otherPlayer.Character.HumanoidRootPart, otherPlayer.Name, Color3.new(1,1,1), 14, "PlayersESP")
-Highlight(otherPlayer.Character, Color3.new(1), "PlayerssESP")
-end
-end
-end)
-else
-PlayersESP:Disconnect()
-for _,v in ipairs(game.Players:GetDescendants()) do
-if v.Name == "PlayersESP" then
-v:Destroy()
-end
-end
-end
 end})
 Miscellaneous:AddDivider()
 Miscellaneous:AddToggle('MyToggle',{
