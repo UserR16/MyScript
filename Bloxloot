@@ -33,7 +33,7 @@ RaidBoss:AddToggle('AutoSheep',{
 _G.FarmSheep = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmSheep then
-if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3") and workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3"):FindFirstChild("Humanoid").Health > 0 then
+if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3") then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_3"]["1_1_3"].Torso.CFrame
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
@@ -57,7 +57,7 @@ RaidBoss:AddToggle('AutoKingZombie',{
 _G.FarmKingZombie = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmKingZombie then
-if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7") and workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7"):FindFirstChild("Humanoid").Health > 0 then
+if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7") then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_7"]["1_1_7"].Torso.CFrame
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
@@ -81,7 +81,7 @@ RaidBoss:AddToggle('AutoKingSkeleton',{
 _G.FarmKingSkeleton = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmKingSkeleton then
-if workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_100"):FindFirstChild("1_2_100") and workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_100"):FindFirstChild("1_2_100"):FindFirstChild("Humanoid").Health > 0 then
+if workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_100"):FindFirstChild("1_2_100") then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_100"]["1_2_100"].Torso.CFrame
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
@@ -105,7 +105,7 @@ RaidBoss:AddToggle('AutoSpiderQueen',{
 _G.FarmSpiderQueen = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmSpiderQueen then
-if workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_101"):FindFirstChild("1_2_101") and workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_101"):FindFirstChild("1_2_101"):FindFirstChild("Humanoid").Health > 0 then
+if workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_101"):FindFirstChild("1_2_101") then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_101"]["1_2_101"].Torso.CFrame
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
