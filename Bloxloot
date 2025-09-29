@@ -36,12 +36,10 @@ if _G.FarmSheep then
 if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3") and workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3"):FindFirstChild("Humanoid").Health > 0 then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_3"]["1_1_3"].Torso.CFrame
-if _G.LootTP then
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
 if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
 fireproximityprompt(v.BasePart.ProximityPrompt)
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
-end
 end
 end
 else
@@ -62,12 +60,10 @@ if _G.FarmKingZombie then
 if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7") and workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7"):FindFirstChild("Humanoid").Health > 0 then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_7"]["1_1_7"].Torso.CFrame
-if _G.LootTP then
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
 if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
 fireproximityprompt(v.BasePart.ProximityPrompt)
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
-end
 end
 end
 else
@@ -88,12 +84,10 @@ if _G.FarmKingSkeleton then
 if workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_100"):FindFirstChild("1_2_100") and workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_100"):FindFirstChild("1_2_100"):FindFirstChild("Humanoid").Health > 0 then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_100"]["1_2_100"].Torso.CFrame
-if _G.LootTP then
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
 if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
 fireproximityprompt(v.BasePart.ProximityPrompt)
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
-end
 end
 end
 else
@@ -114,12 +108,10 @@ if _G.FarmSpiderQueen then
 if workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_101"):FindFirstChild("1_2_101") and workspace.World1.EnemySpawnPools["1"]:FindFirstChild("1_2_101"):FindFirstChild("1_2_101"):FindFirstChild("Humanoid").Health > 0 then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.EnemySpawnPools["1"]["1_2_101"]["1_2_101"].Torso.CFrame
-if _G.LootTP then
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
 if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
 fireproximityprompt(v.BasePart.ProximityPrompt)
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.BasePart.CFrame
-end
 end
 end
 else
@@ -129,13 +121,6 @@ else
 workspace.Gravity = NormalGravity
 end
 end)
-end})
-RaidBoss:AddDivider()
-RaidBoss:AddToggle('AutoCollectTeleport',{
-	Text = 'Auto Collect Teleport',
-	Default = false,
-	Callback = function(v)
-_G.LootTP = v
 end})
 
 local Server = Main:AddLeftGroupbox('Server')
