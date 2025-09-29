@@ -26,14 +26,14 @@ local Main = Window:AddTab("Main")
 local RaidBoss = Main:AddLeftGroupbox('Raid Boss')
 
 local NormalGravity = workspace.Gravity
-RaidBoss:AddToggle('MyToggle',{
+RaidBoss:AddToggle('AutoSheep',{
 	Text = 'Auto Sheep',
 	Default = false,
 	Callback = function(v)
 _G.FarmSheep = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmSheep then
-if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3") and workspace.World1.Part1.EnemySpawnPools:FindFirstChild("1_1_3"):FindFirstChild("1_1_3"):FindFirstChild("Humanoid").Health > 0 then
+if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3") and workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_3"):FindFirstChild("1_1_3"):FindFirstChild("Humanoid").Health > 0 then
 workspace.Gravity = 0
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_3"]["1_1_3"].Torso.CFrame
 if _G.LootTP then
@@ -52,7 +52,7 @@ workspace.Gravity = NormalGravity
 end
 end)
 end})
-RaidBoss:AddToggle('MyToggle',{
+RaidBoss:AddToggle('AutoKingZombie',{
 	Text = 'Auto King Zombie',
 	Default = false,
 	Callback = function(v)
@@ -61,7 +61,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.FarmKingZombie then
 if workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7") and workspace.World1.Part1.EnemySpawnPoints:FindFirstChild("1_1_7"):FindFirstChild("1_1_7"):FindFirstChild("Humanoid").Health > 0 then
 workspace.Gravity = 0
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_8"]["1_1_8"].Torso.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.World1.Part1.EnemySpawnPoints["1_1_7"]["1_1_7"].Torso.CFrame
 if _G.LootTP then
 for _,v in ipairs(workspace.Runtime.LootPoints:GetChildren()) do
 if v.Parent.Name == "LootPoints" and v and (v.BasePart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 100 then
@@ -78,7 +78,7 @@ workspace.Gravity = NormalGravity
 end
 end)
 end})
-RaidBoss:AddToggle('MyToggle',{
+RaidBoss:AddToggle('AutoKingSkeleton',{
 	Text = 'Auto King Skeleton',
 	Default = false,
 	Callback = function(v)
@@ -104,7 +104,7 @@ workspace.Gravity = NormalGravity
 end
 end)
 end})
-RaidBoss:AddToggle('MyToggle',{
+RaidBoss:AddToggle('AutoSpiderQueen',{
 	Text = 'Auto Spider Queen',
 	Default = false,
 	Callback = function(v)
@@ -131,7 +131,7 @@ end
 end)
 end})
 RaidBoss:AddDivider()
-RaidBoss:AddToggle('MyToggle',{
+RaidBoss:AddToggle('AutoCollectTeleport',{
 	Text = 'Auto Collect Teleport',
 	Default = false,
 	Callback = function(v)
@@ -139,7 +139,7 @@ _G.LootTP = v
 end})
 
 local Server = Main:AddLeftGroupbox('Server')
-Server:AddToggle('MyToggle',{
+Server:AddToggle('AutoServerHop',{
 	Text = 'Auto Server Hop',
 	Default = false,
 	Callback = function(v)
@@ -189,7 +189,7 @@ end
 end})
 
 local Players = Main:AddRightGroupbox('Players')
-Players:AddSlider('MySlider',{
+Players:AddSlider('Speed',{
 	Text = 'Speed',
 	Default = 20,
 	Min = 20,
@@ -199,7 +199,7 @@ Players:AddSlider('MySlider',{
 	Callback = function(v)
 _G.SetWalkSpeed = v
 end})
-Players:AddToggle('MyToggle',{
+Players:AddToggle('LoopSpeed',{
 	Text = 'Loop Speed',
 	Default = false,
 	Callback = function(v)
@@ -210,7 +210,7 @@ game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SetWalkSpeed or 20
 end
 end)
 end})
-Players:AddSlider('MySlider',{
+Players:AddSlider('FOV',{
 	Text = 'FOV',
 	Default = 70,
 	Min = 70,
@@ -220,7 +220,7 @@ Players:AddSlider('MySlider',{
 	Callback = function(v)
 _G.SetFOV = v
 end})
-Players:AddToggle('MyToggle',{
+Players:AddToggle('LoopFOV',{
 	Text = 'Loop FOV',
 	Default = false,
 	Callback = function(v)
@@ -232,7 +232,7 @@ end
 end)
 end})
 Players:AddDivider()
-Players:AddToggle('MyToggle',{
+Players:AddToggle('InfJump',{
 	Text = 'Infinite Jump',
 	Default = false,
 	Callback = function(v)
@@ -244,7 +244,7 @@ end
 end)
 end})
 local Miscellaneous = Main:AddRightGroupbox('Miscellaneous')
-Miscellaneous:AddToggle('MyToggle',{
+Miscellaneous:AddToggle('HitboxEnemies',{
 	Text = 'Hitbox Enemies',
 	Default = false,
 	Callback = function(v)
@@ -280,7 +280,7 @@ end
 end
 end
 end})
-Miscellaneous:AddToggle('MyToggle',{
+Miscellaneous:AddToggle('HitboxPlayers',{
 	Text = 'Hitbox Players',
 	Default = false,
 	Callback = function(v)
@@ -302,7 +302,7 @@ end
 end)
 end})
 Miscellaneous:AddDivider()
-Miscellaneous:AddToggle('MyToggle',{
+Miscellaneous:AddToggle('AutoClaimItems',{
 	Text = 'Auto Claim Items',
 	Default = false,
 	Callback = function(v)
