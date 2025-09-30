@@ -23,9 +23,45 @@ local Window = Library:CreateWindow({
 })
 
 local Main = Window:AddTab("Main")
-local RaidBoss = Main:AddLeftGroupbox('Raid Boss')
-
+local RaidBoss = Main:AddLeftGroupbox('Mob & Boss')
 local NormalGravity = workspace.Gravity
+RaidBoss:AddDropdown('SelectMobs', {
+	Values = {"Chicken", "Pig", "Llama", "Zombie", "Creeper", "Bat", "Slime", "Copper Zombie", "Skeleton"},
+	Default = 1,
+    Multi = false
+	Callback = function(v)
+_G.SelectModFarm = v
+end})
+RaidBoss:AddToggle('FarmMob',{
+	Text = 'Farm Mob Select',
+	Default = false,
+	Callback = function(v)
+_G.FarmMod = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FarmMod then
+if _G.SelectModFarm == "Chicken" then
+farm_mod("1_1_1", "Part1")
+elseif _G.SelectModFarm == "Pig" then
+farm_mod("1_1_2", "Part1")
+elseif _G.SelectModFarm == "Llama" then
+farm_mod("1_1_4", "Part1")
+elseif _G.SelectModFarm == "Zombie" then
+farm_mod("1_1_5", "Part1")
+elseif _G.SelectModFarm == "Creeper" then
+farm_mod("1_1_6", "Part1")
+elseif _G.SelectModFarm == "Bat" then
+farm_mod("1_2_1", "Part2")
+elseif _G.SelectModFarm == "Slime" then
+farm_mod("1_2_2", "Part2")
+elseif _G.SelectModFarm == "Copper Zombie" then
+farm_mod("1_2_3", "Part2")
+elseif _G.SelectModFarm == "Skeleton" then
+farm_mod("1_2_4", "Part2")
+end
+end
+end)
+end})
+RaidBoss:AddDivider()
 RaidBoss:AddToggle('AutoSheep',{
 	Text = 'Auto Sheep',
 	Default = false,
