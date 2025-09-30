@@ -25,12 +25,21 @@ local Window = Library:CreateWindow({
 local Main = Window:AddTab("Main")
 local RaidBoss = Main:AddLeftGroupbox('Mob & Boss')
 local NormalGravity = workspace.Gravity
+local function farm_mod(mod, part)
+for _,v in ipairs(workspace.World1[part].EnemySpawnPoints:GetDescendants()) do
+if v.Name == mod and v:IsA("Model") and v:FindFirstChild("Humanoid").Health > 0 and v:FindFirstChild("HumanoidRootPart") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+elseif v.Name == mod and v:IsA("Model") and v:FindFirstChild("Humanoid").Health > 0 and v:FindFirstChild("RootPart") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame
+end
+end
+end
 RaidBoss:AddDropdown('SelectMobs', {
-	Values = {"Chicken", "Pig", "Llama", "Zombie", "Creeper", "Bat", "Slime", "Copper Zombie", "Skeleton"},
+	Values = {"Chicken", "Pig", "Llama", "Zombie", "Creeper", "Bat", "Slime", "Copper Zombie", "Skeleton", "Spider"},
 	Default = 1,
-    Multi = false
+    Multi = false,
 	Callback = function(v)
-_G.SelectModFarm = v
+_G.SelectModFarm = v or "Chicken"
 end})
 RaidBoss:AddToggle('FarmMob',{
 	Text = 'Farm Mob Select',
@@ -57,6 +66,8 @@ elseif _G.SelectModFarm == "Copper Zombie" then
 farm_mod("1_2_3", "Part2")
 elseif _G.SelectModFarm == "Skeleton" then
 farm_mod("1_2_4", "Part2")
+elseif _G.SelectModFarm == "Spider" then
+farm_mod("1_2_5", "Part2")
 end
 end
 end)
