@@ -362,6 +362,7 @@ if _G.HitboxPlayers then
 for _, otherPlayer in pairs(game.Players:GetPlayers()) do
 if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
 otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+otherPlayer.Character.HumanoidRootPart.CanCollide = false
 if _G.ShowHitbox then
 otherPlayer.Character.HumanoidRootPart.Transparency = 0.85
 else
