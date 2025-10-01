@@ -1,0 +1,11 @@
+game:GetService("RunService").RenderStepped:Connect(function()
+for _,v in ipairs(workspace.Players.Killers:GetChildren()) do
+if v.Parent.Name == "Killers" and v:GetAttribute("Username") == game.Players.LocalPlayer.Name then
+for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("CollisionHitbox") and (otherPlayer.Character.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox").Position).Magnitude < 10 then
+game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox").CFrame = otherPlayer.Character.HumanoidRootPart.CFrame
+end
+end
+end
+end
+end)
