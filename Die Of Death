@@ -95,7 +95,7 @@ end})
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoBreakComputer and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
 for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
-if v.Name == "Computer" and v then
+if v.Name == "Computer" and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
 fireproximityprompt(v.Primary.Prompt)
 end
 end
@@ -329,7 +329,7 @@ Tabs.Main:Section({Title = "Other", Icon = "plus"})
 game:GetService("RunService").RenderStepped:Connect(function()
 if workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly") then
 for _, v in ipairs(workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly"):GetChildren()) do
-if v.Parent.Name == "KillerOnly" and v then
+if v.Parent.Name == "KillerOnly" and workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly") then
 v.CanCollide = not _G.ThroughRedKillerWalls
 end
 end
@@ -344,7 +344,7 @@ end})
 game:GetService("RunService").RenderStepped:Connect(function()
 if workspace.GameAssets.Teams.Other:FindFirstChild("Wall") then
 for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
-if v.Parent.Name == "Other" and v.Name == "Wall" and v then
+if v.Parent.Name == "Other" and v.Name == "Wall" and workspace.GameAssets.Teams.Other:FindFirstChild("Wall") then
 v.HumanoidRootPart.CanCollide = not _G.ThroughBuildKillerWalls
 end
 end
@@ -362,7 +362,11 @@ if _G.HitboxPlayers then
 for _, otherPlayer in pairs(game.Players:GetPlayers()) do
 if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
 otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
-otherPlayer.Character.HumanoidRootPart.Transparency = 0.75
+if _G.ShowHitbox then
+otherPlayer.Character.HumanoidRootPart.Transparency = 0.85
+else
+otherPlayer.Character.HumanoidRootPart.Transparency = 1
+end
 end
 end
 else
@@ -380,11 +384,17 @@ Tabs.Main:Slider({
     Callback = function(v)
 _G.HitboxSize = v or 10
 end})
-Tabs.Players:Toggle({
+Tabs.Main:Toggle({
     Title = "Hitbox Players",
     Value = false,
     Callback = function(v) 
 _G.HitboxPlayers = v
+end})
+Tabs.Main:Toggle({
+    Title = "Show Hitbox",
+    Value = false,
+    Callback = function(v) 
+_G.ShowHitbox = v
 end})
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
