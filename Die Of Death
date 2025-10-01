@@ -350,6 +350,12 @@ end
 end
 end
 end)
+Tabs.Main:Toggle({
+    Title = "Through Build Killer Walls",
+    Value = false,
+    Callback = function(v) 
+_G.ThroughBuildKillerWalls = v
+end})
 Tabs.Main:Section({Title = "Hitbox", Icon = "compass"})
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.HitboxPlayers then
@@ -368,7 +374,6 @@ end
 end
 end
 end)
-end})
 Tabs.Main:Slider({
     Title = "Hitbox Size",
     Value = { Min = 10, Max = 30, Default = 10 },
