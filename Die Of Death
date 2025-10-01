@@ -360,21 +360,21 @@ Tabs.Main:Section({Title = "Hitbox", Icon = "compass"})
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.HitboxPlayers then
 for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
-otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
-otherPlayer.Character.HumanoidRootPart.CanCollide = false
+if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("Hurtbox") then
+otherPlayer.Character.Hurtbox.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+otherPlayer.Character.Hurtbox.CanCollide = false
 if _G.ShowHitbox then
-otherPlayer.Character.HumanoidRootPart.Transparency = 0.85
+otherPlayer.Character.Hurtbox.Transparency = 0.85
 else
-otherPlayer.Character.HumanoidRootPart.Transparency = 1
+otherPlayer.Character.Hurtbox.Transparency = 1
 end
 end
 end
 else
 for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
-otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(3,3,3)
-otherPlayer.Character.HumanoidRootPart.Transparency = 1
+if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("Hurtbox") then
+otherPlayer.Character.Hurtbox.Size = Vector3.new(3,3,3)
+otherPlayer.Character.Hurtbox.Transparency = 1
 end
 end
 end
