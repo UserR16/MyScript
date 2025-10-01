@@ -350,7 +350,37 @@ end
 end
 end
 end)
-
+Tabs.Main:Section({Title = "Hitbox", Icon = "compass"})
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.HitboxPlayers then
+for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+otherPlayer.Character.HumanoidRootPart.Transparency = 0.75
+end
+end
+else
+for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(3,3,3)
+otherPlayer.Character.HumanoidRootPart.Transparency = 1
+end
+end
+end
+end)
+end})
+Tabs.Main:Slider({
+    Title = "Hitbox Size",
+    Value = { Min = 10, Max = 30, Default = 10 },
+    Callback = function(v)
+_G.HitboxSize = v or 10
+end})
+Tabs.Players:Toggle({
+    Title = "Hitbox Players",
+    Value = false,
+    Callback = function(v) 
+_G.HitboxPlayers = v
+end})
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
 local inf = 9e999999999
