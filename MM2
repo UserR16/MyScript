@@ -3,7 +3,7 @@ local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local GuiService = game:GetService("GuiService")
-local dg = workspace.Gravity
+local oldgravity = workspace.Gravity
 -- Lock variable to prevent multiple script executions
 local isRunning = false
 local coinCollectorThread
@@ -116,11 +116,11 @@ local function startCoinCollector()
     local function teleportToCoin(coin)
         if coin then
             workspace.Gravity = 0
-            humanoidRootPart.CFrame = CFrame.new(coin.Position - Vector3.new(0,3.6,0))
+            humanoidRootPart.CFrame = CFrame.new(coin.Position - Vector3.new(0,4.5,0))
             visitedCoins[coin] = true -- Mark the coin as visited
         else
             warn("No coin to teleport to!")
-            workspace.Gravity = dg
+            workspace.Gravity = oldgravity
         end
     end
 
@@ -130,7 +130,7 @@ local function startCoinCollector()
             visitedCoins[coin] = true -- Mark the coin as visited
             local distance = (humanoidRootPart.Position - coin.Position).Magnitude
             local tweenInfo = TweenInfo.new(distance / TWEEN_SPEED, Enum.EasingStyle.Linear)
-            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,3.6,0))}
+            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,4.5,0))}
             local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
             tween:Play()
 
@@ -255,21 +255,38 @@ end
 
 -- GUI to toggle auto farm and speed
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
-local AmareHubWindow = Library:NewWindow("Summer - MM2")
-local KillingCheats = AmareHubWindow:NewSection("Farm")
-local Credit = AmareHubWindow:NewSection("Credit")
+local Window = Library:NewWindow("🌅 Summer - MM2")
+local KillingCheats = Window:NewSection("Farm")
+local Credit = Window:NewSection("Credit")
 
 -- Toggle for Auto Farm
 KillingCheats:CreateToggle("Auto Farm", function(value)
-    if value then
-        if not isRunning then
-            coinCollectorThread = game:GetService("RunService").Heartbeat:Connect(startCoinCollector)
-        end
-    else
-        stopCoinCollector()
-    end
+if value then
+workspace.Gravity = 0
+if not isRunning then
+coinCollectorThread = game:GetService("RunService").Heartbeat:Connect(startCoinCollector)
+end
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "Coin_Server" and v then
+v.Size = Vector3.new(10,15,10)
+end
+end
+BigCoins = workspace.DescendantAdded:Connect(function(v)
+if v.Name == "Coin_Server" and v then
+v.Size = Vector3.new(10,15,10)
+end
 end)
-local newSpeed = tonumber(20)
+else
+workspace.Gravity = oldgravity
+stopCoinCollector()
+BigCoins:Disconnect()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "Coin_Server" and v then
+v.Size = Vector3.new(1, 2, 1)
+end
+end
+end
+end)
 Credit:CreateButton("bởi Thanh Tiến", function()
 end)
 -- Connect to a new round event (example, adjust as needed)
