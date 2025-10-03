@@ -130,7 +130,7 @@ local function startCoinCollector()
             visitedCoins[coin] = true -- Mark the coin as visited
             local distance = (humanoidRootPart.Position - coin.Position).Magnitude
             local tweenInfo = TweenInfo.new(distance / TWEEN_SPEED, Enum.EasingStyle.Linear)
-            local goal = {CFrame = CFrame.new(coin.Position)}
+            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,3.6,0))}
             local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
             tween:Play()
 
@@ -269,7 +269,7 @@ KillingCheats:CreateToggle("Auto Farm", function(value)
         stopCoinCollector()
     end
 end)
-local newSpeed = tonumber(15)
+local newSpeed = tonumber(20)
 Credit:CreateButton("bởi Thanh Tiến", function()
 end)
 -- Connect to a new round event (example, adjust as needed)
