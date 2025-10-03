@@ -11,7 +11,7 @@ local hasReset = false -- Flag to track if the character has been reset
 local hasExecutedOnce = false -- Flag to ensure second script executes only once
 
 -- Default tween speed
-local TWEEN_SPEED = 20
+local TWEEN_SPEED = 25
 local TELEPORT_DISTANCE = 200
 
 -- Function to execute the coin collection script
@@ -116,7 +116,7 @@ local function startCoinCollector()
     local function teleportToCoin(coin)
         if coin then
             workspace.Gravity = 0
-            humanoidRootPart.CFrame = CFrame.new(coin.Position - Vector3.new(0,4.5,0))
+            humanoidRootPart.CFrame = CFrame.new(coin.Position - Vector3.new(0,6,0))
             visitedCoins[coin] = true -- Mark the coin as visited
         else
             warn("No coin to teleport to!")
@@ -130,7 +130,7 @@ local function startCoinCollector()
             visitedCoins[coin] = true -- Mark the coin as visited
             local distance = (humanoidRootPart.Position - coin.Position).Magnitude
             local tweenInfo = TweenInfo.new(distance / TWEEN_SPEED, Enum.EasingStyle.Linear)
-            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,4.5,0))}
+            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,6,0))}
             local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
             tween:Play()
 
@@ -268,12 +268,12 @@ coinCollectorThread = game:GetService("RunService").Heartbeat:Connect(startCoinC
 end
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Coin_Server" and v then
-v.Size = Vector3.new(10,15,10)
+v.Size = Vector3.new(10,30,10)
 end
 end
 BigCoins = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "Coin_Server" and v then
-v.Size = Vector3.new(10,15,10)
+v.Size = Vector3.new(10,30,10)
 end
 end)
 else
