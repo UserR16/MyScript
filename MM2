@@ -16,6 +16,15 @@ local TELEPORT_DISTANCE = 200
 
 -- Function to execute the coin collection script
 local function startCoinCollector()
+local player = game.Players.LocalPlayer
+            if player and player.Character then
+                for _, part in pairs(player.Character:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                    end
+                end
+            end
+    
     if isRunning then return end
     isRunning = true
 
@@ -280,6 +289,7 @@ else
 workspace.Gravity = oldgravity
 stopCoinCollector()
 BigCoins:Disconnect()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0,-12,0)
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Coin_Server" and v then
 v.Size = Vector3.new(1, 2, 1)
