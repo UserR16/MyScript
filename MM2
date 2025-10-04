@@ -107,6 +107,7 @@ local player = game.Players.LocalPlayer
         if coinContainer then
             for _, coin in ipairs(coinContainer:GetChildren()) do
                 if coin:IsA("BasePart") and not visitedCoins[coin] then
+                    Instance.new("Highlight", coin)
                     local distance = (humanoidRootPart.Position - coin.Position).Magnitude
                     if distance < shortestDistance then
                         shortestDistance = distance
