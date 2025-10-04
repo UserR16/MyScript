@@ -18,7 +18,7 @@ local TELEPORT_DISTANCE = 200
 local function startCoinCollector()
 local player = game.Players.LocalPlayer
             if player and player.Character then
-                for _, part in pairs(player.Character:GetDescendants()) do
+                for _, part in ipairs(player.Character:GetChildren()) do
                     if part:IsA("BasePart") then
                         part.CanCollide = false
                     end
@@ -60,27 +60,34 @@ local player = game.Players.LocalPlayer
     end
 
     -- List of possible maps and their CoinContainer paths
-    local mapPaths = {
-        "BeachResort",
-        "Yacht",
-        "IceCastle",
-        "SkiLodge",
-        "Station",
-        "LogCabin",
-        "Bank2",
-        "BioLab",
-        "House2",
-        "Factory",
-        "Hospital3",
-        "Hotel",
-        "Mansion2",
-        "MilBase",
-        "Office3",
-        "PoliceStation",
-        "Workplace",
-        "ResearchFacility",
-        "ChristmasItaly"
-    }
+
+local mapPaths = {
+"Bank2",
+"BioLab",
+"Factory",
+"Hospital3",
+"Hotel2",
+"House2",
+"Mansion2",
+"MilBase",
+"Office3",
+"PoliceStation",
+"ResearchFacility",
+"Workplace",
+"BeachResort",
+"Yacht",
+"Manor",
+"Farmhouse",
+"Mineshaft",
+"Barn",
+"VampireCastle",
+"Workshop",
+"LogCabin",
+"TrainStation",
+"ChristmasInItaly",
+"SkiLodge",
+"IceCastle"
+}
 
     -- Keep track of visited coins to prevent revisiting
     local visitedCoins = {}
@@ -107,7 +114,6 @@ local player = game.Players.LocalPlayer
         if coinContainer then
             for _, coin in ipairs(coinContainer:GetChildren()) do
                 if coin:IsA("BasePart") and not visitedCoins[coin] then
-                    Instance.new("Highlight", coin)
                     local distance = (humanoidRootPart.Position - coin.Position).Magnitude
                     if distance < shortestDistance then
                         shortestDistance = distance
@@ -126,7 +132,7 @@ local player = game.Players.LocalPlayer
     local function teleportToCoin(coin)
         if coin then
             workspace.Gravity = 0
-            humanoidRootPart.CFrame = CFrame.new(coin.Position - Vector3.new(0,6,0))
+            humanoidRootPart.CFrame = CFrame.new(coin.Position - Vector3.new(0,10,0))
             visitedCoins[coin] = true -- Mark the coin as visited
         else
             warn("No coin to teleport to!")
@@ -140,7 +146,7 @@ local player = game.Players.LocalPlayer
             visitedCoins[coin] = true -- Mark the coin as visited
             local distance = (humanoidRootPart.Position - coin.Position).Magnitude
             local tweenInfo = TweenInfo.new(distance / TWEEN_SPEED, Enum.EasingStyle.Linear)
-            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,6,0))}
+            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,10,0))}
             local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
             tween:Play()
 
