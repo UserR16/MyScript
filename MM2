@@ -286,13 +286,26 @@ else
 workspace.Gravity = oldgravity
 stopCoinCollector()
 BigCoins:Disconnect()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0,-12,0)
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Coin_Server" and v then
 v.Size = Vector3.new(1, 2, 1)
 end
 end
 end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoSummerBox then
+local args = {
+	"Summer2025Box",
+	"MysteryBox",
+	"BeachBalls2025"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Shop"):WaitForChild("OpenCrate"):InvokeServer(unpack(args))
+end
+end)
+
+KillingCheats:CreateToggle("Auto Summer Box", function(value)
+_G.AutoSummerBox = value
 end)
 Credit:CreateButton("bởi Thanh Tiến", function()
 end)
