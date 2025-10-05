@@ -288,17 +288,10 @@ local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/blood
 local Window = Library:NewWindow("🌅 Summer - MM2")
 local KillingCheats = Window:NewSection("Farm")
 local Credit = Window:NewSection("Credit")
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.Freeze then
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-wait(0.1)
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
-end
-end)
 -- Toggle for Auto Farm
 KillingCheats:CreateToggle("Auto Farm", function(value)
-_G.Freeze = v
 if value then
+workspace.Gravity = 0
 if not isRunning then
 coinCollectorThread = game:GetService("RunService").Heartbeat:Connect(startCoinCollector)
 end
@@ -315,6 +308,7 @@ end)
 else
 stopCoinCollector()
 BigCoins:Disconnect()
+workspace.Gravity = oldgravity
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Coin_Server" and v then
 v.Size = Vector3.new(1, 2, 1)
