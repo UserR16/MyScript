@@ -1,3 +1,16 @@
+if game.Players.LocalPlayer.Name == "kyanh114" then
+local Alurt = loadstring(game:HttpGet("https://raw.githubusercontent.com/azir-py/project/refs/heads/main/Zwolf/AlurtUI.lua"))()
+local notif1 = Alurt.CreateNode({
+    Title = "Xin vui lòng",
+    Content = "Bạn cần dùng tài khoản phụ hoặc mới để dùng.",
+    Audio = "rbxassetid://17525305988",
+    Length = 8,
+    Image = "rbxassetid://17616650704", 
+    BarColor = Color3.fromRGB(255, 75, 75)
+})
+end
+
+
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -94,8 +107,9 @@ local mapPaths = {
 "Hospital2",
 "Mansion",
 "House",
-"Office2"
-"Office"
+"Office2",
+"Office",
+"Mineshaft"
 }
 
     -- Keep track of visited coins to prevent revisiting
