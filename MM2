@@ -12,7 +12,7 @@ local hasExecutedOnce = false -- Flag to ensure second script executes only once
 
 -- Default tween speed
 local TWEEN_SPEED = 25
-local TELEPORT_DISTANCE = 200
+local TELEPORT_DISTANCE = 500
 
 -- Function to execute the coin collection script
 local function startCoinCollector()
@@ -139,7 +139,7 @@ local mapPaths = {
             local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,6.25,0))}
             local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
             tween:Play()
-
+            hasReset = false
             tween.Completed:Wait() -- Wait for the tween to finish
         else
             warn("No coin to tween to!")
@@ -171,7 +171,12 @@ local mapPaths = {
             end
 
             -- If all CoinVisuals are gone and the character has not reset, reset the character
-
+            if allCoinVisualsGone and not hasReset then
+                character:BreakJoints() -- Reset character
+                visitedCoins = {} -- Reset visited coins to allow collection again
+                hasReset = true -- Set the reset flag
+                wait(1) -- Wait before continuing after reset
+            end
             -- If all CoinVisuals are gone, execute the second script once
             if allCoinVisualsGone and not hasExecutedOnce then
                 hasExecutedOnce = true
@@ -269,12 +274,12 @@ coinCollectorThread = game:GetService("RunService").Heartbeat:Connect(startCoinC
 end
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Coin_Server" and v then
-v.Size = Vector3.new(10,30,10)
+v.Size = Vector3.new(10,50,10)
 end
 end
 BigCoins = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "Coin_Server" and v then
-v.Size = Vector3.new(10,30,10)
+v.Size = Vector3.new(10,50,10)
 end
 end)
 else
@@ -288,9 +293,6 @@ v.Size = Vector3.new(1, 2, 1)
 end
 end
 end
-end)
-KillingCheats:CreateButton("Reset", function()
-Players.LocalPlayer.Character.Humanoid.Health = 0
 end)
 Credit:CreateButton("bởi Thanh Tiến", function()
 end)
