@@ -295,14 +295,14 @@ if value then
 local Parts = Instance.new("Part", workspace)
 Parts.Name = "FarmPart"
 Parts.Material = "Neon"
-Parts.Size = Vector3.new(1,1,1)
+Parts.Size = Vector3.new(10,1,10)
 if not isRunning then
 coinCollectorThread = game:GetService("RunService").Heartbeat:Connect(startCoinCollector)
 end
 game:GetService("RunService").RenderStepped:Connect(function()
 if workspace:FindFirstChild("FarmPart") then
-Parts.CFrame = Players.LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0,2.8,0)
-Parts.Color = Color3.fromRGB(tick() % 5/5, 1, 1)
+Parts.CFrame = Players.LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0,3,0)
+Parts.Color = Color3.fromHSV(tick() % 5/5, 1, 1)
 end
 end)
 for _,v in ipairs(workspace:GetDescendants()) do
@@ -318,8 +318,8 @@ end)
 else
 stopCoinCollector()
 BigCoins:Disconnect()
-if Parts then
-Parts:Destroy()
+if workspace:FindFirstChild("FarmPart") then
+workspace:FindFirstChild("FarmPart"):Destroy()
 end
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Coin_Server" and v then
