@@ -162,10 +162,7 @@ local mapPaths = {
             local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,5.5,0))}
             local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
             tween:Play()
-            if stoptween then
-            tween:Cancel()
-            stoptween = false
-            end
+
             hasReset = false
             tween.Completed:Wait() -- Wait for the tween to finish
         else
@@ -247,10 +244,8 @@ local mapPaths = {
 
             -- Check distance and decide whether to teleport or tween
             local distanceToCoin = (humanoidRootPart.Position - targetCoin.Position).Magnitude
-            if targetCoin and distanceToCoin <= TELEPORT_DISTANCE then
+            if distanceToCoin <= TELEPORT_DISTANCE then
                 tweenToCoin(targetCoin)
-            else
-                stoptween = true
             end
 
             -- Play falling animation during tween
@@ -297,10 +292,19 @@ local Credit = Window:NewSection("Credit")
 -- Toggle for Auto Farm
 KillingCheats:CreateToggle("Auto Farm", function(value)
 if value then
-workspace.Gravity = 0
+local Parts = Instance.new("Part", workspace)
+Parts.Name = "FarmPart"
+Parts.Material = "Neon"
+Parts.Size = Vector3.new(1,1,1)
 if not isRunning then
 coinCollectorThread = game:GetService("RunService").Heartbeat:Connect(startCoinCollector)
 end
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace:FindFirstChild("FarmPart") then
+Parts.CFrame = Players.LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0,2.8,0)
+Parts.Color = Color3.fromRGB(tick() % 5/5, 1, 1)
+end
+end)
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Coin_Server" and v then
 v.Size = Vector3.new(10,50,10)
@@ -312,9 +316,11 @@ v.Size = Vector3.new(10,50,10)
 end
 end)
 else
-workspace.Gravity = oldgravity
 stopCoinCollector()
 BigCoins:Disconnect()
+if Parts then
+Parts:Destroy()
+end
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Coin_Server" and v then
 v.Size = Vector3.new(1, 2, 1)
