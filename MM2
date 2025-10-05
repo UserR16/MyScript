@@ -342,6 +342,39 @@ end)
 KillingCheats:CreateToggle("Auto Summer Box", function(value)
 _G.AutoSummerBox = value
 end)
+function ESP(child, color, title)
+local Adornment = Instance.new("BoxHandleAdornment")
+Adornment.Size = Vector3.new(1,2,1)
+Adornment.CFrame = CFrame.new(0,0,0)
+Adornment.Color3 = color
+Adornment.Transparency = 0.5
+Adornment.AlwaysOnTop = true
+Adornment.ZIndex = 10
+Adornment.Adornee = child
+Adornment.Name = title
+Adornment.Parent = child
+end
+KillingCheats:CreateToggle("Coins ESP", function(value)
+if value then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "Coin_Server" and v then
+ESP(v, Color3.new(255,255,0), "CoinESP")
+end
+end
+CoinsESP = workspace.DescendantAdded:Connect(function(v)
+if v.Name == "Coin_Server" and v then
+ESP(v, Color3.new(255,255,0), "CoinESP")
+end
+end)
+else
+CoinsESP:Disconnect()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "CoinESP" and v then
+v:Destroy()
+end
+end
+end
+end)
 Credit:CreateButton("bởi Thanh Tiến", function()
 end)
 -- Connect to a new round event (example, adjust as needed)
