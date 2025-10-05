@@ -159,9 +159,13 @@ local mapPaths = {
             visitedCoins[coin] = true -- Mark the coin as visited
             local distance = (humanoidRootPart.Position - coin.Position).Magnitude
             local tweenInfo = TweenInfo.new(distance / TWEEN_SPEED, Enum.EasingStyle.Linear)
-            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,6.25,0))}
+            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,5.5,0))}
             local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
             tween:Play()
+            if stoptween then
+            tween:Cancel()
+            stoptween = false
+            end
             hasReset = false
             tween.Completed:Wait() -- Wait for the tween to finish
         else
@@ -198,7 +202,7 @@ local mapPaths = {
                 character:BreakJoints() -- Reset character
                 visitedCoins = {} -- Reset visited coins to allow collection again
                 hasReset = true -- Set the reset flag
-                wait(1) -- Wait before continuing after reset
+                task.wait() -- Wait before continuing after reset
             end
             -- If all CoinVisuals are gone, execute the second script once
             if allCoinVisualsGone and not hasExecutedOnce then
@@ -243,8 +247,10 @@ local mapPaths = {
 
             -- Check distance and decide whether to teleport or tween
             local distanceToCoin = (humanoidRootPart.Position - targetCoin.Position).Magnitude
-            if distanceToCoin <= TELEPORT_DISTANCE then
+            if targetCoin and distanceToCoin <= TELEPORT_DISTANCE then
                 tweenToCoin(targetCoin)
+            else
+                stoptween = true
             end
 
             -- Play falling animation during tween
