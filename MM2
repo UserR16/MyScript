@@ -86,7 +86,16 @@ local mapPaths = {
 "TrainStation",
 "ChristmasInItaly",
 "SkiLodge",
-"IceCastle"
+"IceCastle",
+"Hotel",
+"Bank",
+"Barn",
+"Hospital",
+"Hospital2",
+"Mansion",
+"House",
+"Office2"
+"Office"
 }
 
     -- Keep track of visited coins to prevent revisiting
