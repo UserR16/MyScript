@@ -128,17 +128,7 @@ local mapPaths = {
         return nearestCoin
     end
 
-    -- Function to teleport to a coin
-    local function teleportToCoin(coin)
-        if coin then
-            workspace.Gravity = 0
-            humanoidRootPart.CFrame = CFrame.new(coin.Position - Vector3.new(0,10,0))
-            visitedCoins[coin] = true -- Mark the coin as visited
-        else
-            warn("No coin to teleport to!")
-            workspace.Gravity = oldgravity
-        end
-    end
+
 
     -- Function to tween to a coin
     local function tweenToCoin(coin)
@@ -146,12 +136,9 @@ local mapPaths = {
             visitedCoins[coin] = true -- Mark the coin as visited
             local distance = (humanoidRootPart.Position - coin.Position).Magnitude
             local tweenInfo = TweenInfo.new(distance / TWEEN_SPEED, Enum.EasingStyle.Linear)
-            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,10,0))}
+            local goal = {CFrame = CFrame.new(coin.Position - Vector3.new(0,6.25,0))}
             local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
             tween:Play()
-
-            -- When the tween starts, enable auto reset
-            hasReset = false -- Allow reset once the tween starts
 
             tween.Completed:Wait() -- Wait for the tween to finish
         else
@@ -228,9 +215,7 @@ local mapPaths = {
 
             -- Check distance and decide whether to teleport or tween
             local distanceToCoin = (humanoidRootPart.Position - targetCoin.Position).Magnitude
-            if distanceToCoin >= TELEPORT_DISTANCE then
-                teleportToCoin(targetCoin)
-            else
+            if distanceToCoin <= TELEPORT_DISTANCE then
                 tweenToCoin(targetCoin)
             end
 
@@ -303,6 +288,9 @@ v.Size = Vector3.new(1, 2, 1)
 end
 end
 end
+end)
+KillingCheats:CreateButton("Reset", function()
+Players.LocalPlayer.Character.Humanoid.Health = 0
 end)
 Credit:CreateButton("bởi Thanh Tiến", function()
 end)
