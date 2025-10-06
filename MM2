@@ -4,7 +4,7 @@ local notif1 = Alurt.CreateNode({
     Title = "Xin vui lòng",
     Content = "Bạn cần dùng tài khoản phụ hoặc mới để dùng.",
     Audio = "rbxassetid://17525305988",
-    Length = 8,
+    Length = 30,
     Image = "rbxassetid://17616650704", 
     BarColor = Color3.fromRGB(255, 75, 75)
 })
@@ -17,6 +17,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local GuiService = game:GetService("GuiService")
 local oldgravity = workspace.Gravity
+local oldspeed = Players.LocalPlayer.Character.Humanoid.WalkSpeed
+local oldjump = Players.LocalPlayer.Character.Humanoid.JumpPower
 -- Lock variable to prevent multiple script executions
 local isRunning = false
 local coinCollectorThread
@@ -289,7 +291,17 @@ local Window = Library:NewWindow("🌅 Summer - MM2")
 local KillingCheats = Window:NewSection("Farm")
 local Credit = Window:NewSection("Credit")
 -- Toggle for Auto Farm
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.offspeedjump and Players.LocalPlayer.Character then
+Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+Players.LocalPlayer.Character.Humanoid.JumpPower = 0
+else
+Players.LocalPlayer.Character.Humanoid.WalkSpeed = oldspeed
+Players.LocalPlayer.Character.Humanoid.JumpPower = oldjump
+end
+end)
 KillingCheats:CreateToggle("Auto Farm", function(value)
+_G.offspeedjump = value
 if value then
 workspace.Gravity = 0
 if not isRunning then
