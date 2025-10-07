@@ -343,16 +343,12 @@ KillingCheats:CreateToggle("Auto Summer Box", function(value)
 _G.AutoSummerBox = value
 end)
 function ESP(child, color, title)
-local Adornment = Instance.new("BoxHandleAdornment")
-Adornment.Size = Vector3.new(1.2,2,1.2)
-Adornment.CFrame = CFrame.new(0,0,0)
-Adornment.Color3 = color
-Adornment.Transparency = 0.5
-Adornment.AlwaysOnTop = true
-Adornment.ZIndex = 10
-Adornment.Adornee = child
-Adornment.Name = title
-Adornment.Parent = child
+local h = Instance.new("Highlight", child)
+h.FillColor = color
+h.OutlineColor = color
+h.FillTransparency = 1
+h.OutlineTransparency =  0
+h.Name = title
 end
 KillingCheats:CreateToggle("Coins ESP", function(value)
 if value then
