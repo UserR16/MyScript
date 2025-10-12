@@ -46,7 +46,7 @@ end
 end
 end
 --// Library \\
-local repo = 'https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/'
+local repo = 'https://raw.githubusercontent.com/deividcomsono/Obsidian/main/'
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
@@ -262,42 +262,6 @@ end)
 end})
 
 local Players = Tabs.Main:AddRightGroupbox('Player')
-
-Players:AddDropdown('SpeedBoostValue', {
-	Values = {'1', '2', '3', '4', '5'},
-	Default = 2,
-	Multi = false,
-	Text = 'Tpwalk',
-	Searchable = false,
-        Callback = function(v)
-_G.SpeedBoostValue = v or '2'
-end})
-
-Players:AddToggle("SpeedBoost",{
-Text = "Enabled tpwalk",
-Default = false,
-Callback = function(v)
-_G.SpeedBoost = v
-while _G.SpeedBoost do
-if _G.SpeedBoostValue == '1' then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.1
-game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif _G.SpeedBoostValue == '2' then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.2
-game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif _G.SpeedBoostValue == '3' then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.3
-game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif _G.SpeedBoostValue == '4' then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.4
-game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif _G.SpeedBoostValue == '5' then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.5
-game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-end
-wait()
-end
-end})
 Players:AddDivider()
 StaminaScript = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
 game:GetService("RunService").RenderStepped:Connect(function()
@@ -467,6 +431,15 @@ if game:GetService("ReplicatedStorage").Modules.StatusEffects:FindFirstChild(nam
 game:GetService("ReplicatedStorage").Modules.StatusEffects:FindFirstChild(name):Destroy()
 end
 end
+Players:AddDivider()
+Players:AddToggle("NoStunned",{
+Text = "No Stunned",
+Default = false,
+Callback = function(v)
+if v then
+disable_effect("Stunned")
+end
+end})
 Players:AddToggle("NoPoisoned",{
 Text = "No Poisoned",
 Default = false,
@@ -564,7 +537,9 @@ game:GetService("ReplicatedStorage").Modules.StatusEffects.KillerExclusive.Glitc
 end
 end})
 local Camera = Tabs.Main:AddLeftGroupbox('Camera Offical')
+if game.Players.LocalPlayer.Character then
 local oldfov = game.Players.LocalPlayer.Character.FOVMultipliers.FOVSetting.Value
+end
 Camera:AddToggle("MFOV",{
 Text = "Max Field Of View",
 Default = false,
@@ -706,13 +681,13 @@ Default = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") and v then
 Text(v, v.Name, Color3.new(0,0,1), 14, "Generator_ESP")
 Highlight(v, Color3.new(0,0,1), "Generator_ESP")
 end
 end
-GeneratorESP = workspace.Map.Ingame.Map.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") and v then
 Text(v, v.Name, Color3.new(0,0,1), 14, "Generator_ESP")
 Highlight(v, Color3.new(0,0,1), "Generator_ESP")
 end
