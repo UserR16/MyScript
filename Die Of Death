@@ -54,7 +54,6 @@ Main = Tabs.Main:Tab({ Title = "Main", Icon = "layout-grid"}),
 Players = Tabs.Main:Tab({ Title = "Players", Icon = "user"}),
 Camera = Tabs.Main:Tab({ Title = "Camera", Icon = "camera"}),
 ESP = Tabs.Main:Tab({ Title = "ESP", Icon = "map"}),
-Config = Tabs.Main:Tab({ Title = "Setting", Icon = "settings"}),
 }
 
 local function Notify(name, time)
@@ -356,47 +355,7 @@ Tabs.Main:Toggle({
     Callback = function(v) 
 _G.ThroughBuildKillerWalls = v
 end})
-Tabs.Main:Section({Title = "Hitbox", Icon = "compass"})
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.HitboxPlayers then
-for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("Hurtbox") then
-otherPlayer.Character.Hurtbox.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
-otherPlayer.Character.Hurtbox.CanCollide = false
-if _G.ShowHitbox then
-otherPlayer.Character.Hurtbox.Transparency = 0.85
-else
-otherPlayer.Character.Hurtbox.Transparency = 1
-end
-end
-end
-else
-for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-if otherPlayer ~= game.Players.LocalPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("Hurtbox") then
-otherPlayer.Character.Hurtbox.Size = Vector3.new(3,3,3)
-otherPlayer.Character.Hurtbox.Transparency = 1
-end
-end
-end
-end)
-Tabs.Main:Slider({
-    Title = "Hitbox Size",
-    Value = { Min = 10, Max = 30, Default = 10 },
-    Callback = function(v)
-_G.HitboxSize = v or 10
-end})
-Tabs.Main:Toggle({
-    Title = "Hitbox Players",
-    Value = false,
-    Callback = function(v) 
-_G.HitboxPlayers = v
-end})
-Tabs.Main:Toggle({
-    Title = "Show Hitbox",
-    Value = false,
-    Callback = function(v) 
-_G.ShowHitbox = v
-end})
+
 Tabs.Players:Section({Title = "Players", Icon = "user"})
 
 local inf = 9e999999999
@@ -636,6 +595,11 @@ TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
 UIStroke.Thickness = 1
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+if v:FindFirstChild("Humanoid") then
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "\n/" .. v.Humanoid.MaxHealth
+end
+end)
 end
 end
 KillersESP = workspace.GameAssets.Teams.Killer.DescendantAdded:Connect(function(v)
@@ -663,6 +627,11 @@ TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
 UIStroke.Thickness = 1
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+if v:FindFirstChild("Humanoid") then
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "\n/" .. v.Humanoid.MaxHealth
+end
+end)
 end
 end)
 else
@@ -703,6 +672,11 @@ TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
 UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+if v:FindFirstChild("Humanoid") then
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "\n/" .. v.Humanoid.MaxHealth
+end
+end)
 end
 end
 SurvivorESP = workspace.GameAssets.Teams.Survivor.DescendantAdded:Connect(function(v)
@@ -730,6 +704,11 @@ TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
 UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+if v:FindFirstChild("Humanoid") then
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "\n/" .. v.Humanoid.MaxHealth
+end
+end)
 end
 end)
 else
