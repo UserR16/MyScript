@@ -20,7 +20,7 @@ local Window = Library:CreateWindow({
 
 local Tabs = {
   Main = Window:AddTab("Main", "boxes"),
-  Setting = Window:AddTab("Config", "settings"),
+  ["UI Settings"] = Window:AddTab("Config", "settings"),
 }
 
 local Interact = Tabs.Main:AddLeftGroupbox("Interact", "key")
@@ -350,6 +350,19 @@ end
 end
 end})
 local Camera = Tabs.Main:AddLeftGroupbox("Camera", "camera")
+game:GetService("RunService").RenderStepped:Connect(function()
+workspace.CurrentCamera.FieldOfView = _G.FieldOfView or 70
+end)
+Camera:AddSlider("FOV", {
+	Text = "Field Of View",
+	Default = 70,
+	Min = 70,
+	Max = 120,
+	Rounding = 1,
+	Compact = true,
+  Callback = function(v)
+_G.FieldOfView = v
+end})
 Camera:AddToggle("RemoveBloodVignette",{
     Text = "No Blood Vignette",
     Default = false,
@@ -409,3 +422,398 @@ game:GetService("Players").LocalPlayer.PlayerGui.MainGui.EvilScary.Visible = fal
 end
 end)
 end})
+local Lighting = Tabs.Main:AddRightGroupbox("Lighting", "Lightning")
+local Default = {
+Shadows = game.Lighting.GlobalShadows,
+Brightness = game.Lighting.Brightness,
+OutdoorAmbient = game.Lighting.OutdoorAmbient
+}
+Lighting:AddToggle("Fullbright",{
+    Text = "Fullbright",
+    Default = false,
+    Callback = function(v)
+_G.Fullbright = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.Fullbright then
+game.Lighting.GlobalShadows = false
+game.Lighting.Brightness = 0.3
+game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
+else
+game.Lighting.GlobalShadows = Default.Shadows
+game.Lighting.Brightness = Default.Brightness
+game.Lighting.OutdoorAmbient = Default.OutdoorAmbient
+end
+end)
+end})
+Lighting:AddToggle("NoFog",{
+    Text = "Disable Fog",
+    Default = false,
+    Callback = function(v)
+_G.NoFog = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
+if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
+game.Lighting.FogStart = _G.NoFog and 0 or game.Lighting:GetAttribute("FogStart")
+game.Lighting.FogEnd = _G.NoFog and math.huge or game.Lighting:GetAttribute("FogEnd")
+local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+if fog then
+if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+fog.Density = _G.NoFog and 0 or fog:GetAttribute("Density")
+end
+end)
+end})
+local ESP = Tabs.Main:AddLeftGroupbox("ESP", "compass")
+local function Highlight(target, color, name)
+task.wait(0.25)
+local Highlight = Instance.new('Highlight', target)
+Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+Highlight.FillColor = color
+Highlight.OutlineColor = color
+Highlight.FillTransparency = 1
+Highlight.OutlineTransparency =  0
+Highlight.Name = name
+end
+ESP:AddToggle("KillersESP",{
+    Text = "Killers ESP",
+    Default = false,
+    Callback = function(v)
+if v then
+for _,v in ipairs(workspace.GameAssets.Teams.Killer:GetChildren()) do
+if v:IsA("Model") and v and v.Parent.Name == "Killer" then
+Highlight(v, Color3.new(1), "YOUHUB : Killer ESP")
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Killer ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+if v:FindFirstChild("Humanoid") then
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "\n/" .. v.Humanoid.MaxHealth
+end
+end)
+end
+end
+KillersESP = workspace.GameAssets.Teams.Killer.DescendantAdded:Connect(function(v)
+wait(0.3)
+if v:IsA("Model") and v and v.Parent.Name == "Killer" then
+Highlight(v, Color3.new(1), "YOUHUB : Killer ESP")
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Killer ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+if v:FindFirstChild("Humanoid") then
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "\n/" .. v.Humanoid.MaxHealth
+end
+end)
+end
+end)
+else
+KillersESP:Disconnect()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "YOUHUB : Killer ESP" then
+v:Destroy()
+end
+end
+end
+end})
+ESP:AddToggle("SurvivorsESP",{
+    Text = "Survivors ESP",
+    Default = false,
+    Callback = function(v)
+if v then
+for _,v in ipairs(workspace.GameAssets.Teams.Survivor:GetChildren()) do
+if v:IsA("Model") and v and v.Parent.Name == "Survivor" then
+Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Survivor ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 0.5
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+if v:FindFirstChild("Humanoid") then
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "\n/" .. v.Humanoid.MaxHealth
+end
+end)
+end
+end
+SurvivorESP = workspace.GameAssets.Teams.Survivor.DescendantAdded:Connect(function(v)
+wait(0.3)
+if v:IsA("Model") and v and v.Parent.Name == "Survivor" then
+Highlight(v, Color3.new(0,1), "YOUHUB : Survivor ESP")
+local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Survivor ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 0.5
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+if v:FindFirstChild("Humanoid") then
+TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "\n/" .. v.Humanoid.MaxHealth
+end
+end)
+end
+end)
+else
+SurvivorESP:Disconnect()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "YOUHUB : Survivor ESP" then
+v:Destroy()
+end
+end
+end
+end})
+ESP:AddToggle("OtherESP",{
+    Text = "Other ESP",
+    Default = false,
+    Callback = function(v)
+if v then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
+if v:IsA("Model") and v and v.Parent.Name == "Other" then
+Highlight(v, Color3.new(1,0,1), "YOUHUB : Other ESP")
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Other ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(1,0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 0.5
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+end
+end
+OtherESP = workspace.GameAssets.Teams.Other.DescendantAdded:Connect(function(v)
+wait(0.3)
+if v:IsA("Model") and v and v.Parent.Name == "Other" then
+Highlight(v, Color3.new(1,0,1), "YOUHUB : Other ESP")
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "YOUHUB : Other ESP"
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(1,0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 0.5
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+end
+end)
+else
+OtherESP:Disconnect()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "YOUHUB : Other ESP" then
+v:Destroy()
+end
+end
+end
+end})
+
+
+local MenuGroup = Tabs["UI Settings"]:AddLeftGroupbox("Menu", "wrench")
+-- Example of dynamically-updating watermark with common traits (fps and ping)
+local FrameTimer = tick()
+local FrameCounter = 0;
+local FPS = 60;
+local GetPing = (function() return math.floor(game:GetService('Stats').Network.ServerStatsItem['Data Ping']:GetValue()) end)
+local CanDoPing = pcall(function() return GetPing(); end)
+
+local WatermarkConnection = game:GetService('RunService').RenderStepped:Connect(function()
+	FrameCounter += 1;
+
+	if (tick() - FrameTimer) >= 1 then
+		FPS = FrameCounter;
+		FrameTimer = tick();
+		FrameCounter = 0;
+	end;
+
+	if CanDoPing then
+		Library:SetWatermark(('%d fps | %d ms'):format(
+			math.floor(FPS),
+			GetPing()
+		));
+	else
+		Library:SetWatermark(('%d fps'):format(
+			math.floor(FPS)
+		));
+	end
+end);
+MenuGroup:AddToggle("KeybindMenuOpen", {
+	Default = Library.KeybindFrame.Visible,
+	Text = "Open Keybind Menu",
+	Callback = function(value)
+		Library.KeybindFrame.Visible = value
+	end,
+})
+MenuGroup:AddToggle("ShowCustomCursor", {
+	Text = "Custom Cursor",
+	Default = true,
+	Callback = function(Value)
+		Library.ShowCustomCursor = Value
+	end,
+})
+MenuGroup:AddToggle("ShowFPSPing", {
+	Text = "Show Smoothness",
+	Default = false,
+	Callback = function(Value)
+		Library:SetWatermarkVisibility(Value)
+	end,
+})
+MenuGroup:AddDropdown("NotificationSide", {
+	Values = { "Left", "Right" },
+	Default = "Right",
+
+	Text = "Notification Side",
+
+	Callback = function(Value)
+		Library:SetNotifySide(Value)
+	end,
+})
+MenuGroup:AddDropdown("DPIDropdown", {
+	Values = { "50%", "75%", "100%", "125%", "150%", "175%", "200%" },
+	Default = "100%",
+
+	Text = "DPI Scale",
+
+	Callback = function(Value)
+		Value = Value:gsub("%%", "")
+		local DPI = tonumber(Value)
+
+		Library:SetDPIScale(DPI)
+	end,
+})
+MenuGroup:AddDivider()
+MenuGroup:AddLabel("Menu bind")
+	:AddKeyPicker("MenuKeybind", { Default = "RightShift", NoUI = true, Text = "Menu keybind" })
+
+MenuGroup:AddButton("Unload", function()
+	Library:Unload()
+end)
+
+Library.ToggleKeybind = Options.MenuKeybind -- Allows you to have a custom keybind for the menu
+
+-- Addons:
+-- SaveManager (Allows you to have a configuration system)
+-- ThemeManager (Allows you to have a menu theme system)
+
+-- Hand the library over to our managers
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+-- Ignore keys that are used by ThemeManager.
+-- (we dont want configs to save themes, do we?)
+SaveManager:IgnoreThemeSettings()
+
+-- Adds our MenuKeybind to the ignore list
+-- (do you want each config to have a different menu key? probably not.)
+SaveManager:SetIgnoreIndexes({ "MenuKeybind" })
+
+-- use case for doing it this way:
+-- a script hub could have themes in a global folder
+-- and game configs in a separate folder per game
+ThemeManager:SetFolder("MyScriptHub")
+SaveManager:SetFolder("MyScriptHub/specific-game")
+SaveManager:SetSubFolder("specific-place") -- if the game has multiple places inside of it (for example: DOORS)
+-- you can use this to save configs for those places separately
+-- The path in this script would be: MyScriptHub/specific-game/settings/specific-place
+-- [ This is optional ]
+
+-- Builds our config menu on the right side of our tab
+SaveManager:BuildConfigSection(Tabs["UI Settings"])
+
+-- Builds our theme menu (with plenty of built in themes) on the left side
+-- NOTE: you can also call ThemeManager:ApplyToGroupbox to add it to a specific groupbox
+ThemeManager:ApplyToTab(Tabs["UI Settings"])
+
+-- You can use the SaveManager:LoadAutoloadConfig() to load a config
+-- which has been marked to be one that auto loads!
+SaveManager:LoadAutoloadConfig()
+
+
+
