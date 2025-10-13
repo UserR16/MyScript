@@ -1,0 +1,351 @@
+local repo = 'https://raw.githubusercontent.com/deividcomsono/Obsidian/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local Options = Library.Options
+local Toggles = Library.Toggles
+
+Library.ShowToggleFrameInKeybinds = true 
+Library.ShowCustomCursor = true
+Library.NotifySide = "Right"
+Library.Scheme.AccentColor = Color3.fromRGB(0, 255, 150)
+
+local Window = Library:CreateWindow({
+	Title = "Arimium Hub",
+  Font = Enum.Font.SourceSansBold,
+	NotifySide = "Right",
+  Footer = "DIE OF DEATH | v1.2"
+})
+
+local Tabs = {
+  Main = Window:AddTab("Main", "boxes"),
+  Setting = Window:AddTab("Config", "settings"),
+}
+
+local Interact = Tabs.Main:AddLeftGroupbox("Interact", "key")
+
+Interact:AddToggle("InstanceInteract",{
+    Text = "Instance Interact",
+    Default = false,
+    Callback = function(v)
+if v then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") and v then
+v.HoldDuration = 0
+end
+end
+InstanceInteract = workspace.DescendantAdded:Connect(function(v)
+if v:IsA("ProximityPrompt") and v then
+v.HoldDuration = 0
+end
+end)
+else
+InstanceInteract:Disconnect()
+end
+end})
+Interact:AddDivider()
+Interact:AddToggle("AutoBadwareComputer",{
+    Text = "Auto Badware Computer",
+    Default = false,
+    Callback = function(v)
+_G.AutoBadwareComputer = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoBadwareomputer and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
+if v.Name == "Computer" and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
+fireproximityprompt(v.Primary.Prompt)
+end
+end
+end
+end)
+end})
+
+local Anti = Tabs.Main:AddRightGroupbox("Anti", "hammer")
+Anti:AddToggle("AntiEvilScary",{
+    Text = "Anti Evil Scary",
+    Default = false,
+    Callback = function(v)
+_G.AntiEvilScary = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary") then
+workspace.GameAssets:FindFirstChild("Debris"):FindFirstChild("Cleanable"):FindFirstChild("EvilScary").CanTouch = not _G.AntiEvilScary
+end
+end)
+end})
+local Ability = Tabs.Main:AddLeftGroupbox("Ability", "layout-grid")
+local function AAB(Ability)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = Ability .. "_Button"
+ScreenGui.ResetOnSpawn = true
+ScreenGui.Parent = game.CoreGui
+
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(0, 120, 0, 60)
+Button.Position = UDim2.new(0.85, 0, 0, 10)
+Button.BackgroundColor3 = Library.Scheme.MainColor
+Button.BackgroundTransparency = 0
+Button.TextColor3 = Library.Scheme.FontColor
+Button.Font = Enum.Font.SourceSansBold
+Button.TextSize = 16
+Button.Text = Ability
+Button.Parent = ScreenGui
+
+local Shadow = Instance.new("Frame")
+Shadow.Size = UDim2.new(0, 120, 0, 60)
+Shadow.Position = UDim2.new(0, 0, 0, 0)
+Shadow.BackgroundTransparency = 1
+Shadow.Parent = Button
+
+local UIStrokeShadow = Instance.new("UIStroke")
+UIStrokeShadow.Color = Library.Scheme.AccentColor
+UIStrokeShadow.Thickness = 3
+UIStrokeShadow.Transparency = 0
+UIStrokeShadow.Parent = Shadow
+
+game:GetService("RunService").RenderStepped:Connect(function()
+UIStrokeShadow.Color = Library.Scheme.AccentColor
+Button.BackgroundColor3 = Library.Scheme.MainColor
+Button.TextColor3 = Library.Scheme.FontColor
+end)
+
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    Button.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+ 
+Button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = Button.Position
+ 
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+ 
+Button.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+ 
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        update(input)
+    end
+end)
+
+Button.MouseButton1Click:Connect(function()
+if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+local args = {
+	Ability
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer(unpack(args))
+end
+end)
+end
+Ability:AddButton("Adrenaline", function()
+AAB("Adrenaline")
+end)
+Ability:AddButton("Banana", function()
+AAB("Banana")
+end)
+Ability:AddButton("Bonus Pad", function()
+AAB("BonusPad")
+end)
+Ability:AddButton("Block", function()
+AAB("Block")
+end)
+Ability:AddButton("Dash", function()
+AAB("Dash")
+end)
+Ability:AddButton("Cloak", function()
+AAB("Cloak")
+end)
+Ability:AddButton("Hotdog", function()
+AAB("Hotdog")
+end)
+Ability:AddButton("Punch", function()
+AAB("Punch")
+end)
+Ability:AddButton("Revolver", function()
+AAB("Revolver")
+end)
+Ability:AddButton("Taunt", function()
+AAB("Taunt")
+end)
+Ability:AddDivider()
+local Ability = {
+"Adrenaline",
+"Banana",
+"BonusPad",
+"Block",
+"Dash",
+"Cloak",
+"Caretaker",
+"Hotdog",
+"Punch",
+"Revolver",
+"Taunt"
+}
+game:GetService("RunService").Stepped:Connect(function()
+if _G.AutoSetAbility and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+local args = {
+	{
+		_G.SetAbility1 or "Adrenaline",
+		_G.SetAbility2 or "Banana"
+	}
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteEvents"):WaitForChild("AbilitySelection"):FireServer(unpack(args))
+end
+end)
+Ability:AddDropdown("Ability1", {
+	Values = Ability,
+	Default = 0,
+	Multi = false,
+  Text = "Ability 1",
+  Callback = function(v)
+_G.SetAbility1 = v
+end})
+Ability:AddDropdown("Ability1", {
+	Values = Ability,
+	Default = 0,
+	Multi = false,
+  Text = "Ability 1",
+  Callback = function(v)
+_G.SetAbility2 = v
+end})
+Ability:AddToggle("AutoSetAbility",{
+    Text = "Auto Set Ability",
+    Default = false,
+    Callback = function(v)
+_G.AutoSetAbility = v
+end})
+local Through = Tabs.Main:AddRightGroupbox("Through", "plus")
+Through:AddToggle("ThroughKillerOnlyWalls",{
+    Text = "Through Killer Only Walls",
+    Default = false,
+    Callback = function(v)
+_G.ThroughRedKillerWalls = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly") then
+for _, v in ipairs(workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly"):GetChildren()) do
+if v.Parent.Name == "KillerOnly" and workspace.GameAssets:FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly") then
+v.CanCollide = not _G.ThroughRedKillerWalls
+end
+end
+end
+end)
+end})
+Through:AddToggle("ThroughArtfulWalls",{
+    Text = "Through Artful Walls",
+    Default = false,
+    Callback = function(v)
+_G.ThroughArtfulWalls = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Other:FindFirstChild("Wall") then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
+if v.Parent.Name == "Other" and v.Name == "Wall" and workspace.GameAssets.Teams.Other:FindFirstChild("Wall") then
+v.HumanoidRootPart.CanCollide = not _G.ThroughArtfulWalls
+end
+end
+end
+end)
+end})
+local Players = Tabs.Main:AddLeftGroupbox("Players", "user")
+game:GetService("RunService").Stepped:Connect(function()
+if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+if _G.InfStamina then
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+end
+if _G.NoStun and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):GetAttribute("WalkSpeedModifier") < 0 then
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeedModifier", 0)
+end
+end
+if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
+if _G.InfStamina then
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+end
+if _G.NoStun and workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):GetAttribute("WalkSpeedModifier") < 0 then
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeedModifier", 0)
+end
+end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpPower or 0
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
+workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (26 + _G.SprintSpeedBoost))
+end
+if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpPower or 0
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
+workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (28 + _G.SprintSpeedBoost))
+end
+if workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name) then
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpPower or 0
+workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeed", (12 + _G.WalkSpeedBoost))
+workspace.GameAssets.Teams.Ghost:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("SprintSpeed", (30 + _G.SprintSpeedBoost))
+end
+end)
+Players:AddSlider("WalkSpeed", {
+	Text = "Walk Speed Boost",
+	Default = 0,
+	Min = 0,
+	Max = 10,
+	Rounding = 1,
+	Compact = true,
+  Callback = function(v)
+_G.WalkSpeedBoost = v
+end})
+Players:AddSlider("SprintSpeed", {
+	Text = "Sprint Speed Boost",
+	Default = 0,
+	Min = 0,
+	Max = 10,
+	Rounding = 1,
+	Compact = true,
+  Callback = function(v)
+_G.SprintSpeedBoost = v
+end})
+Players:AddToggle("InfStamina",{
+    Text = "Inf Stamina",
+    Default = false,
+    Callback = function(v)
+_G.InfStamina = v
+end})
+Players:AddToggle("NoStunned",{
+    Text = "No Stunned",
+    Default = false,
+    Callback = function(v)
+_G.NoStun = v
+end})
+Players:AddToggle("Noclip",{
+    Text = "Noclip",
+    Default = false,
+    Callback = function(v)
+if v then
+Noclip = game:GetService("RunService").RenderStepped:Connect(function()
+if game.Players.LocalPlayer and game.Players.LocalPlayer.Character then
+for _, part in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+if part:IsA("BasePart") then
+part.CanCollide = false
+end
+end
+end
+end)
+else
+if Noclip then
+Noclip:Disconnect()
+Noclip = nil
+end
+end
+end})
