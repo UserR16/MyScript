@@ -1,0 +1,13 @@
+local sea = workspace.World.Seas
+local lighting = game.Lighting
+game:GetService("RunService").Stepped:Connect(function()
+lighting.GlobalShadow = false
+lighting.OutdoorAmbient = Color3.fromRGB(150,150,150)
+lighting.Brightness = 1
+sea.Water.Transparency = 1
+sea.Water2.Transparency = 1
+sea.Water3.Transparency = 1
+if sea.Water2:FindFirstChild("Mesh") then
+sea.Water2["Mesh"]:Destroy()
+end
+end)
