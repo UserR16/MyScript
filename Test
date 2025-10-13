@@ -349,3 +349,63 @@ Noclip = nil
 end
 end
 end})
+local Camera = Tabs.Main:AddLeftGroupbox("Camera", "camera")
+Camera:AddToggle("RemoveBloodVignette",{
+    Text = "No Blood Vignette",
+    Default = false,
+    Callback = function(v)
+_G.RemoveBloodVignette = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveBloodVignette then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.BloodVignette.Visible = false
+end
+end)
+end})
+Camera:AddToggle("RemoveHurtOverlay",{
+    Text = "No Hurt Overlay",
+    Default = false,
+    Callback = function(v)
+_G.RemoveHurtOverlayVignette = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveHurtOverlayVignette then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.HurtOverlay.Visible = false
+end
+end)
+end})
+Camera:AddToggle("RemoveTauntVignette",{
+    Text = "No Taunt Vignette",
+    Default = false,
+    Callback = function(v)
+_G.RemoveTauntVignette = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveTauntVignette and game:GetService("Players").LocalPlayer.PlayerGui.MainGui.RoundUI:FindFirstChild("Taunt") then
+for _,v in ipairs(game:GetService("Players").LocalPlayer.PlayerGui.MainGui.RoundUI:GetChildren()) do
+if v.Name == "Taunt" and v then
+v.Visible = false
+end
+end
+end
+end)
+end})
+Camera:AddToggle("RemoveParanoyVignette",{
+    Text = "No Paranoy Vignette",
+    Default = false,
+    Callback = function(v)
+_G.RemoveParanoyVignette = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveParanoyVignette then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Paranoy.Visible = false
+end
+end)
+end})
+Camera:AddToggle("RemoveEvilScaryVignette",{
+    Text = "No Evil Scary Vignette",
+    Default = false,
+    Callback = function(v)
+_G.RemoveEvilScaryJumpscare = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.RemoveEvilScaryJumpscare then
+game:GetService("Players").LocalPlayer.PlayerGui.MainGui.EvilScary.Visible = false
+end
+end)
+end})
