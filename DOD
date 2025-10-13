@@ -183,7 +183,7 @@ Ability:AddButton("Taunt", function()
 AAB("Taunt")
 end)
 Ability:AddDivider()
-local Ability = {
+local Abilities = {
 "Adrenaline",
 "Banana",
 "BonusPad",
@@ -208,18 +208,18 @@ game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Remote
 end
 end)
 Ability:AddDropdown("Ability1", {
-	Values = Ability,
-	Default = 0,
+	Values = Abilities,
+	Default = "Adrenaline",
 	Multi = false,
   Text = "Ability 1",
   Callback = function(v)
 _G.SetAbility1 = v
 end})
 Ability:AddDropdown("Ability1", {
-	Values = Ability,
-	Default = 0,
+	Values = Abilities,
+	Default = "Banana",
 	Multi = false,
-  Text = "Ability 1",
+  Text = "Ability 2",
   Callback = function(v)
 _G.SetAbility2 = v
 end})
@@ -229,6 +229,15 @@ Ability:AddToggle("AutoSetAbility",{
     Callback = function(v)
 _G.AutoSetAbility = v
 end})
+Ability:AddButton("Set Ability", function()
+local args = {
+	{
+		_G.SetAbility1 or "Adrenaline",
+		_G.SetAbility2 or "Banana"
+	}
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteEvents"):WaitForChild("AbilitySelection"):FireServer(unpack(args))
+end)
 local Through = Tabs.Main:AddRightGroupbox("Through", "plus")
 Through:AddToggle("ThroughKillerOnlyWalls",{
     Text = "Through Killer Only Walls",
