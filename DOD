@@ -566,7 +566,7 @@ game:GetService("Players").LocalPlayer.PlayerGui.MainGui.EvilScary.Visible = fal
 end
 end)
 end})
-local Lighting = Tabs.Main:AddLeftGroupbox("Lighting", "Lightning")
+local Lighting = Tabs.Main:AddLeftGroupbox("Lighting", "light-bulb")
 local Default = {
 Shadows = game.Lighting.GlobalShadows,
 Brightness = game.Lighting.Brightness,
