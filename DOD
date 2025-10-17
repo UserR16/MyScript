@@ -270,10 +270,12 @@ end
 end)
 end})
 local Players = Tabs.Main:AddLeftGroupbox("Players", "user")
+local StaminaScript = require(game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Client.Modules.Movement)
 game:GetService("RunService").Stepped:Connect(function()
 if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
 if _G.InfStamina then
-workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+StaminaScript.Stamina = 100
+StaminaScript.MaxStamina = 100
 end
 if _G.NoStun and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):GetAttribute("WalkSpeedModifier") < 0 then
 workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeedModifier", 0)
@@ -281,7 +283,8 @@ end
 end
 if workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
 if _G.InfStamina then
-workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("MaxStamina", inf)
+StaminaScript.Stamina = 110
+StaminaScript.MaxStamina = 110
 end
 if _G.NoStun and workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):GetAttribute("WalkSpeedModifier") < 0 then
 workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name):SetAttribute("WalkSpeedModifier", 0)
