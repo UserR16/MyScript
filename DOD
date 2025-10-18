@@ -276,8 +276,8 @@ end)
 end})
 local Players = Tabs.Main:AddLeftGroupbox("Players", "user")
 
-local Players = game.Players
-local Character = Players.LocalPlayer.Character
+local Player = game.Players
+local Character = Player.LocalPlayer.Character
 local HumanoidRootPart = Character.HumanoidRootPart
 local Humanoid = Character.Humanoid
 local Char = Character
@@ -368,6 +368,9 @@ local imageButton = Instance.new("ImageButton", ff_button)
 		imageButton.AnchorPoint = Vector2.new(0.5, 0.5)
 		imageButton.Position = UDim2.new(0.5, 0, 0.5, 0)
 		imageButton.Image = "rbxthumb://type=Asset&id=2714338264&w=150&h=150"
+game:GetService("RunService").RenderStepped:Connect(function()
+imageButton.ImageColor3 = Library.Scheme.AccentColor
+end)
 ff_connection = imageButton.Activated:Connect(Flip)
 sausageHolder.Size = UDim2.new(0, originalSize + 48, 0, sausageHolder.Size.Y.Offset)
 task.wait()
