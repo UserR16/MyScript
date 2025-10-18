@@ -356,7 +356,7 @@ function Flip()
 	Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, false)
 	Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, false)
 	Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
-	local duration = 0.45
+	local duration = 0.2
 	local steps = 120
 	local startCFrame = hrp.CFrame
 	local forwardVector = startCFrame.LookVector
@@ -515,6 +515,27 @@ Players:AddToggle("NoStunned",{
     Default = false,
     Callback = function(v)
 _G.NoStun = v
+end})
+Players:AddToggle("Extend",{
+    Text = "Extend Hitbox",
+    Default = false,
+    Callback = function(v)
+_G.ExtendHitbox = v
+if ExtendHitbox == true then
+local distance = 10
+repeat game:GetService("RunService").Heartbeat:Wait()
+local vel, movel = nil, 0.1
+while not (game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character.Parent and game:GetService("Players").LocalPlayer.Character.HumanoidRootPart and game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Parent) do
+game:GetService("RunService").Heartbeat:Wait()
+end
+vel = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity
+game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = vel * distance + (game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector * distance)
+game:GetService("RunService").RenderStepped:Wait()
+if (game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character.Parent and game:GetService("Players").LocalPlayer.Character.HumanoidRootPart and game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Parent) then
+game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = vel
+end
+until _G.ExtendHitbox == false
+end
 end})
 Players:AddToggle("FlipUi",{
     Text = "Flip Button",
