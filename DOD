@@ -59,13 +59,12 @@ end
 end
 end
 end)
-end}):AddKeyPicker("KeyPicker",{
-    Default = "B",
-    SyncToggleState = false,
-	Mode = "Toggle",
-	Text = "Auto Badware Computer",
+end}):AddKeyPicker("AutoBadwareComputerKeybind", {
+   Default = "B",
+   Text = "Auto Badware Computer",
+   Mode = Library.IsMobile and "Toggle" or "Hold",
+   SyncToggleState = Library.IsMobile
 })
-
 local Anti = Tabs.Main:AddRightGroupbox("Anti", "hammer")
 Anti:AddToggle("AntiEvilScary",{
     Text = "Anti Evil Scary",
@@ -79,25 +78,22 @@ end
 end)
 end})
 local Ability = Tabs.Main:AddLeftGroupbox("Ability", "layout-grid")
-local function AAB(Ability)
+local function AAB(Ability, Image)
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = Ability .. "_Button"
 ScreenGui.ResetOnSpawn = true
 ScreenGui.Parent = game.CoreGui
 
-local Button = Instance.new("TextButton")
-Button.Size = UDim2.new(0, 120, 0, 60)
+local Button = Instance.new("ImageButton")
+Button.Size = UDim2.new(0, 70, 0, 70)
 Button.Position = UDim2.new(0.85, 0, 0, 10)
 Button.BackgroundColor3 = Library.Scheme.MainColor
 Button.BackgroundTransparency = 0
-Button.TextColor3 = Library.Scheme.FontColor
-Button.Font = Enum.Font.SourceSansBold
-Button.TextSize = 16
-Button.Text = Ability
+Button.Image = Image
 Button.Parent = ScreenGui
 
 local Shadow = Instance.new("Frame")
-Shadow.Size = UDim2.new(0, 120, 0, 60)
+Shadow.Size = UDim2.new(0, 70, 0, 70)
 Shadow.Position = UDim2.new(0, 0, 0, 0)
 Shadow.BackgroundTransparency = 1
 Shadow.Parent = Button
@@ -111,7 +107,6 @@ UIStrokeShadow.Parent = Shadow
 game:GetService("RunService").RenderStepped:Connect(function()
 UIStrokeShadow.Color = Library.Scheme.AccentColor
 Button.BackgroundColor3 = Library.Scheme.MainColor
-Button.TextColor3 = Library.Scheme.FontColor
 end)
 
 local dragging = false
@@ -157,35 +152,35 @@ game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Remote
 end
 end)
 end
-Ability:AddButton("Adrenaline", function()
-AAB("Adrenaline")
+Ability:AddButton("Adrenaline [35s]", function()
+AAB("Adrenaline", "rbxassetid://116399911657417")
 end)
-Ability:AddButton("Banana", function()
-AAB("Banana")
+Ability:AddButton("Banana [20s]", function()
+AAB("Banana", "rbxassetid://96202444819611)
 end)
-Ability:AddButton("Bonus Pad", function()
-AAB("BonusPad")
+Ability:AddButton("Bonus Pad [70s]", function()
+AAB("BonusPad", "rbxassetid://86775625332300")
 end)
-Ability:AddButton("Block", function()
-AAB("Block")
+Ability:AddButton("Block [40s]", function()
+AAB("Block", "rbxassetid://120929805037270")
 end)
-Ability:AddButton("Dash", function()
-AAB("Dash")
+Ability:AddButton("Dash [20s]", function()
+AAB("Dash", "rbxassetid://73777691791017")
 end)
-Ability:AddButton("Cloak", function()
-AAB("Cloak")
+Ability:AddButton("Cloak [50s]", function()
+AAB("Cloak", "rbxassetid://90476367580326")
 end)
-Ability:AddButton("Hotdog", function()
-AAB("Hotdog")
+Ability:AddButton("Hotdog [15s]", function()
+AAB("Hotdog", "rbxassetid://134322360499381")
 end)
-Ability:AddButton("Punch", function()
-AAB("Punch")
+Ability:AddButton("Punch [40s]", function()
+AAB("Punch", "rbxassetid://97428323453639")
 end)
-Ability:AddButton("Revolver", function()
-AAB("Revolver")
+Ability:AddButton("Revolver [15s]", function()
+AAB("Revolver", "rbxassetid://107624957891469")
 end)
-Ability:AddButton("Taunt", function()
-AAB("Taunt")
+Ability:AddButton("Taunt [25s]", function()
+AAB("Taunt", "rbxassetid://85436299122876")
 end)
 Ability:AddDivider()
 local Abilities = {
@@ -282,6 +277,10 @@ local HumanoidRootPart = Character.HumanoidRootPart
 local Humanoid = Character.Humanoid
 local Char = Character
 
+local ff_connection = nil
+local ff_enabled = false
+local ff_cd = false
+
 function Flip()
 	if ff_cd then
 		return
@@ -350,7 +349,9 @@ function Flip()
 end
 local sausageHolder = game.CoreGui.TopBarApp.TopBarApp.UnibarLeftFrame.UnibarMenu["2"]
 local originalSize = sausageHolder.Size.X.Offset
-
+local ff_connection = nil
+local ff_enabled = false
+local ff_cd = false
 function SetFrontFlip(bool)
 ff_enabled = bool
 if ff_enabled == true then
@@ -489,11 +490,11 @@ Noclip:Disconnect()
 Noclip = nil
 end
 end
-end}):AddKeyPicker("KeyPicker",{
-    Default = "N",
-    SyncToggleState = false,
-	Mode = "Toggle",
-	Text = "Noclip",
+end}):AddKeyPicker("NoclipKeybind", {
+   Default = "N",
+   Text = "Noclip",
+   Mode = Library.IsMobile and "Toggle" or "Hold",
+   SyncToggleState = Library.IsMobile
 })
 local Camera = Tabs.Main:AddRightGroupbox("Camera", "camera")
 game:GetService("RunService").RenderStepped:Connect(function()
