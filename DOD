@@ -422,7 +422,9 @@ local imageButton = Instance.new("ImageButton", ff_button)
 game:GetService("RunService").RenderStepped:Connect(function()
 imageButton.ImageColor3 = Library.Scheme.AccentColor
 end)
-ff_connection = imageButton.Activated:Connect(Flip)
+ff_connection = imageButton.MouseButton1Click:Connect(function()
+Flip()
+end)
 sausageHolder.Size = UDim2.new(0, originalSize + 48, 0, sausageHolder.Size.Y.Offset)
 task.wait()
 ff_button.Position = UDim2.new(0, sausageHolder.Size.X.Offset - 48, 0, 0)
@@ -913,8 +915,13 @@ end
 end
 end
 end})
-
-
+ESP:AddDivider()
+ESP:AddToggle("ShowText",{
+    Text = "Show Text",
+    Default = false,
+    Callback = function(v)
+_G.ShowText = v
+end})
 local MenuGroup = Tabs["UI Settings"]:AddLeftGroupbox("Menu", "wrench")
 -- Example of dynamically-updating watermark with common traits (fps and ping)
 local FrameTimer = tick()
