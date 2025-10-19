@@ -642,7 +642,7 @@ game:GetService("Players").LocalPlayer.PlayerGui.MainGui.EvilScary.Visible = fal
 end
 end)
 end})
-local Lighting = Tabs.Main:AddLeftGroupbox("Lighting", "light-bulb")
+local Lighting = Tabs.Main:AddLeftGroupbox("Lighting", "lightbulb")
 local Default = {
 Shadows = game.Lighting.GlobalShadows,
 Brightness = game.Lighting.Brightness,
@@ -726,7 +726,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 else
-TextLabel.Text = "🔴"
+TextLabel.Text = "•"
 end
 end)
 end
@@ -760,7 +760,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 else
-TextLabel.Text = "🔴"
+TextLabel.Text = "•"
 end
 end)
 end
@@ -807,7 +807,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 else
-TextLabel.Text = "🟢"
+TextLabel.Text = "•"
 end
 end)
 end
@@ -841,7 +841,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 else
-TextLabel.Text = "🟢"
+TextLabel.Text = "•"
 end
 end)
 end
@@ -888,7 +888,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name
 else
-TextLabel.Text = "🟣"
+TextLabel.Text = "•"
 end
 end)
 end
@@ -922,7 +922,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name
 else
-TextLabel.Text = "🟣"
+TextLabel.Text = "•"
 end
 end)
 end
