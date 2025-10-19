@@ -332,9 +332,6 @@ local ff_enabled = false
 local ff_cd = false
 
 function Flip()
-	if ff_cd then
-		return
-	end
 	ff_cd = true
 	local character = Character
 	local hrp = HumanoidRootPart
@@ -356,7 +353,7 @@ function Flip()
 	Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, false)
 	Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, false)
 	Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
-	local duration = 0.2
+	local duration = 0.5
 	local steps = 120
 	local startCFrame = hrp.CFrame
 	local forwardVector = startCFrame.LookVector
