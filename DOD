@@ -108,8 +108,8 @@ UIStrokeShadow.Transparency = 0
 UIStrokeShadow.Parent = Shadow
 
 game:GetService("RunService").RenderStepped:Connect(function()
-UIStrokeShadow.Color = Library.Scheme.AccentColor
-Button.BackgroundColor3 = Library.Scheme.MainColor
+UIStrokeShadow.Color = Library.Scheme.MainColor
+Button.BackgroundColor3 = Library.Scheme.BackgroundColor
 end)
 
 local dragging = false
