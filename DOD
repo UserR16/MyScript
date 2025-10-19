@@ -87,7 +87,7 @@ ScreenGui.Parent = game.CoreGui
 local Button = Instance.new("ImageButton")
 Button.Size = UDim2.new(0, 70, 0, 70)
 Button.Position = UDim2.new(0.85, 0, 0, 10)
-Button.BackgroundColor3 = Library.Scheme.MainColor
+Button.BackgroundColor3 = Library.Scheme.BackgroundColor
 Button.BackgroundTransparency = 0
 Button.Image = Image
 Button.Parent = ScreenGui
@@ -98,8 +98,11 @@ Shadow.Position = UDim2.new(0, 0, 0, 0)
 Shadow.BackgroundTransparency = 1
 Shadow.Parent = Button
 
+local uc = Instance.new("UICorner", Shadow)
+local uc2 = Instance.new("UICorner", Button)
+
 local UIStrokeShadow = Instance.new("UIStroke")
-UIStrokeShadow.Color = Library.Scheme.AccentColor
+UIStrokeShadow.Color = Library.Scheme.MainColor
 UIStrokeShadow.Thickness = 3
 UIStrokeShadow.Transparency = 0
 UIStrokeShadow.Parent = Shadow
