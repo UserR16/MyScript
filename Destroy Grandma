@@ -1,37 +1,88 @@
-game:GetService("RunService").RenderStepped:Connect(function()
+function AddESP(Child, Name, Color, Size, Title)
+if Child then
+local Billboard = Instance.new("BillboardGui", Child)
+local Text = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", Text)
+local Highlight = Instance.new('Highlight', Child)
+        Billboard.AlwaysOnTop = true
+        Billboard.Size = UDim2.new(0,400,0,100)
+        Billboard.Adornee = Child
+        Billboard.Name = Title
+        Billboard.Active = true
+        Text.AnchorPoint = Vector2.new(0.5,0.5)
+        Text.BackgroundTransparency = 1
+        Text.BackgroundColor3 = Color3.new(0,0,0)
+        Text.TextColor3 = Color
+        Text.Font = "SourceSansBold"
+        Text.TextSize = Size
+        Text.TextTransparency = 0
+        Text.Visible = true
+        Text.Text = Name
+        Text.Size = UDim2.new(1,0,0,0)
+        Text.Position = UDim2.new(0.5,0,0.7,-35)
+        UIStroke.Thickness = 1.5
+        UIStroke.Color = Color3.new()
+        UIStroke.Transparency = 0
+        Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        Highlight.FillColor = Color
+        Highlight.OutlineColor = Color
+        Highlight.FillTransparency = 1
+        Highlight.OutlineTransparency =  0
+        Highlight.Name = Title
+task.spawn(function()
+while wait(0.001) do
+if getgenv().DistanceESP then
+Text.Text = string.format("%s\n(%sm)", Name or Child.Name, math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - Child:GetPivot().Position).Magnitude))
+else
+Text.Text = Name
+end
+end                                
+end)
+getgenv().DistanceESP = true
 for _,v in ipairs(workspace.Map.Tools:GetChildren()) do
 if v.Parent.Name == "Tools" and v then
-local ToolHighlight = Instance.new("Highlight", v)
-ToolHighlight.OutlineColor = Color3.fromRGB(0,255,255)
-ToolHighlight.FillTransparency = 1
+AddESP(v, v.Name, Color3.new(0,1,1), 14, "TE")
 end
 end
 for _,v in ipairs(workspace.Map.Keys:GetChildren()) do
 if v.Parent.Name == "Keys" and v then
-local KeyHighlight = Instance.new("Highlight", v)
-KeyHighlight.OutlineColor = Color3.fromRGB(255,255,0)
-KeyHighlight.FillTransparency = 1
+AddESP(v, "Keys", Color3.new(1,1,0), 14, "KE")
 end
 end
 for _,v in ipairs(workspace.Map.Pills:GetChildren()) do
 if v.Parent.Name == "Pills" and v.Name == "HealthMeds" and v then
-local HealMedsHighlight = Instance.new("Highlight", v)
-HealMedsHighlight.OutlineColor = Color3.fromRGB(0,255,50)
-HealMedsHighlight.FillTransparency = 1
+AddESP(v, "Health Meds", Color3.new(0,1,0), 14, "HME")
 end
 end
 for _,v in ipairs(workspace.Map.Chests:GetChildren()) do
 if v.Parent.Name == "Chests" and v.Name == "Chest" and v then
-local ChestHighlight = Instance.new("Highlight", v)
-ChestHighlight.OutlineColor = Color3.fromRGB(255,130,0)
-ChestHighlight.FillTransparency = 1
+AddESP(v, "Chest", Color3.from(255,150,0), 14, "CE")
 end
 end
 for _,v in ipairs(workspace.Map.Chests:GetChildren()) do
 if v.Parent.Name == "Chests" and v.Name == "MegaChest" and v then
-local MegaChestHighlight = Instance.new("Highlight", v)
-MegaChestHighlight.OutlineColor = Color3.fromRGB(0,100,50)
-MegaChestHighlight.FillTransparency = 1
+AddESP(v, "Mega Chest", Color3.from(0,150,50), 14, "MCE")
 end
+end
+workspace.Map.Tools.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "Tools" and v then
+AddESP(v, v.Name, Color3.new(0,1,1), 14, "TE")
+end
+end)
+workspace.Map.Keys.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "Keys" and v then
+AddESP(v, "Keys", Color3.new(1,1,0), 14, "KE")
+end
+end)
+workspace.Map.Pills.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "Pills" and v.Name == "HealthMeds" and v then
+AddESP(v, "Health Meds", Color3.new(0,1,0), 14, "HME")
+end
+end)
+workspace.Map.Chests.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "Chests" and v.Name == "MegaChest" and v then
+AddESP(v, "Mega Chest", Color3.from(0,150,50), 14, "MCE")
+elseif v.Parent.Name == "Chests" and v.Name == "Chest" and v then
+AddESP(v, "Chest", Color3.from(255,150,0), 14, "CE")
 end
 end)
