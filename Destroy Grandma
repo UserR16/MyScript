@@ -1,0 +1,37 @@
+game:GetService("RunService").Stepped:Connect(function()
+for _,v in ipairs(workspace.Map.Tools:GetChildren()) do
+if v.Parent.Name == "Tools" and v then
+local ToolHighlight = Instance.new("Highlight", v)
+ToolHighlight.OutlineColor = Color3.fromRGB(0,255,255)
+ToolHighlight.FillTransparency = 1
+end
+end
+for _,v in ipairs(workspace.Map.Keys:GetChildren()) do
+if v.Parent.Name == "Keys" and v then
+local KeyHighlight = Instance.new("Highlight", v)
+KeyHighlight.OutlineColor = Color3.fromRGB(255,255,0)
+KeyHighlight.FillTransparency = 1
+end
+end
+for _,v in ipairs(workspace.Map.Pills:GetChildren()) do
+if v.Parent.Name == "Pills" and v.Name == "HealthMeds" and v then
+local HealMedsHighlight = Instance.new("Highlight", v)
+HealMedsHighlight.OutlineColor = Color3.fromRGB(0,255,50)
+HealMedsHighlight.FillTransparency = 1
+end
+end
+for _,v in ipairs(workspace.Map.Chests:GetChildren()) do
+if v.Parent.Name == "Chests" and v.Name == "Chest" and v then
+local ChestHighlight = Instance.new("Highlight", v)
+ChestHighlight.OutlineColor = Color3.fromRGB(255,130,0)
+ChestHighlight.FillTransparency = 1
+end
+end
+for _,v in ipairs(workspace.Map.Chests:GetChildren()) do
+if v.Parent.Name == "Chests" and v.Name == "MegaChest" and v then
+local MegaChestHighlight = Instance.new("Highlight", v)
+MegaChestHighlight.OutlineColor = Color3.fromRGB(0,100,50)
+MegaChestHighlight.FillTransparency = 1
+end
+end
+end)
