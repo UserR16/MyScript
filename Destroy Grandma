@@ -1,4 +1,4 @@
-game:GetService("RunService").Stepped:Connect(function()
+game:GetService("RunService").RenderStepped:Connect(function()
 for _,v in ipairs(workspace.Map.Tools:GetChildren()) do
 if v.Parent.Name == "Tools" and v then
 local ToolHighlight = Instance.new("Highlight", v)
