@@ -1,0 +1,331 @@
+
+
+
+
+
+
+local Players = game:GetService("Players")
+local Teams = game:GetService("Teams")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+
+-- Settings
+local lockEnabled = false
+local teamCheckEnabled = true
+local lockSpeed = 0.25
+local selectedTeams = {}
+
+
+-- GUI setup
+local screenGui = Instance.new("ScreenGui")
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+-- Main frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 280, 0, 300)
+mainFrame.Position = UDim2.new(0, 20, 0, 200)
+mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = screenGui
+
+local corner = Instance.new("UICorner", mainFrame)
+corner.CornerRadius = UDim.new(0, 10)
+local border = Instance.new("UIStroke", mainFrame)
+border.Thickness = 1.5
+border.Color = Color3.fromRGB(85, 85, 85)
+
+-- Collapse button
+local collapseBtn = Instance.new("TextButton", mainFrame)
+collapseBtn.Size = UDim2.new(0,45,0,45)
+collapseBtn.Position = UDim2.new(0,0,0,0)
+collapseBtn.Text = ">"
+collapseBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+collapseBtn.TextColor3 = Color3.new(1, 1, 1)
+collapseBtn.BackgroundTransparency = 1
+collapseBtn.TextScaled = true
+collapseBtn.Font = Enum.Font.SourceSansBold
+local collapseCorner = Instance.new("UICorner", collapseBtn)
+collapseCorner.CornerRadius = UDim.new(1, 0)
+
+-- Title
+local title = Instance.new("TextLabel", mainFrame)
+title.Size = UDim2.new(1, -35, 0, 35)
+title.Position = UDim2.new(0.2, 10, 0, 5)
+title.BackgroundTransparency = 1
+title.Text = "rechedmcvn's aimbot"
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = "25"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Button container
+local buttonFrame = Instance.new("Frame", mainFrame)
+buttonFrame.Position = UDim2.new(0, 10, 0, 50)
+buttonFrame.Size = UDim2.new(1, -20, 1, -60)
+buttonFrame.BackgroundTransparency = 1
+local listLayout = Instance.new("UIListLayout", buttonFrame)
+listLayout.Padding = UDim.new(0, 8)
+
+-- Styled button generator
+local function createButton(text)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, 0, 0, 45)
+    btn.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    btn.Font = Enum.Font.SourceSansBold
+    btn.Text = text
+    btn.TextSize = "15"
+    local c = Instance.new("UICorner", btn)
+    c.CornerRadius = UDim.new(0, 8)
+    return btn
+end
+
+-- Lock button
+local lockButton = createButton("Lock: OFF")
+lockButton.Parent = buttonFrame
+
+lockButton.MouseButton1Click:Connect(function()
+    lockEnabled = not lockEnabled
+    lockButton.Text = lockEnabled and "Lock: ON" or "Lock: OFF"
+    lockButton.BackgroundColor3 = lockEnabled and Color3.fromRGB(40, 120, 40) or Color3.fromRGB(70, 70, 70)
+end)
+
+teamCheckEnabled = true
+-- Team check button
+local teamButton = createButton("TeamCheck: ON")
+teamButton.Parent = buttonFrame
+teamButton.BackgroundColor3 = Color3.fromRGB(40, 120, 40)
+teamButton.MouseButton1Click:Connect(function()
+    teamCheckEnabled = not teamCheckEnabled
+    teamButton.Text = teamCheckEnabled and "TeamCheck: ON" or "TeamCheck: OFF"
+    teamButton.BackgroundColor3 = teamCheckEnabled and Color3.fromRGB(40, 120, 40) or Color3.fromRGB(70, 70, 70)
+end)
+
+-- Team select button
+local teamSelectButton = createButton("Select Teams")
+teamSelectButton.Parent = buttonFrame
+
+-- Team panel (hidden by default)
+local teamPanel = Instance.new("Frame", mainFrame)
+teamPanel.AnchorPoint = Vector2.new(0, 0)
+teamPanel.Position = UDim2.new(1, 0, 0, 0)
+teamPanel.Size = UDim2.new(0, 140, 1, 0)
+teamPanel.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+teamPanel.BackgroundTransparency = 1
+teamPanel.Visible = false
+local panelCorner = Instance.new("UICorner", teamPanel)
+panelCorner.CornerRadius = UDim.new(0, 10)
+
+local panelLabel = Instance.new("TextLabel", teamPanel)
+panelLabel.Size = UDim2.new(1, 0, 0, 35)
+panelLabel.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+panelLabel.Text = "Target Teams"
+panelLabel.TextColor3 = Color3.new(1, 1, 1)
+panelLabel.TextSize = "15"
+panelLabel.Font = Enum.Font.SourceSansBold
+local plCorner = Instance.new("UICorner", panelLabel)
+plCorner.CornerRadius = UDim.new(0, 8)
+
+local scrollFrame = Instance.new("ScrollingFrame", teamPanel)
+scrollFrame.Size = UDim2.new(1, 0, 1, -40)
+scrollFrame.Position = UDim2.new(0, 0, 0, 40)
+scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+scrollFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scrollFrame.ScrollBarThickness = 5
+scrollFrame.BackgroundTransparency = 1
+
+local scrollLayout = Instance.new("UIListLayout", scrollFrame)
+scrollLayout.Padding = UDim.new(0, 5)
+scrollLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+-- Populate teams
+local function refreshTeams()
+    for _, c in ipairs(scrollFrame:GetChildren()) do
+        if c:IsA("TextButton") then c:Destroy() end
+    end
+
+    for _, team in ipairs(Teams:GetChildren()) do
+        local btn = createButton(team.Name)
+        btn.Size = UDim2.new(1, -10, 0, 40)
+        btn.Parent = scrollFrame
+        btn.MouseButton1Click:Connect(function()
+            if selectedTeams[team.Name] then
+                selectedTeams[team.Name] = nil
+            else
+                selectedTeams[team.Name] = team
+            end
+            btn.BackgroundColor3 = selectedTeams[team.Name] and Color3.fromRGB(120, 40, 40)
+                or Color3.fromRGB(70, 70, 70)
+        end)
+    end
+end
+
+Teams.ChildAdded:Connect(refreshTeams)
+Teams.ChildRemoved:Connect(refreshTeams)
+refreshTeams()
+
+-- Smooth fade helper
+local function fade(obj, targetTransparency, duration)
+    local tween = TweenService:Create(obj, TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = targetTransparency})
+    tween:Play()
+    for _, descendant in ipairs(obj:GetDescendants()) do
+        if descendant:IsA("TextLabel") or descendant:IsA("TextButton") then
+            TweenService:Create(descendant, TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = targetTransparency}):Play()
+            TweenService:Create(descendant, TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = targetTransparency}):Play()
+        end
+    end
+end
+
+-- Team panel toggle
+local teamPanelVisible = false
+teamSelectButton.MouseButton1Click:Connect(function()
+    teamPanelVisible = not teamPanelVisible
+    if teamPanelVisible then
+        mainFrame:TweenSize(UDim2.new(0, 420, 0, 300), "Out", "Quad", 0.25, true)
+        task.wait(0.1)
+        teamPanel.Visible = true
+        teamPanel:TweenPosition(UDim2.new(1, -140, 0, 0), "Out", "Quad", 0.25, true)
+        fade(teamPanel, 0, 0.25)
+    else
+        fade(teamPanel, 1, 0.25)
+        task.wait(0.2)
+        teamPanel:TweenPosition(UDim2.new(1, 0, 0, 0), "In", "Quad", 0.25, true, function()
+            teamPanel.Visible = false
+        end)
+        mainFrame:TweenSize(UDim2.new(0, 280, 0, 300), "In", "Quad", 0.25, true)
+    end
+end)
+
+-- Collapse behavior
+local expanded = true
+collapseBtn.MouseButton1Click:Connect(function()
+    expanded = not expanded
+    collapseBtn.Text = expanded and ">" or "<"
+    if expanded then
+        mainFrame:TweenSize(UDim2.new(0, 280, 0, 300), "Out", "Quad", 0.25, true)
+    else
+        mainFrame:TweenSize(UDim2.new(0, 45, 0, 45), "Out", "Quad", 0.25, true)
+    end
+    for _, child in ipairs(mainFrame:GetChildren()) do
+        if child ~= collapseBtn and child ~= corner and child ~= border then
+            child.Visible = expanded
+        end
+    end
+end)
+
+-- Target detection
+local function getClosestVisibleTarget()
+    local myChar = LocalPlayer.Character
+    local head = myChar and myChar:FindFirstChild("Head")
+    if not head then return end
+
+    local best, bestDist = nil, math.huge
+    local myPos = head.Position
+
+    for _, plr in ipairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer then
+            if (not teamCheckEnabled) or (plr.Team ~= LocalPlayer.Team) then
+                if (next(selectedTeams) == nil) or selectedTeams[plr.Team and plr.Team.Name] then
+                    local enemyChar = plr.Character
+                    local humanoid = enemyChar and enemyChar:FindFirstChildOfClass("Humanoid")
+                    local enemyHead = enemyChar and enemyChar:FindFirstChild("Head")
+
+                    if humanoid and humanoid.Health > 0 and enemyHead then
+                        local rayParams = RaycastParams.new()
+                        rayParams.FilterDescendantsInstances = {myChar}
+                        rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+                        local result = workspace:Raycast(myPos, (enemyHead.Position - myPos).Unit * 500, rayParams)
+
+                        if result and result.Instance:IsDescendantOf(enemyChar) then
+                            local dist = (enemyHead.Position - myPos).Magnitude
+                            if dist < bestDist then
+                                bestDist = dist
+                                best = enemyHead
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    return best
+end
+
+-- Camera lock loop
+RunService.RenderStepped:Connect(function()
+    if not lockEnabled then return end
+
+    local enemyHead = getClosestVisibleTarget()
+    local myChar = LocalPlayer.Character
+    local myHead = myChar and myChar:FindFirstChild("Head")
+
+    if enemyHead and myHead then
+        local desiredDir = (enemyHead.Position - myHead.Position).Unit
+        local newCFrame = Camera.CFrame:Lerp(
+            CFrame.new(Camera.CFrame.Position, Camera.CFrame.Position + desiredDir),
+            lockSpeed
+        )
+        Camera.CFrame = newCFrame
+    end
+end)
+spawn(function()
+while true do
+game:GetService("ReplicatedStorage"):WaitForChild("GunRemotes"):WaitForChild("FuncReload"):InvokeServer()
+wait()
+end
+end)
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "AimbotGUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = game.CoreGui
+
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(0, 150, 0, 50)
+Button.Position = UDim2.new(0.85, 0, 0, 10)
+Button.BackgroundColor3 = Color3.fromRGB(0,255)
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.Font = Enum.Font.SourceSansBold
+Button.TextSize = 20
+Button.Text = "Escape Prison"
+Button.Parent = ScreenGui
+
+local UICornerButton = Instance.new("UICorner")
+UICornerButton.Parent = Button
+local UiStorke = Instance.new("UIStroke", Button)
+
+local UICornerButton = Instance.new("UICorner")
+UICornerButton.Parent = DButton
+local UiStorkeD = Instance.new("UIStroke", DButton)
+
+local CButton = Instance.new("TextButton")
+CButton.Size = UDim2.new(0, 150, 0, 50)
+CButton.Position = UDim2.new(0.85, 0, 0, 70)
+CButton.BackgroundColor3 = Color3.fromRGB(0,255)
+CButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CButton.Font = Enum.Font.SourceSansBold
+CButton.TextSize = 20
+CButton.Text = if game.Players.LocalPlayer.Name == "rechedmcvn" then "Teleport to Anh3DZ" else "Bell" end
+CButton.Parent = ScreenGui
+
+local UICornerButton = Instance.new("UICorner")
+UICornerButton.Parent = CButton
+local UiStorkeC = Instance.new("UIStroke", CButton)
+local Default = false
+
+Button.MouseButton1Click:Connect(function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(50,5,50)
+wait(1)
+game.Players.LocalPlayer.Character.Humanoid.Health = 0
+end)
+CButton.MouseButton1Click:Connect(function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =  game.Players.rechedmcvnGV.Character.HumanoidRootPart.CFrame
+end)
