@@ -313,13 +313,27 @@ CButton.BackgroundColor3 = Color3.fromRGB(0,255)
 CButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CButton.Font = Enum.Font.SourceSansBold
 CButton.TextSize = 20
-CButton.Text = if game.Players.LocalPlayer.Name == "rechedmcvn" then "Teleport to Anh3DZ" else "Bell" end
+CButton.Text = if game.Players.LocalPlayer.Name == "rechedmcvnGV" then "Teleport to Anh3DZ" else "Teleport to Bell"
 CButton.Parent = ScreenGui
 
 local UICornerButton = Instance.new("UICorner")
 UICornerButton.Parent = CButton
 local UiStorkeC = Instance.new("UIStroke", CButton)
 local Default = false
+
+local SButton = Instance.new("TextButton")
+SButton.Size = UDim2.new(0, 150, 0, 50)
+SButton.Position = UDim2.new(0.85, 0, 0, 120)
+SButton.BackgroundColor3 = Color3.fromRGB(0,255)
+SButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SButton.Font = Enum.Font.SourceSansBold
+SButton.TextSize = 20
+SButton.Text = if game.Players.LocalPlayer.Name == "rechedmcvnGV" then "Speed for bell" else "Speed for NguoiDepZai"
+SButton.Parent = ScreenGui
+
+local UICornerButtonS = Instance.new("UICorner")
+UICornerButtonS.Parent = SButton
+local UiStorkeS = Instance.new("UIStroke", SButton)
 
 Button.MouseButton1Click:Connect(function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(50,5,50)
@@ -328,4 +342,11 @@ game.Players.LocalPlayer.Character.Humanoid.Health = 0
 end)
 CButton.MouseButton1Click:Connect(function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =  game.Players.rechedmcvnGV.Character.HumanoidRootPart.CFrame
+end)
+SButton.MouseButton1Click:Connect(function()
+game:GetService("RunService").RenderStepped:Connect(function()
+if game.Players.LocalPlayer.Character then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed =  40
+end
+end)
 end)
