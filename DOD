@@ -51,7 +51,7 @@ Interact:AddToggle("AutoBadwareComputer",{
     Callback = function(v)
 _G.AutoBadwareComputer = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoBadwareomputer and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
+if _G.AutoBadwareComputer and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
 for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
 if v.Name == "Computer" and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
 fireproximityprompt(v.Primary.Prompt)
@@ -268,6 +268,15 @@ end)
 pcall(function()
 UIModule = require(LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("MainGui"):WaitForChild("Client"):WaitForChild("Modules"):WaitForChild("UI"))
 end)
+Ability:AddDropdown("Ability3", {
+	Values = Abilities,
+	Default = "Banana",
+	Multi = false,
+  Text = "Select Ability",
+  Callback = function(v)
+_G.SetAbility3 = v
+end})
+
 local AbilityDatas = {
     ["Adrenaline"] = {Name = "Adrenaline",InputShown = "",Tip = "Get a temporary speed boost for 6 seconds, highlighting you to your teamates and slowing you down after it\'s over.",Cooldown = 35,Icon = "rbxassetid://116399911657417",DisplayName = "Adrenaline"};
     ["Punch"] = {Name = "Punch",InputShown = "",Tip = "Swing foward stunning any killers hit for 3 seconds, if missed you\'ll get severe endlag.",Cooldown = 40,Icon = "rbxassetid://97428323453639",DisplayName = "Punch"};
@@ -281,7 +290,14 @@ local AbilityDatas = {
     ["Taunt"] = {Name = "Taunt",InputShown = "",Tip = "Taunt the killer gaining a forcefield, highlighting the killer, and slowing them down for 5 seconds or until you\'re hit for the duration of the effect (1.25x damage).",Cooldown = 25,Icon = "rbxassetid://85436299122876",DisplayName = "Taunt"};
     ["Banana"] = {Name = "Banana",InputShown = "",Tip = "Toss a banana onto the floor, if the killer or the civilian who made it touch the banana, they will slip and be briefly stunned, the banana will naturally decay over time.",Cooldown = 20,Icon = "rbxassetid://96202444819611",DisplayName = "Banana Peel"};
 }
-
+Ability:AddButton("Create Ability", function()
+if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+for _,ability in pairs(_G.SetAbility3) do
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteEvents"):WaitForChild("AbilitySelection"):FireServer(unpack({{tostring(ability)}}))
+AbilityModule.CreateAbility(AbilityDatas[tostring(ability)])
+end
+end
+end)
 Ability:AddButton("Set All Ability", function()
 if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteEvents"):WaitForChild("AbilitySelection"):FireServer(unpack({{tostring(Abilities[math.random(1, 11)]);tostring(Abilities[math.random(1, 11)])}}))
