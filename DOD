@@ -548,25 +548,23 @@ Players:AddSlider("SprintSpeed", {
   Callback = function(v)
 _G.SprintSpeedBoost = v
 end})
-Players:AddToggle("InfStamina",{
-    Text = "Inf Stamina",
-    Default = false,
-    Callback = function(v)
-_G.InfStamina = v
-end})
-Players:AddToggle("NoStunned",{
-    Text = "No Stunned",
-    Default = false,
-    Callback = function(v)
-_G.NoStun = v
+Players:AddSlider("DistanceExtendHitbox", {
+	Text = "Distance Extend Hitbox",
+	Default = 10,
+	Min = 1,
+	Max = 20,
+	Rounding = 1,
+	Compact = true,
+  Callback = function(v)
+_G.DistanceExtendHitbox = v
 end})
 Players:AddToggle("Extend",{
     Text = "Extend Hitbox",
     Default = false,
     Callback = function(v)
 _G.ExtendHitbox = v
-if ExtendHitbox == true then
-local distance = 15
+if _G.ExtendHitbox == true then
+local distance = _G.DistanceExtendHitbox or 10
 repeat game:GetService("RunService").Heartbeat:Wait()
 local vel, movel = nil, 0.1
 while not (game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character.Parent and game:GetService("Players").LocalPlayer.Character.HumanoidRootPart and game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Parent) do
@@ -579,6 +577,45 @@ if (game:GetService("Players").LocalPlayer.Character and game:GetService("Player
 game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = vel
 end
 until _G.ExtendHitbox == false
+end
+end})
+Players:AddToggle("InfStamina",{
+    Text = "Inf Stamina",
+    Default = false,
+    Callback = function(v)
+_G.InfStamina = v
+end})
+Players:AddToggle("NoStunned",{
+    Text = "No Stunned",
+    Default = false,
+    Callback = function(v)
+_G.NoStun = v
+end})
+Players:AddToggle("AntiFallRagdoll",{
+    Text = "Anti Fall Ragdoll",
+    Default = false,
+    Callback = function(v)
+if v then
+for _,v in ipairs(workspace.GameAssets:GetDescendants()) do
+if v.Name == "FallDamage" and v:IsA("BasePart") then
+v.CanCollide = false
+v.CanTouch = false
+end
+end
+AntiFallRagdoll = workspace.GameAssets.DescendantAdded:Connect(function(child)
+if child.Name == "FallDamage" and child:IsA("BasePart") then
+child.CanCollide = false
+child.CanTouch = false
+end
+end)
+else
+for _,v in ipairs(workspace.GameAssets:GetDescendants()) do
+if v.Name == "FallDamage" and v:IsA("BasePart") then
+v.CanCollide = false
+v.CanTouch = true
+end
+end
+AntiFallRagdoll:Disconnect()
 end
 end})
 Players:AddToggle("FlipUi",{
