@@ -379,10 +379,6 @@ local HumanoidRootPart = Character.HumanoidRootPart
 local Humanoid = Character.Humanoid
 local Char = Character
 
-local ff_connection = nil
-local ff_enabled = false
-local ff_cd = false
-
 local inf = 9e9999999999999999999999
 local StaminaScript = require(game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Client.Modules.Movement)
 game:GetService("RunService").Stepped:Connect(function()
