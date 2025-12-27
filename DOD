@@ -23,31 +23,34 @@ local Tabs = {
   ["UI Settings"] = Window:AddTab("Config", "settings"),
 }
 local Farm = Tabs.Main:AddLeftGroupbox("Farm", "coin")
-
-Farm:AddToggle("FarmWithSurvivor",{
-    Text = "Farm With Survivors",
+Farm:AddDropdown("FarmMode", {
+	Values = {"Survivor", "Killer"},
+	Default = "Survivor",
+	Multi = false,
+    Text = "Farm Mode",
+    Callback = function(v)
+_G.FarmMode = v or "Survivor"
+end})
+Farm:AddToggle("FarmSurvivor",{
+    Text = "Farm",
     Default = false,
     Callback = function(v)
-_G.FarmWithSurvivors = v
+_G.Farm = v
 game:GetService("RunService").Stepped:Connect(function()
-if _G.FarmWithSurvivors and not workspace.GameAssets.Teams.Other:FindFirstChild("Computer") and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+if _G.Farm and _G.FarmMode == "Survivor" and workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
+local Survivors = workspace.GameAssets.Teams.Survivor:FindFirstChildWhichIsA("Model")
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Survivors.HumanoidRootPart.CFrame - Vector3.new(0,6,0)
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(Survivors.HumanoidRootPart.Position.X, Survivors.HumanoidRootPart.Position.Y, Survivors.HumanoidRootPart.Position.Z))
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Eject")
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Swing")
+end
+if _G.Farm and _G.FarmMode == "Killer" and workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
+workspace.GameAssets.Teams.Killer:WaitForChild(game.Players.LocalPlayer.Name).Parent = workspace
 local Killers = workspace.GameAssets.Teams.Killer:FindFirstChildWhichIsA("Model")
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Killers.HumanoidRootPart.CFrame - Vector3.new(0,6,0)
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(Killers.HumanoidRootPart.Position.X, Killers.HumanoidRootPart.Position.Y, Killers.HumanoidRootPart.Position.Z))
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Adrenaline")
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Banana")
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Cloak")
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Punch")
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Revolver")
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Taunt")
-end
-if _G.FarmWithSurvivors and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
-for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
-if v.Name == "Computer" and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Primary.CFrame
-fireproximityprompt(v.Primary.Prompt)
-end
-end
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Eject")
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Swing")
 end
 end)
 end})
