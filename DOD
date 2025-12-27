@@ -180,7 +180,7 @@ Ability:AddButton("Punch [40s]", function()
 AAB("Punch", "rbxassetid://97428323453639")
 end)
 Ability:AddButton("Caretaker [30s]", function()
-AAB("Punch", "rbxassetid://90712805517714")
+AAB("Caretaker", "rbxassetid://90712805517714")
 end)
 Ability:AddButton("Revolver [15s]", function()
 AAB("Revolver", "rbxassetid://107624957891469")
@@ -295,10 +295,7 @@ local AbilityDatas = {
 }
 Ability:AddButton("Create Ability", function()
 if workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
-for _,ability in pairs(_G.SetAbility3) do
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteEvents"):WaitForChild("AbilitySelection"):FireServer(unpack({{tostring(ability)}}))
-AbilityModule.CreateAbility(AbilityDatas[tostring(ability)])
-end
+AbilityModule.CreateAbility(AbilityDatas[tostring(_G.SetAbility3 or "Banana")])
 end
 end)
 Ability:AddButton("Set All Ability", function()
