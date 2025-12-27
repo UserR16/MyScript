@@ -32,7 +32,7 @@ _G.FarmWithSurvivors = v
 game:GetService("RunService").Stepped:Connect(function()
 if _G.FarmWithSurvivors and not workspace.GameAssets.Teams.Other:FindFirstChild("Computer") and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
 local Killers = workspace.GameAssets.Teams.Killer:FindFirstChildWhichIsA("Model")
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Killers.HumanoidRootPart.CFrame - Vector3.new(0,5,0)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Killers.HumanoidRootPart.CFrame - Vector3.new(0,6,0)
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(Killers.HumanoidRootPart.Position.X, Killers.HumanoidRootPart.Position.Y, Killers.HumanoidRootPart.Position.Z))
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Adrenaline")
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Banana")
@@ -51,6 +51,7 @@ end
 end
 end)
 end})
+
 local Interact = Tabs.Main:AddLeftGroupbox("Interact", "key")
 
 Interact:AddToggle("InstanceInteract",{
