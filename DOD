@@ -31,8 +31,9 @@ Farm:AddToggle("FarmWithSurvivor",{
 _G.FarmWithSurvivors = v
 game:GetService("RunService").Stepped:Connect(function()
 if _G.FarmWithSurvivors and not workspace.GameAssets.Teams.Other:FindFirstChild("Computer") and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
-local Killers = workspace.GameAssets.Teams.Killer:FindFirstChildWhichIsA("Model").Character.HumanoidRootPart
+local Killers = workspace.GameAssets.Teams.Killer:FindFirstChildWhichIsA("Model").HumanoidRootPart
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Killers.CFrame - Vector3.new(0,0,5)
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(Killers.HumanoidRootPart.Position.X, Killers.HumanoidRootPart.Position.Y, Killers.HumanoidRootPart.Position.Z))
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Adrenaline")
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Banana")
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Cloak")
