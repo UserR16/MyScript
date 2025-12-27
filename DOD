@@ -371,6 +371,12 @@ end
 end)
 end})
 local Players = Tabs.Main:AddLeftGroupbox("Players", "user")
+local Player = game.Players
+local Character = Player.LocalPlayer.Character
+local HumanoidRootPart = Character.HumanoidRootPart
+local Humanoid = Character.Humanoid
+local Char = Character
+
 function SetFrontFlip(bool)
 ff_enabled = bool
 if ff_enabled == true then
@@ -392,12 +398,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
 imageButton.ImageColor3 = Library.Scheme.AccentColor
 end)
 ff_connection = imageButton.MouseButton1Click:Connect(function()
-local Player = game.Players
-local Character = Player.LocalPlayer.Character
-local HumanoidRootPart = Character.HumanoidRootPart
-local Humanoid = Character.Humanoid
-local Char = Character
-
 local ff_connection = nil
 local ff_enabled = false
 local ff_cd = false
