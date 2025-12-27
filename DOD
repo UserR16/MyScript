@@ -22,7 +22,34 @@ local Tabs = {
   Main = Window:AddTab("Main", "boxes"),
   ["UI Settings"] = Window:AddTab("Config", "settings"),
 }
+local Farm = Tabs.Main:AddLeftGroupbox("Farm", "coin")
 
+Farm:AddToggle("FarmWithSurvivor",{
+    Text = "Farm With Survivors",
+    Default = false,
+    Callback = function(v)
+_G.FarmWithSurvivors = v
+game:GetService("RunService").Stepped:Connect(function()
+if _G.FarmWithSurvivors and not workspace.GameAssets.Teams.Other:FindFirstChild("Computer") and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+local Killers = workspace.GameAssets.Teams.Killer:FindFirstChildWhichIsA("Model").Character.HumanoidRootPart
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Killers.CFrame - Vector3.new(0,0,5)
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Adrenaline")
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Banana")
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Cloak")
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Punch")
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Revolver")
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Taunt")
+end
+if _G.FarmWithSurvivors and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") and workspace.GameAssets.Teams.Survivor:FindFirstChild(game.Players.LocalPlayer.Name) then
+for _,v in ipairs(workspace.GameAssets.Teams.Other:GetChildren()) do
+if v.Name == "Computer" and workspace.GameAssets.Teams.Other:FindFirstChild("Computer") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Primary.CFrame
+fireproximityprompt(v.Primary.Prompt)
+end
+end
+end
+end)
+end})
 local Interact = Tabs.Main:AddLeftGroupbox("Interact", "key")
 
 Interact:AddToggle("InstanceInteract",{
