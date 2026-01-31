@@ -23,8 +23,11 @@ local Tabs = {
   ["UI Settings"] = Window:AddTab("Config", "settings"),
 }
 local Farm = Tabs.Main:AddLeftGroupbox("Farm", "coin")
+local cd = {p = 0, r = 0, t = 0, i = 0, a = 0}
+local plat = Instance.new("Part")plat.Size = Vector3.new(8,1,8)plat.Anchored = trueplat.Transparency = 1plat.CanCollide = trueplat.Parent = workspace
+
 Farm:AddDropdown("FarmMode", {
-	Values = {"Survivor", "Killer"},
+	Values = {"Survivor", "Killer (Coming Soon)"},
 	Default = "Survivor",
 	Multi = false,
     Text = "Farm Mode",
@@ -37,21 +40,28 @@ Farm:AddToggle("FarmSurvivor",{
     Callback = function(v)
 _G.Farm = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.Farm and _G.FarmMode == "Survivor" and workspace.GameAssets.Teams.Killer:FindFirstChild(game.Players.LocalPlayer.Name) then
-local Survivors = workspace.GameAssets.Teams.Survivor:FindFirstChildWhichIsA("Model")
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Survivors.HumanoidRootPart.CFrame - Vector3.new(0,6,0)
-game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(Survivors.HumanoidRootPart.Position.X, Survivors.HumanoidRootPart.Position.Y, Survivors.HumanoidRootPart.Position.Z))
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Eject")
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Swing")
+if _G.Farm and _G.FarmMode == "Survivor" then
+local lp = game.Players.LocalPlayer
+local char = lp.Character
+local killer = workspace.GameAssets.Teams.Killer:FindFirstChildWhichIsA("Model")
+if char and char:FindFirstChild("HumanoidRootPart") and killer and killer:FindFirstChild("HumanoidRootPart") then
+local myRoot = char.HumanoidRootPart
+local kRoot = killer.HumanoidRootPart
+local canAtk = (tick()-cd.p > 2.1) or (tick()-cd.r > 5.1)
+if canAtk then
+if tick()-cd.i > 15 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Invisibility")cd.i=tick()end
+if char.Humanoid.Health < 60 and tick()-cd.a > 20 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Adrenaline")cd.a=tick()end
+myRoot.CFrame = kRoot.CFrame * CFrame.new(0, 0, -3.5) * CFrame.Angles(0, math.pi, 0)
+if tick()-cd.p > 2.1 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Punch")cd.p=tick()end
+if tick()-cd.r > 5.1 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Revolver")cd.r=tick()end
+if tick()-cd.t > 3.1 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Taunt")cd.t=tick()end
+else
+local targetPos = kRoot.Position + Vector3.new(0, 18, 0)
+plat.CFrame = CFrame.new(targetPos - Vector3.new(0, 3.5, 0))
+myRoot.CFrame = CFrame.new(targetPos)
+myRoot.CFrame = CFrame.lookAt(myRoot.Position, kRoot.Position)
+myRoot.Velocity = Vector3.new(0, 0, 0)
 end
-if _G.Farm and _G.FarmMode == "Killer" then
-workspace.GameAssets.Teams.Killer:WaitForChild(game.Players.LocalPlayer.Name).Parent = workspace
-local Killers = workspace.GameAssets.Teams.Killer:FindFirstChildWhichIsA("Model")
-if workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Killers.HumanoidRootPart.CFrame - Vector3.new(0,6,0)
-game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(Killers.HumanoidRootPart.Position.X, Killers.HumanoidRootPart.Position.Y, Killers.HumanoidRootPart.Position.Z))
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Eject")
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Swing")
 end
 end
 end)
