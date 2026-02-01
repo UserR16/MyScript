@@ -22,55 +22,6 @@ local Tabs = {
   Main = Window:AddTab("Main", "boxes"),
   ["UI Settings"] = Window:AddTab("Config", "settings"),
 }
-local Farm = Tabs.Main:AddLeftGroupbox("Farm", "coin")
-local cd = {p = 0, r = 0, t = 0, i = 0, a = 0}
-local plat = Instance.new("Part")
-plat.Size = Vector3.new(8,1,8)
-plat.Anchored = true
-plat.Transparency = 1
-plat.CanCollide = true
-plat.Parent = workspace
-
-Farm:AddDropdown("FarmMode", {
-	Values = {"Survivor", "Killer (Coming Soon)"},
-	Default = "Survivor",
-	Multi = false,
-    Text = "Farm Mode",
-    Callback = function(v)
-_G.FarmMode = v or "Survivor"
-end})
-Farm:AddToggle("FarmSurvivor",{
-    Text = "Farm",
-    Default = false,
-    Callback = function(v)
-_G.Farm = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.Farm and _G.FarmMode == "Survivor" then
-local lp = game.Players.LocalPlayer
-local char = lp.Character
-local killer = workspace.GameAssets.Teams.Killer:FindFirstChildWhichIsA("Model")
-if char and char:FindFirstChild("HumanoidRootPart") and killer and killer:FindFirstChild("HumanoidRootPart") then
-local myRoot = char.HumanoidRootPart
-local kRoot = killer.HumanoidRootPart
-local canAtk = (tick()-cd.p > 2.1) or (tick()-cd.r > 5.1)
-if canAtk then
-if tick()-cd.i > 15 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Invisibility")cd.i=tick()end
-if char.Humanoid.Health < 60 and tick()-cd.a > 20 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Adrenaline")cd.a=tick()end
-myRoot.CFrame = kRoot.CFrame * CFrame.new(0, 0, -3.5) * CFrame.Angles(0, math.pi, 0)
-if tick()-cd.p > 2.1 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Punch")cd.p=tick()end
-if tick()-cd.r > 5.1 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Revolver")cd.r=tick()end
-if tick()-cd.t > 3.1 then game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RemoteFunctions"):WaitForChild("UseAbility"):InvokeServer("Taunt")cd.t=tick()end
-else
-local targetPos = kRoot.Position + Vector3.new(0, 18, 0)
-plat.CFrame = CFrame.new(targetPos - Vector3.new(0, 3.5, 0))
-myRoot.CFrame = CFrame.new(targetPos)
-myRoot.CFrame = CFrame.lookAt(myRoot.Position, kRoot.Position)
-myRoot.Velocity = Vector3.new(0, 0, 0)
-end
-end
-end
-end)
-end})
 
 local Interact = Tabs.Main:AddLeftGroupbox("Interact", "key")
 
@@ -435,7 +386,7 @@ Players:AddSlider("WalkSpeed", {
 	Text = "Walk Speed Boost",
 	Default = 0,
 	Min = 0,
-	Max = 10,
+	Max = 25,
 	Rounding = 1,
 	Compact = true,
   Callback = function(v)
@@ -445,7 +396,7 @@ Players:AddSlider("SprintSpeed", {
 	Text = "Sprint Speed Boost",
 	Default = 0,
 	Min = 0,
-	Max = 10,
+	Max = 25,
 	Rounding = 1,
 	Compact = true,
   Callback = function(v)
@@ -668,7 +619,7 @@ local Highlight = Instance.new('Highlight', target)
 Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 Highlight.FillColor = color
 Highlight.OutlineColor = color
-Highlight.FillTransparency = 1
+Highlight.FillTransparency = 0.8
 Highlight.OutlineTransparency =  0
 Highlight.Name = name
 end
@@ -702,6 +653,7 @@ UIStroke.Thickness = 1
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 game:GetService("RunService").RenderStepped:Connect(function()
+TextLabel.TextSize = _G.TextSize or 14
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 else
@@ -736,6 +688,7 @@ UIStroke.Thickness = 1
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 game:GetService("RunService").RenderStepped:Connect(function()
+TextLabel.TextSize = _G.TextSize or 14
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 else
@@ -783,6 +736,7 @@ UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 game:GetService("RunService").RenderStepped:Connect(function()
+TextLabel.TextSize = _G.TextSize or 14
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 else
@@ -817,6 +771,7 @@ UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 game:GetService("RunService").RenderStepped:Connect(function()
+TextLabel.TextSize = _G.TextSize or 14
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name .. "\nHP:" .. v.Humanoid.Health .. "/" .. v.Humanoid.MaxHealth
 else
@@ -864,6 +819,7 @@ UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 game:GetService("RunService").RenderStepped:Connect(function()
+TextLabel.TextSize = _G.TextSize or 14
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name
 else
@@ -898,6 +854,7 @@ UIStroke.Thickness = 0.5
 UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 game:GetService("RunService").RenderStepped:Connect(function()
+TextLabel.TextSize = _G.TextSize or 14
 if _G.ShowText and v:FindFirstChild("Humanoid") then
 TextLabel.Text = v.Name
 else
@@ -916,6 +873,16 @@ end
 end
 end})
 ESP:AddDivider()
+ESP:AddSlider("TextSize", {
+	Text = "Text Size",
+	Default = 14,
+	Min = 10,
+	Max = 25,
+	Rounding = 1,
+	Compact = true,
+  Callback = function(v)
+_G.TextSize = v
+end})
 ESP:AddToggle("ShowText",{
     Text = "Show Text",
     Default = false,
