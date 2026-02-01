@@ -27,7 +27,8 @@ local cd = {p = 0, r = 0, t = 0, i = 0, a = 0}
 local plat = Instance.new("Part")
 plat.Size = Vector3.new(8,1,8)
 plat.Anchored = true
-plat.Transparency = 1plat.CanCollide = true
+plat.Transparency = 1
+plat.CanCollide = true
 plat.Parent = workspace
 
 Farm:AddDropdown("FarmMode", {
