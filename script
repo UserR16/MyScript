@@ -47,13 +47,13 @@ local oldTeleportIndexHook, oldTeleportNamecallHook = nil, nil
 
 makeButtonNonDraggable = function(button)
     button.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             buttonInteraction = true
         end
     end)
     
     button.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             buttonInteraction = false
         end
     end)
@@ -1021,7 +1021,7 @@ createScriptViewer = function()
     
     local dragging, dragStart, startPos = false, nil, nil
     viewerTitle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
             startPos = scriptViewer.Position
@@ -1029,14 +1029,14 @@ createScriptViewer = function()
     end)
     
     viewerTitle.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             local delta = input.Position - dragStart
             scriptViewer.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
     end)
     
     viewerTitle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = false
         end
     end)
@@ -1419,9 +1419,9 @@ addDecompilerLog = function(scriptName, scriptPath, source, scriptType)
     end)
     
     logContainer.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             showScriptInViewer(scriptName, scriptPath, source, scriptType)
-        elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
+        elseif input.UserInputType == Enum.UserInputType.MouseButton2 or input.UserInputType == Enum.UserInputType.Touch then
             local mousePos = UserInputService:GetMouseLocation()
             createScriptContextMenu(mousePos.X, mousePos.Y)
         end
@@ -1524,7 +1524,7 @@ addDecompilerLog = function(scriptName, scriptPath, source, scriptType)
         
         local connection
         connection = UserInputService.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                 local mousePos = UserInputService:GetMouseLocation()
                 local menuPos = contextMenu.AbsolutePosition
                 local menuSize = contextMenu.AbsoluteSize
@@ -2112,7 +2112,7 @@ createGUI = function()
         local originalTransparency = dragFrame.BackgroundTransparency
         
         dragFrame.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 and not buttonInteraction then
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and not buttonInteraction then
                 dragging = true
                 dragStart = input.Position
                 startPos = frame.Position
@@ -2125,14 +2125,14 @@ createGUI = function()
         end)
         
         dragFrame.InputChanged:Connect(function(input)
-            if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            if dragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
                 local delta = input.Position - dragStart
                 frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
             end
         end)
         
         dragFrame.InputEnded:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                 dragging = false
 
                 dragFrame.BackgroundTransparency = originalTransparency
@@ -2163,7 +2163,7 @@ createGUI = function()
     local sidebarDragging = false
     
     sidebar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and not buttonInteraction then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and not buttonInteraction then
             sidebarDragging = true
             dragStart = input.Position
             startPos = mainFrame.Position
@@ -2171,14 +2171,14 @@ createGUI = function()
     end)
     
     sidebar.InputChanged:Connect(function(input)
-        if sidebarDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        if sidebarDragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             local delta = input.Position - dragStart
             mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
     end)
     
     sidebar.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             sidebarDragging = false
         end
     end)
@@ -2187,7 +2187,7 @@ createGUI = function()
     local logContainerDragging = false
     
     logContainer.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and not buttonInteraction then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and not buttonInteraction then
             logContainerDragging = true
             dragStart = input.Position
             startPos = mainFrame.Position
@@ -2195,14 +2195,14 @@ createGUI = function()
     end)
     
     logContainer.InputChanged:Connect(function(input)
-        if logContainerDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        if logContainerDragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             local delta = input.Position - dragStart
             mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
     end)
     
     logContainer.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             logContainerDragging = false
         end
     end)
@@ -2617,7 +2617,7 @@ createSettingsFrame = function()
     local settingsDragging, settingsDragStart, settingsStartPos = false, nil, nil
     
     settingsFrame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and not buttonInteraction then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and not buttonInteraction then
             settingsDragging = true
             settingsDragStart = input.Position
             settingsStartPos = settingsFrame.Position
@@ -2625,14 +2625,14 @@ createSettingsFrame = function()
     end)
     
     settingsFrame.InputChanged:Connect(function(input)
-        if settingsDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        if settingsDragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             local delta = input.Position - settingsDragStart
             settingsFrame.Position = UDim2.new(settingsStartPos.X.Scale, settingsStartPos.X.Offset + delta.X, settingsStartPos.Y.Scale, settingsStartPos.Y.Offset + delta.Y)
         end
     end)
     
     settingsFrame.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             settingsDragging = false
         end
     end)
@@ -2734,7 +2734,7 @@ createMiniExecutor = function()
     local dragging, dragStart, startPos = false, nil, nil
     
     execTitle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
             startPos = miniExecutor.Position
@@ -2742,14 +2742,14 @@ createMiniExecutor = function()
     end)
     
     execTitle.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             local delta = input.Position - dragStart
             miniExecutor.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
     end)
     
     execTitle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = false
         end
     end)
@@ -2944,7 +2944,7 @@ createContextMenu = function(parent, remotePath, remoteArgs, remoteType)
     local contextDragging, contextDragStart, contextStartPos = false, nil, nil
     
     contextMenu.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and not buttonInteraction then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and not buttonInteraction then
             contextDragging = true
             contextDragStart = input.Position
             contextStartPos = contextMenu.Position
@@ -2952,14 +2952,14 @@ createContextMenu = function(parent, remotePath, remoteArgs, remoteType)
     end)
     
     contextMenu.InputChanged:Connect(function(input)
-        if contextDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        if contextDragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             local delta = input.Position - contextDragStart
             contextMenu.Position = UDim2.new(contextStartPos.X.Scale, contextStartPos.X.Offset + delta.X, contextStartPos.Y.Scale, contextStartPos.Y.Offset + delta.Y)
         end
     end)
     
     contextMenu.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             contextDragging = false
         end
     end)
@@ -2967,7 +2967,7 @@ createContextMenu = function(parent, remotePath, remoteArgs, remoteType)
 
     local connection
     connection = UserInputService.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and not contextDragging then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and not contextDragging then
             local mousePos = UserInputService:GetMouseLocation()
             local menuPos = contextMenu.AbsolutePosition
             local menuSize = contextMenu.AbsoluteSize
@@ -3244,7 +3244,7 @@ addGroupedLog = function(remotePath, remoteType, remoteArgs, timestamp)
         
         -- Click to expand/collapse and right-click for context menu
         groupContainer.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                 remoteGroups[remotePath].expanded = not remoteGroups[remotePath].expanded
                 arrow.Text = remoteGroups[remotePath].expanded and "v" or ">"
                 
@@ -3392,7 +3392,7 @@ addGroupedLog = function(remotePath, remoteType, remoteArgs, timestamp)
     end)
     
     individualLog.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             copyToClipboard(remoteArgs or "(no arguments)")
             addLog("> Copied arguments from individual call", Color3.new(0.5, 1, 0.5))
         end
@@ -3546,7 +3546,7 @@ addLog = function(text, color, remotePath, remoteArgs, logType)
         end)
         
         logContainer.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                 if selectedRemote and selectedRemote.logContainer then
                     local prevEntry = selectedRemote.logContainer:FindFirstChild("TextLabel")
                     if prevEntry then
