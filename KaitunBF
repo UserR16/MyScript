@@ -5,7 +5,11 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 _G.TweenSpeed = 321
-
+function AutoHaki()
+if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+end
+end
 local function Tween(targetCFrame)
     local char = LocalPlayer.Character
     if not char or not char:FindFirstChild("HumanoidRootPart") then return end
@@ -22,12 +26,25 @@ local function Tween(targetCFrame)
     local tween = TweenService:Create(root, TweenInfo.new(duration, Enum.EasingStyle.Linear), {CFrame = targetCFrame})
     tween:Play()
 end
+function claimquest(name, lv)
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", name, lv)
+end
 function farmlevel()
 for _,v in ipairs(workspace.Enemies:GetChildren()) do
 if level < 50 and v.Name == "Galley Pirate" and v then
 Tween(v.HumanoidRootPart.CFrame - Vector3.new(0, -15, 0))
 else
+if not v then
 Tween(CFrame.new(5258.2788085938, 38.526931762695, 4050.044921875))
+end
+end
+if level > 50 and v.Name == "Brute" and v then
+claimquest("BuggyQuest1", 2)
+Tween(v.HumanoidRootPart.CFrame - Vector3.new(0, -15, 0))
+else
+if not v then
+Tween(CFrame.new(- 1140.1761474609, 4.752049446106, 3827.4057617188))
+end
 end
 end
 end
