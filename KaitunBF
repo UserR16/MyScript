@@ -4,7 +4,7 @@ local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-_G.TweenSpeed = 300
+_G.TweenSpeed = 321
 
 local function Tween(targetCFrame)
     local char = LocalPlayer.Character
@@ -24,11 +24,13 @@ local function Tween(targetCFrame)
 end
 function farmlevel()
 for _,v in ipairs(workspace.Enemies:GetChildren()) do
-if level < 6 and v.Name == "Bandit" and v then
-Tween(v.CFrame - Vector3.new(0, -15, 0)
+if level < 50 and v.Name == "Galley Pirate" and v then
+Tween(v.HumanoidRootPart.CFrame - Vector3.new(0, -15, 0))
+else
+Tween(CFrame.new(5258.2788085938, 38.526931762695, 4050.044921875))
 end
 end
-end)
+end
 farmlevel()
 
 
