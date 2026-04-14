@@ -1,0 +1,157 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/UserR16/Script/refs/heads/main/CooperateWithMyFriendDoingUI"))()
+local Window = Library:CreateWindow({
+    Name = "Lori's Nightmare", 
+    ToggleKey = Enum.KeyCode.RightControl,
+    KeySystem = false,
+    Key = "key123"
+})
+
+local Tabs = {
+Main = Window:CreateTab("Main"),
+Player = Window:CreateTab("Players")
+}
+
+local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/refs/heads/main/ESP"))()
+
+local player = game:GetService("Players").LocalPlayer
+local rs = game:GetService("RunService")
+
+local char = player.Character or player.CharacterAdded:Wait()
+local humanoid = char:WaitForChild("Humanoid")
+local gui = player:WaitForChild("PlayerGui")
+
+player.CharacterAdded:Connect(function(newChar)
+    char = newChar
+    humanoid = newChar:WaitForChild("Humanoid")
+end)
+
+local miniFrame = gui:WaitForChild("Minigame"):WaitForChild("Frame")
+local barFrame = gui:WaitForChild("BarMinigame"):WaitForChild("Frame")
+local frame = barFrame:WaitForChild("Frame")
+local bar = barFrame:WaitForChild("bar")
+local template = frame:WaitForChild("Template")
+
+local SubTab = Tabs.Main:CreateSubTab("Computer")
+
+local Section = SubTab:AddSection("Minigame Button", false)
+Section:AddToggle({Text = "Permanent position button", Callback = function(v)
+if v then
+ppb = miniFrame.DescendantAdded:Connect(function(v)
+if v.Name == "Template" then
+v.Position = UDim2.new(0.8, 0, 0.8, 0)
+end
+end)
+else
+ppb:Disconnect()
+end
+end})
+local Section = SubTab:AddSection("Minigame Bar", false)
+Section:AddToggle({Text = "Auto Position Bar", Callback = function(v)
+if v then
+apb = rs.RenderStepped:Connect(function()
+    if bar and template then
+        if template.Position ~= bar.Position then
+            template.Position = bar.Position
+        end
+        local goal = frame:FindFirstChild("Goal")
+        if goal and goal.Position ~= bar.Position then
+            goal.Position = bar.Position
+        end
+    end
+    if frame.Position ~= UDim2.new(0.5, 0, 0.5, 0) then
+        frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    end
+end)
+else
+apb:Disconnect()
+end
+end})
+local SubTab = Tabs.Players:CreateSubTab("Players")
+
+local Section = SubTab:AddSection("Players", false)
+Section:AddSlider({Text = "WalkSpeed", Min = 16, Max = 200, Default = 16, Callback = function(v) _G.SetWalkSpeed = v end})
+Section:AddToggle({Text = "Enabled WalkSpeed", Callback = function(v)
+_G.WalkSpeed = v
+rs.Stepped:Connect(function()
+if _G.WalkSpeed and humanoid then
+humanoid.WalkSpeed = _G.SetWalkSpeed or 20
+end
+end)
+end})
+local Section = SubTab:AddSection("ESP", false)
+Section:AddToggle({Text = "Monster & Players ESP", Callback = function(v)
+if v then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "HumanoidRootPart" and not v:FindFirstChild("mpe_esp") then
+esp:AddESP(v.Parent, v.Name, Color3.fromRGB(255), 15, 'mpe_esp')
+end
+end
+mpe = rs.Stepped:Connect(function()
+for _,v in ipairs(game:GetService("Workspace"):GetChildren()) do
+if v:IsA("Model") and not v:FindFirstChild("s_esp") then
+if game:GetService("Players"):GetPlayerFromCharacter(v) ~= game:GetService("Players").LocalPlayer then
+esp:AddESP(v, v.Name, Color3.fromRGB(0,255,100), 15, 's_esp')
+end
+end
+end
+end)
+mpe2 = workspace.DescendantAdded:Connect(function(v)
+if v.Name == "HumanoidRootPart" and not v:FindFirstChild("mpe_esp") then
+esp:AddESP(v.Parent, v.Name, Color3.fromRGB(255), 15, 'mpe_esp')
+end
+end)
+else
+mpe:Disconnect()
+mpe2:Disconnect()
+esp:Delete("s_esp")
+end
+end})
+
+
+--[[
+local player = game:GetService("Players").LocalPlayer
+local rs = game:GetService("RunService")
+
+local char = player.Character or player.CharacterAdded:Wait()
+local humanoid = char:WaitForChild("Humanoid")
+local gui = player:WaitForChild("PlayerGui")
+
+player.CharacterAdded:Connect(function(newChar)
+    char = newChar
+    humanoid = newChar:WaitForChild("Humanoid")
+end)
+
+local miniFrame = gui:WaitForChild("Minigame"):WaitForChild("Frame")
+local barFrame = gui:WaitForChild("BarMinigame"):WaitForChild("Frame")
+local frame = barFrame:WaitForChild("Frame")
+local bar = barFrame:WaitForChild("bar")
+local template = frame:WaitForChild("Template")
+
+rs.RenderStepped:Connect(function()
+if humanoid and humanoid.Parent then
+  humanoid.WalkSpeed = 20
+    end
+    if bar and template then
+        if template.Position ~= bar.Position then
+            template.Position = bar.Position
+        end
+        local goal = frame:FindFirstChild("Goal")
+        if goal and goal.Position ~= bar.Position then
+            goal.Position = bar.Position
+        end
+    end
+    if frame.Position ~= UDim2.new(0.5, 0, 0.5, 0) then
+        frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    end
+end)
+
+miniFrame.DescendantAdded:Connect(function(v)
+    if v.Name == "Template" then
+        v.Position = UDim2.new(0.8, 0, 0.8, 0)
+    end
+end)
+Sec:AddInput({Text = "User Name", Default = "Player", Callback = function(v) print("Input: " .. v) end})
+Sec:AddToggle({Text = "Auto Farm", Callback = function(v) print("Toggle: ", v) end})
+Sec:AddSlider({Text = "WalkSpeed", Min = 16, Max = 200, Default = 16, Callback = function(v) LP.Character.Humanoid.WalkSpeed = v end})
+Sec:AddDropdown({Text = "Select World", List = {"Sea 1", "Sea 2", "Sea 3"}, Multi = false, Callback = function(v) print("World: " .. v) end})
+Sec:AddButton({Text = "Force Save Config", Callback = function() print("Saved manually!") end})]]--
