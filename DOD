@@ -128,7 +128,7 @@ Button.InputBegan:Connect(function(input)
         startPos = Button.Position
  
         input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
+            if not _G.Freeze and input.UserInputState == Enum.UserInputState.End then
                 dragging = false
             end
         end)
@@ -142,7 +142,7 @@ Button.InputChanged:Connect(function(input)
 end)
  
 game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if dragging and input == dragInput then
+    if not _G.Freeze and dragging and input == dragInput then
         update(input)
     end
 end)
@@ -484,12 +484,13 @@ Players:AddSlider("SpeedFlySlider",{
 Text = "Speed Fly Slider",
 Default = 16,
 Min = 16,
-Max = _G.SpeedBypass and 50 or 21,
+Max = 100,
 Rounding = 1,
 Compact = true,
 Callback = function(v)
 _G.SpeedFlySlider = v or 16
 end})
+_G.SpeedFlySlider = 16
 Players:AddToggle("Fly",{
 Text = "Fly",
 Default = false,
