@@ -45,6 +45,63 @@ InstanceInteract:Disconnect()
 end
 end})
 Interact:AddDivider()
+Interact:AddSlider("SpeedHunt", {
+	Text = "Speed Hunt",
+	Default = 100,
+	Min = 100,
+	Max = 200,
+	Rounding = 1,
+	Compact = true,
+  Callback = function(v)
+_G.SpeedHunt = v
+end})
+Interact:AddToggle("AutoHuntSurvivor",{
+    Text = "Auto Hunt Survivor",
+    Default = false,
+    Callback = function(v)
+_G.AutoHunt = v
+local LP = game:GetService("Players").LocalPlayer
+local Teams = workspace.GameAssets.Teams
+local function Clean(r, h)
+    if r then for _, v in pairs({"H_BV", "H_BG"}) do if r:FindFirstChild(v) then r[v]:Destroy() end end end
+    if h then h.PlatformStand = false end
+end
+task.spawn(function()
+    while task.wait() do
+        local Char = LP.Character
+        local Root = Char and Char:FindFirstChild("HumanoidRootPart")
+        local Hum = Char and Char:FindFirstChild("Humanoid")
+        
+        local IsKiller = false
+        for _, v in pairs(Teams.Killer:GetChildren()) do if v.Name:find(LP.Name) then IsKiller = true break end end
+
+        if _G.AutoHunt and IsKiller and Root and Hum then
+        local Target, MinH, MinD = nil, 9e9, 9e9
+            for _, v in pairs(Teams.Survivor:GetChildren()) do
+                local th, tr = v:FindFirstChildOfClass("Humanoid"), v:FindFirstChild("HumanoidRootPart")
+                if th and tr and th.Health > 0 then
+                    local d = (Root.Position - tr.Position).Magnitude
+                    if th.Health < MinH or (th.Health == MinH and d < MinD) then
+                        MinH, MinD, Target = th.Health, d, tr
+                    end
+                end
+            end
+
+            local bv = Root:FindFirstChild("H_BV") or Instance.new("BodyVelocity", Root)
+            local bg = Root:FindFirstChild("H_BG") or Instance.new("BodyGyro", Root)
+            
+            bv.Name, bv.maxForce = "H_BV", Vector3.new(9e9, 9e9, 9e9)
+            bg.Name, bg.maxTorque = "H_BG", Vector3.new(9e9, 9e9, 9e9)
+            
+            Hum.PlatformStand = true
+            bg.cframe = CFrame.new(Root.Position) * CFrame.Angles(-1.57, 0, 0)
+            bv.velocity = Target and (Target.Position - Root.Position).Unit * _G.SpeedHunt or Vector3.new(0, 0, 0)
+        else
+            Clean(Root, Hum)
+        end
+    end
+end)
+end})
 Interact:AddToggle("AutoBadwareComputer",{
     Text = "Auto Badware Computer",
     Default = false,
