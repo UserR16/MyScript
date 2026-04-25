@@ -9,10 +9,9 @@ local Toggles = Library.Toggles
 Library.ShowToggleFrameInKeybinds = true 
 Library.ShowCustomCursor = true
 Library.NotifySide = "Right"
-Library.Scheme.AccentColor = Color3.fromRGB(0, 255, 150)
 
 local Window = Library:CreateWindow({
-	Title = "Arimium Hub",
+	Title = "YOUHUB",
   Font = Enum.Font.SourceSansBold,
 	NotifySide = "Right",
   Footer = "DIE OF DEATH | v0.2"
@@ -168,6 +167,8 @@ UIStrokeShadow.Parent = Shadow
 game:GetService("RunService").RenderStepped:Connect(function()
 UIStrokeShadow.Color = Library.Scheme.MainColor
 Button.BackgroundColor3 = Library.Scheme.BackgroundColor
+Shadow.Size = UDim2.new(0, _G.ButtonSize or 70, 0, _G.ButtonSize or 70)
+Button.Size = UDim2.new(0, _G.ButtonSize or 70, 0, _G.ButtonSize or 70)
 end)
 
 local dragging = false
@@ -292,6 +293,16 @@ Ability:AddToggle("AutoSetAbility",{
     Default = false,
     Callback = function(v)
 _G.AutoSetAbility = v
+end})
+Ability:AddSlider("ButtonSize", {
+	Text = "Sprint Speed Boost",
+	Default = 70,
+	Min = 70,
+	Max = 100,
+	Rounding = 1,
+	Compact = true,
+  Callback = function(v)
+_G.ButtonSize = v
 end})
 Ability:AddToggle("FreezeButton",{
     Text = "Freeze Button",
@@ -1136,6 +1147,6 @@ ThemeManager:ApplyToTab(Tabs["UI Settings"])
 -- You can use the SaveManager:LoadAutoloadConfig() to load a config
 -- which has been marked to be one that auto loads!
 SaveManager:LoadAutoloadConfig()
-
+Library.Scheme.AccentColor = Color3.fromRGB(255,255,0)
 
 
