@@ -295,7 +295,7 @@ Ability:AddToggle("AutoSetAbility",{
 _G.AutoSetAbility = v
 end})
 Ability:AddSlider("ButtonSize", {
-	Text = "Sprint Speed Boost",
+	Text = "Button Size",
 	Default = 70,
 	Min = 70,
 	Max = 100,
@@ -480,7 +480,7 @@ Players:AddSlider("DistanceExtendHitbox", {
 	Text = "Distance Extend Hitbox",
 	Default = 10,
 	Min = 1,
-	Max = 25,
+	Max = 50,
 	Rounding = 1,
 	Compact = true,
   Callback = function(v)
