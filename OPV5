@@ -47,7 +47,7 @@ Farm:CreateToggle("Farm Coins", function(v)
 h = v
 spawn(function()
 while h do
-takegold()
+takecoins()
 wait()
 end
 end)
