@@ -2,84 +2,46 @@
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
 local Window = Library:NewWindow("V5")
 local Farm = Window:NewSection("Farm")
-function takegold()
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local Actors = game:GetService("ReplicatedStorage").Runtime.Actors
-local remotes = table.create(250)
-
-for i = 0, 250 do
-        local actor = Actors:FindFirstChild("GoldBrickPointActor_" .. i)
-        if actor then
-            local events = actor:FindFirstChild("Events")
-            if events then
-                local r = events:FindFirstChild("TakeGold")
-                if r then
-                    remotes[#remotes + 1] = r
-                end
-            end
-        end
-    end
-
-    -- bắn trong cùng 1 frame (không wait, không spawn)
-    for i = 0, #remotes do
-        local r = remotes[i]
-        pcall(function()
-            r:FireServer()
-        end)
-    end
+function takecoins()
+for i = 0, 200 do
+    local actor = game:GetService("ReplicatedStorage").Runtime.Actors:FindFirstChild("GoldPointActor_" .. i)
     
-
-    -- gom toàn bộ remote trước
-    for i = 0, 250 do
-        local actor = Actors:FindFirstChild("GoldPointActor_" .. i)
-        if actor then
-            local events = actor:FindFirstChild("Events")
-            if events then
-                local r = events:FindFirstChild("TakeGold")
-                if r then
-                    remotes[#remotes + 1] = r
-                end
-            end
-        end
-    end
-
-    -- bắn trong cùng 1 frame (không wait, không spawn)
-    for i = 0, #remotes do
-        local r = remotes[i]
-        pcall(function()
-            r:FireServer()
-            r:FireServer(player)
-        end)
+    if actor then
+        actor.Events.TakeGold:FireServer()
+        actor.Events.TakeGold:FireServer(game:GetService("Players").LOLSCRIPT01)
+        task.wait()
     end
 end
+for i = 0, 200 do
+    local actor = game:GetService("ReplicatedStorage").Runtime.Actors:FindFirstChild("GoldBrickPointActor_" .. i)
+    
+    if actor then
+        actor.Events.TakeGold:FireServer()
+        actor.Events.TakeGold:FireServer(game:GetService("Players").LOLSCRIPT01)
+        task.wait(0.1)
+    end
+end
+end
 function takediamonds()
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local Actors = game:GetService("ReplicatedStorage").Runtime.Actors
-    local remotes = table.create(250)
-
-    -- gom toàn bộ remote trước
-    for i = 0, 250 do
-        local actor = Actors:FindFirstChild("DiamondPointActor_" .. i)
-        if actor then
-            local events = actor:FindFirstChild("Events")
-            if events then
-                local r = events:FindFirstChild("TakeDiamond")
-                if r then
-                    remotes[#remotes + 1] = r
-                end
-            end
-        end
+for i = 0, 200 do
+    local actor = game:GetService("ReplicatedStorage").Runtime.Actors:FindFirstChild("DiamondPointActor_" .. i)
+    
+    if actor then
+        actor.Events.TakeDiamond:FireServer()
+        actor.Events.TakeDiamond:FireServer(game:GetService("Players").LOLSCRIPT01)
+        task.wait()
     end
-
-    -- bắn trong cùng 1 frame (không wait, không spawn)
-    for i = 0, #remotes do
-        local r = remotes[i]
-        pcall(function()
-            r:FireServer()
-        end)
+end
+end
+function addcharge()
+for i = 0, 200 do
+    local actor = game:GetService("ReplicatedStorage").Runtime.Actors:FindFirstChild("ChargePointActor_" .. i)
+    
+    if actor then
+        actor.Events.AddCharge:FireServer()
+      task.wait()
     end
+end
 end
 Farm:CreateToggle("Farm Coins", function(v)
 h = v
@@ -95,6 +57,15 @@ l = v
 spawn(function()
 while l do
 takediamonds()
+wait()
+end
+end)
+end)
+Farm:CreateToggle("Farm Charge", function(v)
+t = v
+spawn(function()
+while t do
+addcharge()
 wait()
 end
 end)
