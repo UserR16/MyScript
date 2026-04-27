@@ -1,47 +1,60 @@
 
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
-local Window = Library:NewWindow("V5")
-local Farm = Window:NewSection("Farm")
+local Window1 = Library:NewWindow("Farm")
+local Farm = Window1:NewSection("Farm")
 function takecoins()
-for i = 0, 200 do
-    local actor = game:GetService("ReplicatedStorage").Runtime.Actors:FindFirstChild("GoldPointActor_" .. i)
-    
-    if actor then
-        actor.Events.TakeGold:FireServer()
-        actor.Events.TakeGold:FireServer(game:GetService("Players").LOLSCRIPT01)
+    list = table.create(#game:GetService("ReplicatedStorage").Runtime.Actors:GetChildren())
+    n = 0
+
+    for _, actor in ipairs(game:GetService("ReplicatedStorage").Runtime.Actors:GetChildren()) do
+        if actor.Name:find("Gold") and actor:FindFirstChild("Events") then
+            n += 1
+            list[n] = actor
+        end
+    end
+
+    for i = 1, n, 25 do
+        for j = i, math.min(i + 14, n) do
+            list[j].Events.TakeGold:FireServer(game:GetService("Players").LocalPlayer)
+        end
         task.wait()
     end
-end
-for i = 0, 200 do
-    local actor = game:GetService("ReplicatedStorage").Runtime.Actors:FindFirstChild("GoldBrickPointActor_" .. i)
-    
-    if actor then
-        actor.Events.TakeGold:FireServer()
-        actor.Events.TakeGold:FireServer(game:GetService("Players").LOLSCRIPT01)
-        task.wait(0.1)
-    end
-end
 end
 function takediamonds()
-for i = 0, 200 do
-    local actor = game:GetService("ReplicatedStorage").Runtime.Actors:FindFirstChild("DiamondPointActor_" .. i)
-    
-    if actor then
-        actor.Events.TakeDiamond:FireServer()
-        actor.Events.TakeDiamond:FireServer(game:GetService("Players").LOLSCRIPT01)
+list = table.create(#game:GetService("ReplicatedStorage").Runtime.Actors:GetChildren())
+    n = 0
+
+    for _, actor in ipairs(game:GetService("ReplicatedStorage").Runtime.Actors:GetChildren()) do
+        if actor.Name:find("Diamond") and actor:FindFirstChild("Events") then
+            n += 1
+            list[n] = actor
+        end
+    end
+
+    for i = 1, n, 25 do
+        for j = i, math.min(i + 14, n) do
+            list[j].Events.TakeDiamond:FireServer(game:GetService("Players").LocalPlayer)
+        end
         task.wait()
     end
 end
-end
 function addcharge()
-for i = 0, 200 do
-    local actor = game:GetService("ReplicatedStorage").Runtime.Actors:FindFirstChild("ChargePointActor_" .. i)
-    
-    if actor then
-        actor.Events.AddCharge:FireServer()
-      task.wait()
+list = table.create(#game:GetService("ReplicatedStorage").Runtime.Actors:GetChildren())
+    n = 0
+
+    for _, actor in ipairs(game:GetService("ReplicatedStorage").Runtime.Actors:GetChildren()) do
+        if actor.Name:find("Charge") and actor:FindFirstChild("Events") then
+            n += 1
+            list[n] = actor
+        end
     end
-end
+
+    for i = 1, n, 25 do
+        for j = i, math.min(i + 14, n) do
+            list[j].Events.AddCharge:FireServer(game:GetService("Players").LocalPlayer)
+        end
+        task.wait()
+    end
 end
 Farm:CreateToggle("Farm Coins", function(v)
 h = v
@@ -77,10 +90,73 @@ game:GetService("ReplicatedStorage").Runtime.Actors:WaitForChild("Player_" .. ga
 wait(0.1)
 end
 end)
-Farm:CreateToggle("Roll Boost", function(v)
+
+local Window2 = Library:NewWindow("Open Egg")
+local Eggs = Window2:NewSection("Eggs")
+Eggs:CreateToggle("Hatch Noob Egg", function(v)
+e = v
+while e do
+local args = {
+	"1_0",
+	_G.Hatch3Eggs and 3 or 1
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Runtime"):WaitForChild("Actors"):WaitForChild("Player_" .. game.Players.LocalPlayer.UserId):WaitForChild("Functions"):WaitForChild("OpenPetEggs"):InvokeServer(unpack(args))
+wait()
+end
+end)
+Eggs:CreateToggle("Hatch Rare Egg", function(v)
+e = v
+while e do
+local args = {
+	"1_2",
+	_G.Hatch3Eggs and 3 or 1
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Runtime"):WaitForChild("Actors"):WaitForChild("Player_" .. game.Players.LocalPlayer.UserId):WaitForChild("Functions"):WaitForChild("OpenPetEggs"):InvokeServer(unpack(args))
+wait(1)
+end
+end)
+Eggs:CreateToggle("Hatch Party Egg", function(v)
+e = v
+while e do
+local args = {
+	"1_3",
+	_G.Hatch3Eggs and 3 or 1
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Runtime"):WaitForChild("Actors"):WaitForChild("Player_" .. game.Players.LocalPlayer.UserId):WaitForChild("Functions"):WaitForChild("OpenPetEggs"):InvokeServer(unpack(args))
+wait(1)
+end
+end)
+Eggs:CreateToggle("Hatch Hacker Egg", function(v)
+e = v
+while e do
+local args = {
+	"1_4",
+	_G.Hatch3Eggs and 3 or 1
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Runtime"):WaitForChild("Actors"):WaitForChild("Player_" .. game.Players.LocalPlayer.UserId):WaitForChild("Functions"):WaitForChild("OpenPetEggs"):InvokeServer(unpack(args))
+wait(1)
+end
+end)
+Eggs:CreateToggle("Hatch Vampire Egg", function(v)
+e = v
+while e do
+local args = {
+	"1_5",
+	_G.Hatch3Eggs and 3 or 1
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Runtime"):WaitForChild("Actors"):WaitForChild("Player_" .. game.Players.LocalPlayer.UserId):WaitForChild("Functions"):WaitForChild("OpenPetEggs"):InvokeServer(unpack(args))
+wait(1)
+end
+end)
+local More = Window2:NewSection("More")
+More:CreateToggle("Roll Boost", function(v)
 b = v
 while b do
 game:GetService("ReplicatedStorage").Runtime.Actors:WaitForChild("Player_" .. game.Players.LocalPlayer.UserId).Functions.RollBoost:InvokeServer("JumpPower_1_8")
 wait()
 end
+end)
+local SettingEggs = Window2:NewSection("Setting Hatch")
+SettingEggs:CreateToggle("Hatch Triple Eggs", function(v)
+_G.Hatch3Eggs = v
 end)
